@@ -153,7 +153,7 @@ export default {
     width: 80px;
   }
 .right-a {
-    height: 62px;
+    height: 60px;
     background-color: #f5f6fa;
     border: 1px solid #dee3e9;
     margin-bottom: 20px;
@@ -214,7 +214,7 @@ export default {
 .kes {
     float: left;
     font-size: 24px;
-    line-height: 60px;
+    line-height: 59px;
     text-align: center;
     color: #333335;
     background-color: #dfe3ec;

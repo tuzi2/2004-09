@@ -2,22 +2,22 @@
   <el-container>
     <el-main class="ac">
       <div class="right-a">
-        <p class="kes">课时汇总</p>
+        <p class="bq">课时汇总</p>
         <div id="triangle-right"></div>
         <div class="right-three">
           <div class="search-a">
               <div>
-                <el-select v-model="select" slot="prepend" placeholder="请选择" style="width:20%">
+                <el-select v-model="select" slot="prepend" placeholder="请选择" style="width:15%">
                         <el-option label="架子鼓" value="1" selected></el-option>
                         <el-option label="音乐" value="2"></el-option>
                         <el-option label="基础班" value="3"></el-option>
                       </el-select>
-<el-select v-model="select" slot="prepend" placeholder="请选择 " style="width:20%;margin-left:-5px">
+<el-select v-model="select" slot="prepend" placeholder="请选择 " style="width:15%;margin-left:-5px">
                         <el-option label="架子鼓" value="1" selected></el-option>
                         <el-option label="音乐" value="2"></el-option>
                         <el-option label="基础班" value="3"></el-option>
                       </el-select>
-                    <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
+                    <el-input placeholder="请输入内容" v-model="input3" class="ssk">
                       <el-button slot="append" icon="el-icon-search"></el-button>
                     </el-input>
                   </div> 
@@ -69,13 +69,17 @@
       <el-dialog title="课程详情" :visible.sync="dialogFormVisible">
         <el-form :model="form" class="xinxi">
           <!-- <el-form-item label="基本信息" :label-width="formLabelWidth"> -->
+
           <h1>基本信息</h1>
-          <b>课程名称：架子鼓课</b>
+          <div ><b>课程名称：架子鼓课</b>
           <b>主讲老师：明明</b>
           <b>教室：202教室</b>
-          <h1>上课时间</h1>
-          <b>2021年3月1日(周一)</b>
-          <b>13:30-14:15</b>
+          </div>
+          
+          
+          <div style="margin:40px 0;"><h1>上课时间</h1><b>2021年3月1日(周一)</b>
+          <b>13:30-14:15</b></div>
+          
           <h1>
             学员(2)
             <span class="add">学员添加</span>
@@ -118,11 +122,14 @@ export default {
 </script>
 
 <style>
-.kes {
+.bq {
   float: left;
-  line-height: 23px;
+  line-height: 59px;
   color: #333335;
-  
+  font-size: 24px;
+  background-color: #dfe3ec;
+  padding-left: 20px;
+  padding-right: 10px;
 }
 #triangle-right {
   float: left;
@@ -141,8 +148,8 @@ export default {
 .search-a {
   background-color: #ffffff;
   margin-left: 190px;
-  margin-top: 10px;
-  width: 750px;
+  margin-top: 12px;
+  width: 679px;
   height: 38px;
 }
 .rq {
@@ -158,7 +165,7 @@ export default {
   width: 8%;
   background-color: #f3f3f3;
   color: #00014e;
-  line-height: 99px;
+  line-height: 80px;
   text-align: center;
   border-top: 1px solid #e5e5e5;
   border-bottom: 1px solid #e5e5e5;
@@ -178,17 +185,19 @@ export default {
 .el-icon-arrow-down {
   font-size: 12px;
 }
-.input-with-select{
-  width:40%;
+.ssk{
+  width:475px;
   border: 0;
   float: right;
 }
 .jc {
   width: 153px;
   height: 53px;
-  background-color: red;
   text-align: center;
   cursor: pointer;
+  border-left:7px solid blue;
+  border-radius: 5px 0 0 5px;
+  margin-left: 5px;
 }
 .diao {
   margin-top: 10px;

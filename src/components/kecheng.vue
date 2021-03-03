@@ -135,7 +135,7 @@ p span{
 .kes {
     float: left;
     font-size: 24px;
-    line-height: 60px;
+    line-height: 59px;
     text-align: center;
     color: #333335;
     background-color: #dfe3ec;
