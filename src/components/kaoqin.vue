@@ -2,41 +2,24 @@
   <div>
     <div class="right-a">
       <div class="right-ta">
-        <span>考勤管理</span>
+        <p class="kes">考勤管理</p>
+        <div id="triangle-right"></div>
       </div>
-      <div class="right-ta2">
-        <img src="@/assets/003.png" />
-        <!-- <span @click="">开始时间</span><span>~</span><span>结束时间</span> -->
-        <el-time-select
-          placeholder="起始时间"
-          v-model="startTime"
-          :picker-options="{
-            start: '08:30',
-            step: '00:15',
-            end: '18:30',
-          }"
-        >
-        </el-time-select>
-        <el-time-select
-          placeholder="结束时间"
-          v-model="endTime"
-          :picker-options="{
-            start: '08:30',
-            step: '00:15',
-            end: '18:30',
-            minTime: startTime,
-          }"
-        >
-        </el-time-select>
-      </div>
-      <div class="search">
-        <input
-          type="search"
-          name=""
-          class="search-a"
-          placeholder="             搜索学员快速签到"
-        />
-      </div>
+        <div class="block">
+          <el-date-picker v-model="value2" type="datetimerange" :picker-options="pickerOptions" range-separator="~" start-placeholder="开始日期" end-placeholder="结束日期" align="right">
+          </el-date-picker>
+          
+        <div style="" class="el-inputs">
+          <el-input placeholder="搜索学员快速签到" v-model="input3" class="input-with-select">
+            <el-select v-model="select" slot="prepend" placeholder="课程">
+              <el-option label="架子鼓" value="1"></el-option>
+              <el-option label="钢琴" value="2"></el-option>
+              <el-option label="基础班" value="3"></el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+        </div>
+        </div>
     </div>
     <div class="right-ba">
       <span>今日课表</span>
@@ -83,16 +66,16 @@
           </td>
         </tr>
         <el-dialog title="签到" :visible.sync="dialogTableVisible">
-          <el-radio-group v-model="form.resource">
-            <el-radio label="出勤"></el-radio>
-            <el-radio label="迟到"></el-radio>
-            <el-radio label="请假"></el-radio>
-            <el-radio label="旷课"></el-radio>
-          </el-radio-group> 
-           <el-input type="textarea" v-model="form.desc" placeholder="内容"></el-input>
+          <div  class="groups">
+            <el-radio label="1" v-model="radio">出勤</el-radio>
+            <el-radio label="2" v-model="radio">迟到</el-radio>
+            <el-radio label="3" v-model="radio">请假</el-radio>
+            <el-radio label="4" v-model="radio">旷课</el-radio>
           <br>
-          <el-button type="primary" @click="dialogFormVisible = false">保 存</el-button
-          >
+          <el-input type="textarea" v-model="form.desc" placeholder="备注" class="inputs-aa"></el-input>
+          </div>
+          <br />
+          <el-button type="primary" @click="dialogFormVisible = false" class="buttons">保 存</el-button>
         </el-dialog>
       </table>
     </div>
@@ -102,6 +85,9 @@
 export default {
   data() {
     return {
+      radio:'1',
+      input3: '',
+      select: '',
       startTime: "",
       endTime: "",
       dialogTableVisible: false,
@@ -117,34 +103,61 @@ export default {
         desc: "",
       },
       formLabelWidth: "120px",
+      pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() < Date.now();
+          },
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
+        },
+        value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
+        value2: ''
     };
-  },
-  methods: {
-    // open() {
-    //   this.$alert("签到", {
-    //     confirmButtonText: "确定",
-    //     callback: (action) => {
-    //       this.$message({
-    //         type: "info",
-    //         message: `action: ${action}`,
-    //       });
-    //     },
-    //   });
-    // },
   },
 };
 </script>
 
 <style>
-.right-ta {
-  text-align: center;
-  float: left;
-  font-size: 19px;
-  padding: 26px 26px 26px 26px;
-  background-color: #dfe3ec;
-  cursor: pointer;
+.buttons{
+  margin-left: 700px;
+  width: 150px;
 }
-
+.inputs-aa{
+  width: 350px;
+}
+.groups{
+  text-align: center;
+}
+.input-with-select{
+  width: 450px;
+}
+.el-select{
+    width: 80px;
+  }
+.right-a {
+    height: 62px;
+    background-color: #f5f6fa;
+    border: 1px solid #dee3e9;
+    margin-bottom: 20px;
+}
 .right-ta2 {
   float: left;
   padding: 20px 20px 20px 20px;
@@ -156,18 +169,16 @@ export default {
   padding-top: 5px;
 }
 .right-ba {
-  padding: 26px 26px 26px 26px;
+  margin-left: 20px;
   font-size: 20px;
 }
-/* .search input{
-    /* background-image: url("../assets/008.png"); */
-/* }  */
 .right-ya {
   height: 76px;
   border: 1px #c5c5c5 solid;
   border-radius: 5px 2px 2px 5px;
   border-left: #1890ff 7px solid;
-  /* border-top-left-radius: 3px; */
+  width: 98%;
+  margin: 20px;
 }
 
 .right-ya table {
@@ -198,5 +209,37 @@ export default {
 }
 .tab5 el-button {
   color: #6c80f9;
+}
+
+.kes {
+    float: left;
+    font-size: 24px;
+    line-height: 60px;
+    text-align: center;
+    color: #333335;
+    background-color: #dfe3ec;
+    padding-left: 20px;
+    padding-right: 10px;
+}
+#triangle-right {
+  float: left;
+  width: 0px;
+  height: 0px;
+  border-top: 30px solid transparent;
+  border-left: 20px solid #dfe3ec;
+  border-bottom: 30px solid transparent;
+}
+.el-time-select{
+  float: left;
+}
+.block{
+  margin-left: 40px;
+  margin-top: 10px;
+  float: left;
+}
+.el-inputs{
+  width:300px;
+  float:right;
+  margin-left: 20px;
 }
 </style>

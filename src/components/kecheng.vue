@@ -106,6 +106,7 @@ export default {
 }
 </script>
 <style>
+
 .dialog-footer{
   border-top: 1px solid #eff2f7;
   height: 40px;

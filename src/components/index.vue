@@ -43,8 +43,8 @@
             <div class="right-three">
                   <div style="margin-top: 15px;">
                     <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-                      <el-select v-model="select" slot="prepend" placeholder="请选择">
-                        <el-option label="架子鼓" value="1" selected></el-option>
+                      <el-select v-model="select" slot="prepend" placeholder="课程">
+                        <el-option label="架子鼓" value="1"></el-option>
                         <el-option label="音乐" value="2"></el-option>
                         <el-option label="基础班" value="3"></el-option>
                       </el-select>
@@ -85,8 +85,6 @@ export default {
     data(){
       return{
         datalist:[],
-        input1: '',
-        input2: '',
         input3: '',
         select: '',
         dialogFormVisible: false,form: {
@@ -155,6 +153,9 @@ export default {
 </script>
 <style scoped>
 
+.el-select{
+    width: 100px;
+  }
   .right-a{
     height: 100px;
     background-color: #f5f6fa;
