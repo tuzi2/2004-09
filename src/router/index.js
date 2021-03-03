@@ -5,6 +5,9 @@ import login from '@/components/Login'
 import list from '@/components/list'
 import gwc from '@/components/gwc'
 import kaoqin from '@/components/kaoqin'
+import kecheng from '@/components/kecheng'
+import huizong from '@/components/huizong'
+import student from '@/components/student'
 Vue.use(Router);
 export default new Router({
   routes: [
@@ -22,6 +25,21 @@ export default new Router({
       path: '/kaoqin',
       name: 'kaoqin',
       component: kaoqin
+    },
+    {
+      path: '/huizong',
+      name: 'huizong',
+      component: huizong
+    },
+    {
+      path: '/kecheng',
+      name: 'kecheng',
+      component: kecheng
+    },
+    {
+      path: '/student',
+      name: 'student',
+      component: student
     },
     {
       path: '/login',

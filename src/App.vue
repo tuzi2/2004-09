@@ -2,8 +2,8 @@
 <template>
   <div id="app">
     <el-container>
-  <el-header>
-    <img src="./02.jpg" height="50px">
+  <el-header height="80px">
+    <img src="./02.jpg" height="60px">
     <p class="aa">云教务管理系统</p>
     </el-header>
   <el-container>
@@ -34,7 +34,7 @@ export default {
         datalist:[],
         navList:[
                 {
-                    path:'/list',
+                    path:'/',
                     name:"班级管理",
                     img:con1,
                 },
@@ -70,26 +70,33 @@ export default {
 }
 </script>
 <style>
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 .tp{
-  margin-left: 41px;
   margin-top: 13px;
 }
 .zi{
-    margin-top: -10px;
+    margin-top: -25px;
+    margin-left: 7px;
     width: 100px;
     float: left;
 }
   .el-header{
-    height: 70px;
-    line-height: 50px;
+    border-bottom: 1px solid #B3C0D1;
+    box-shadow:  0 15px 5px -5px #ecf1f4;
   }
-  img{
+  .el-header img{
+    margin-top: 10px;
     float: left;
   }
   .aa{
+    margin-top: 20px;
+    margin-left: 10px;
     font-size: 36px;
     float: left;
-    margin: 5px;
   }
   .el-footer {
     background-color: #B3C0D1;
@@ -101,111 +108,20 @@ export default {
     color: #333;
     text-align: center;
     line-height: 50px;
-    width:100px;
+    width:120px;
+    height: 800px;
     cursor: pointer;
+    box-shadow: 17px 0 5px -5px #f8f9fb;
   }
-    .el-aside .div{
+    .el-aside div{
     float: left;
+    margin-top: 20px;
   }
   .el-main {
-    color: #333;
-    /* text-align: center; */
-    height: 850px;
+    float: left;
+    padding: 0px;
+    height: 750px;
   }
   
 
-  .right-a{
-    height: 80px;
-    background-color: #f5f6fa;
-    margin-top: -20px;
-    border: 1px solid #dee3e9;
-    margin-bottom: 20px;
-  }
-  .right-one{
-    float: left;
-    width: 110px;
-    height: 40px;
-    background-color: #ffffff;
-    margin: 20px;
-    border: 1px solid #dee3e9;
-    font-size: 24px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  .right-one img{
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    line-height: 40px;
-    margin-left: 10px;
-    margin-top: 10px;
-  }
-  .right-one span{
-    margin-left: 10px;
-    text-align: center;
-    line-height: 40px;
-    color: #ada2b2;
-  }
-  .right-two{
-    float: left;
-    width: 150px;
-    height: 40px;
-    background-color: #ffffff;
-    margin: 20px 1px;
-    border: 1px solid #dee3e9;
-    font-size: 24px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  .right-two img{
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    line-height: 40px;
-    margin-left: 10px;
-  }
-  .right-two span{
-    margin-left: 5px;
-    text-align: center;
-    line-height: 15px;
-    color: #ada2b2;
-  }
-  .search-a{
-    margin: 20px;
-    width: 450px;
-    height: 40px;
-  }
-  .tab {
-  width: 98%;
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin: 10px;
-}
-.tab td,.tab th {
-  border-bottom: solid 1px #ececec;
-  padding: 8px;
-  text-align: left;
-  line-height: 40px;
-}
-.tab th {
-  background: #f5f6fa;
-  height: 65px;
-  font-weight: normal;
-}
-.tab img{
-   width:30px;
-   margin-right: 10px;
-}
-.inputs{
-  width: 400px;
-}
-.inputs-a{
-  margin-left: 10px;
-}
-.block{
-  margin-bottom: 20px;
-}
-.demonstration{
-  margin-right: 10px;
-}
 </style>
