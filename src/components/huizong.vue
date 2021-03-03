@@ -4,47 +4,33 @@
       <div class="right-a">
         <p class="kes">课时汇总</p>
         <div id="triangle-right"></div>
-        <!-- Form -->
         <div class="right-three">
           <div class="search-a">
-            <el-dropdown>
-              <span class="el-dropdown-link">
-                课程
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>黄金糕</el-dropdown-item>
-                <el-dropdown-item>狮子头</el-dropdown-item>
-                <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-                <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-            <el-dropdown>
-              <span class="el-dropdown-link">
-                班级
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>黄金糕</el-dropdown-item>
-                <el-dropdown-item>狮子头</el-dropdown-item>
-                <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-                <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-            <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-                      <el-button slot="append" icon="el-icon-search" class="ss"></el-button>
+              <div>
+                <el-select v-model="select" slot="prepend" placeholder="请选择" style="width:20%">
+                        <el-option label="架子鼓" value="1" selected></el-option>
+                        <el-option label="音乐" value="2"></el-option>
+                        <el-option label="基础班" value="3"></el-option>
+                      </el-select>
+<el-select v-model="select" slot="prepend" placeholder="请选择 " style="width:20%;margin-left:-5px">
+                        <el-option label="架子鼓" value="1" selected></el-option>
+                        <el-option label="音乐" value="2"></el-option>
+                        <el-option label="基础班" value="3"></el-option>
+                      </el-select>
+                    <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
+                      <el-button slot="append" icon="el-icon-search"></el-button>
                     </el-input>
+                  </div> 
           </div>
         </div>
       </div>
       <span class="cc"><</span> 上个月
       <b class="rq">2021年3月</b> 下个月 >
-      总排课时:304
-      总学生数:39位
-      未结课:303
-      已结课:0
+      <b style="margin-left:380px">总排课时:304</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      总学生数:39位&nbsp;&nbsp;&nbsp;&nbsp;
+      未结课:303&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      已结课:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <b class="an">按月</b><b class="an1">按日</b> 
       <table width="100%">
         <tr>
           <td class="d">1日(周一)</td>
@@ -80,15 +66,21 @@
           <td class="s"></td>
         </tr>
       </table>
-      <el-dialog title="课程详情" :visible.sync="dialogFormVisible" >
+      <el-dialog title="课程详情" :visible.sync="dialogFormVisible">
         <el-form :model="form" class="xinxi">
           <!-- <el-form-item label="基本信息" :label-width="formLabelWidth"> -->
-            <h1>基本信息</h1>
-            <b>课程名称：架子鼓课</b> <b>主讲老师：明明</b> <b>教室：202教室</b>  
-            <h1>上课时间</h1>
-            <b>2021年3月1日(周一) </b> <b> 13:30-14:15</b> 
-            <h1>学员(2) <span class="add">学员添加</span> </h1>
-            <b>jason</b>
+          <h1>基本信息</h1>
+          <b>课程名称：架子鼓课</b>
+          <b>主讲老师：明明</b>
+          <b>教室：202教室</b>
+          <h1>上课时间</h1>
+          <b>2021年3月1日(周一)</b>
+          <b>13:30-14:15</b>
+          <h1>
+            学员(2)
+            <span class="add">学员添加</span>
+          </h1>
+          <b>jason</b>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取消课程</el-button>
@@ -104,6 +96,8 @@
 export default {
   data() {
     return {
+      input3:'',
+      select:'',
       dialogTableVisible: false,
       dialogFormVisible: false,
       form: {
@@ -120,26 +114,16 @@ export default {
     };
   }
 };
+
 </script>
 
 <style>
 .kes {
-    float: left;
-    font-size: 24px;
-    line-height: 60px;
-    text-align: center;
-    color: #333335;
-    background-color: #dfe3ec;
-    padding-left: 20px;
-    padding-right: 10px;
+  float: left;
+  line-height: 23px;
+  color: #333335;
+  
 }
-.right-a {
-    height: 62px;
-    background-color: #f5f6fa;
-    border: 1px solid #dee3e9;
-    margin-bottom: 20px;
-}
-
 #triangle-right {
   float: left;
   width: 0px;
@@ -148,18 +132,22 @@ export default {
   border-left: 20px solid #dfe3ec;
   border-bottom: 30px solid transparent;
 }
+.right-a {
+    height: 62px;
+    background-color: #f5f6fa;
+    border: 1px solid #dee3e9;
+    margin-bottom: 20px;
+}
 .search-a {
-  border: 1px solid #dee3e9;
   background-color: #ffffff;
-  margin-left: 175px;
+  margin-left: 190px;
   margin-top: 10px;
-  width: 520px;
+  width: 750px;
   height: 38px;
 }
 .rq {
   margin-left: 36px;
   margin-right: 36px;
-  /* display: none; */
   color: #323433;
   font-weight: normal;
 }
@@ -190,6 +178,11 @@ export default {
 .el-icon-arrow-down {
   font-size: 12px;
 }
+.input-with-select{
+  width:40%;
+  border: 0;
+  float: right;
+}
 .jc {
   width: 153px;
   height: 53px;
@@ -203,15 +196,32 @@ export default {
 .ss {
   float: right;
 }
-.el-dialog{
+.el-dialog {
   font-size: 16px;
 }
-b{
+b {
   font-weight: normal;
   margin-right: 5px;
 }
-.add{
+.add {
   color: #538dfb;
+  cursor: pointer;
+}
+.an{
+  border: 1px solid #dcdfe6;
+  border-radius: 3px;
+  background-color: #f1f6fc;
+  color: #cfc8cf;
+  font-size: 14px;
+  cursor: pointer;
+}
+.an1{
+  border: 1px solid #dcdfe6;
+  border-radius: 3px;
+  background-color: #ffffff;
+  color: #cfc8cf;
+  margin-left: -5px;
+  font-size: 14px;
   cursor: pointer;
 }
 </style>
