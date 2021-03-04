@@ -23,11 +23,11 @@
                 <th>单价</th>
                 <th>上课模式</th>
               </tr>
-              <tr class="edit-tr" v-for="(item,index) in datalist" :key="index">
+              <tr class="edit-tr" v-for="(item,index) in list" :key="index">
                 <td class="textleft" style="position: relative"><img src="@/assets/01.png">{{item.name}}</td>
-                <td>按课时收费</td>
-                <td>9000.00元/课时</td>
-                <td>一对一</td>
+                <td>{{item.pricetype}}</td>
+                <td>{{item.price}}元/课时</td>
+                <td>{{item.mode}}</td>
               </tr>
             </tbody>
           </table>
@@ -64,7 +64,7 @@ import axios from 'axios'
 export default {
     data(){
       return{
-        datalist:[],
+        list:[],
           input3:'',
           radio: '1',
           radios: '1',
@@ -85,19 +85,20 @@ export default {
         },
       }
     },
+    
     methods:{
       loaddata() {
-      //使用axios 调用api接口数据
-      let url = "/api/classes/list";
-      let that=this;
-      axios.get(url).then(function (response) {
-        let _data=response.data;
-       that.datalist=_data.data.list;
-          //  console.log(JSON.stringify( that.datalist));
-        })
-        .catch(function (error) {
-          // console.log(error);
-        });
+        //使用axios 调用api接口数据
+        let that=this;
+        that.$http.get("/api/courses/list",{page:1},
+        success=>{
+          that.list  = success.data.list
+            console.log(success.data.list);
+        },
+        failure=>{
+            console.log(failure);
+        }
+      )
     },
     },
     created() {

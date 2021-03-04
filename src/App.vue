@@ -1,7 +1,9 @@
 
 <template>
   <div id="app">
-    <el-container>
+          <router-view />
+
+    <!-- <el-container>
   <el-header height="80px">
     <img src="./02.jpg" height="60px">
     <p class="aa">云教务管理系统</p>
@@ -11,66 +13,65 @@
       <div v-for="item in navList" :key="item.id" @click="path(item.path)" >
           <img :src="item.img" class="tp">
           <p class="zi">{{item.name}}</p>
-      <!-- <router-view></router-view> -->
       </div>
     </el-aside>
     <el-main>
       <router-view></router-view>
     </el-main>
   </el-container>  
-</el-container>
+</el-container> -->
   </div>
 </template>
 <script>
 
-import con1 from "@/assets/002.png";
-import con2 from "@/assets/001.png";
-import con3 from "@/assets/003.png";
-import con4 from "@/assets/004.png";
-import con5 from "@/assets/005.png";
+// import con1 from "@/assets/002.png";
+// import con2 from "@/assets/001.png";
+// import con3 from "@/assets/003.png";
+// import con4 from "@/assets/004.png";
+// import con5 from "@/assets/005.png";
 export default {
-    data(){
-      return{
-        datalist:[],
-        navList:[
-                {
-                    path:'/',
-                    name:"班级管理",
-                    img:con1,
-                },
-                {
-                    path:'/kecheng',
-                    name:"课程管理",
-                    img:con2,
-                },
-                {
-                    path:'/kaoqin',
-                    name:"考勤管理",
-                    img:con3,
-                },
-                {
-                    path:'/huizong',
-                    name:"课时汇总",
-                    img:con4,
-                },
-                {
-                    path:'/student',
-                    name:"学员管理",
-                    img:con5,
-                },
-        ],
+    // data(){
+    //   return{
+    //     datalist:[],
+    //     navList:[
+    //             {
+    //                 path:'/',
+    //                 name:"班级管理",
+    //                 img:con1,
+    //             },
+    //             {
+    //                 path:'/kecheng',
+    //                 name:"课程管理",
+    //                 img:con2,
+    //             },
+    //             {
+    //                 path:'/kaoqin',
+    //                 name:"考勤管理",
+    //                 img:con3,
+    //             },
+    //             {
+    //                 path:'/huizong',
+    //                 name:"课时汇总",
+    //                 img:con4,
+    //             },
+    //             {
+    //                 path:'/student',
+    //                 name:"学员管理",
+    //                 img:con5,
+    //             },
+    //     ],
         
-      }
-    },
-    methods:{
-      path(path){
-        this.$router.push({ path:path  })
-      },
-    }
+    //   }
+    // },
+    // methods:{
+    //   path(path){
+    //     this.$router.push({ path:path  })
+    //   },
+    // }
 }
 </script>
 <style>
-*{
+/* *{
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -122,6 +123,6 @@ export default {
     padding: 0px;
     height: 750px;
   }
-  
+   */
 
 </style>

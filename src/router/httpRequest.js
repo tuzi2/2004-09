@@ -8,7 +8,7 @@ function apiAxios(method,url,data,params, success, failure){
         params:params,
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
-            'token':''
+            'token':localStorage.getItem("token")
         }
       })
       .then(function(res) {

@@ -5,7 +5,8 @@ import App from './App.vue'
 import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-
+import HttpRequest from "./router/httpRequest.js";
+Vue.http = Vue.prototype.$http = HttpRequest
 Vue.use(ElementUI);
 Vue.config.productionTip = false
 
@@ -15,5 +16,8 @@ new Vue({
   router,
   render: h => h(App),
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  data:{
+    bus:new Vue()
+  }
 })

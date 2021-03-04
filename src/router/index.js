@@ -12,44 +12,53 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'index',
-      component: Index,
-    },
-    {
-      path: '/list',
-      name: 'list',
-      component: list
-    },
-    {
-      path: '/kaoqin',
-      name: 'kaoqin',
-      component: kaoqin
-    },
-    {
-      path: '/huizong',
-      name: 'huizong',
-      component: huizong
-    },
-    {
-      path: '/kecheng',
-      name: 'kecheng',
-      component: kecheng
-    },
-    {
-      path: '/student',
-      name: 'student',
-      component: student
+      path:"/",
+      component:()=>import("@/components/index1.vue"),
+      children:[
+        {
+          path: '/index1',
+          name: 'index',
+          component: Index,
+        },
+        {
+          path: '/list',
+          name: 'list',
+          component: list
+        },
+        {
+          path: '/kaoqin',
+          name: 'kaoqin',
+          component: kaoqin
+        },
+        {
+          path: '/huizong',
+          name: 'huizong',
+          component: huizong
+        },
+        {
+          path: '/kecheng',
+          name: 'kecheng',
+          component: kecheng
+        },
+        {
+          path: '/student',
+          name: 'student',
+          component: student
+        },
+      
+        {
+          path:'/gwc',
+          name:'gwc',
+          component: gwc
+        }
+
+      ]
     },
     {
       path: '/login',
       name: 'login',
       component: login
     },
-    {
-      path:'/gwc',
-      name:'gwc',
-      component: gwc
-    }
+    
   ]
 })

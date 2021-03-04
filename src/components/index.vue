@@ -64,14 +64,14 @@
                 <th>已排课时</th>
                 <th>已上课时</th>
               </tr>
-              <tr class="edit-tr" v-for="(item,index) in datalist" :key="index">
+              <tr class="edit-tr" v-for="(item,index) in list" :key="index">
                 <td class="textleft" style="position: relative"><img src="@/assets/09.png">{{item.name}}</td>
-                <td>架子鼓课</td>
-                <td>刘浩</td>
-                <td>0 人</td>
-                <td>0课时</td>
-                <td>23</td>
-                <td>0</td>
+                <td>{{item.coursename}}</td>
+                <td>{{item.teacherslist}}</td>
+                <td>{{item.students}} 人</td>
+                <td>{{item.coursecounts}}课时</td>
+                <td>{{item.schcourses}}</td>
+                <td>{{item.endcourses}}</td>
               </tr>
             </tbody>
           </table>
@@ -84,7 +84,7 @@ import axios from 'axios'
 export default {
     data(){
       return{
-        datalist:[],
+        list:[],
         input3: '',
         select: '',
         dialogFormVisible: false,form: {
@@ -131,24 +131,26 @@ export default {
         value2: '',
       }
     },
+    created() {
+      this.loaddata();
+    },
     methods:{
       loaddata() {
-      //使用axios 调用api接口数据
-      let url = "/api/classes/list";
-      let that=this;
-      axios.get(url).then(function (response) {
-        let _data=response.data;
-       that.datalist=_data.data.list;
-          //  console.log(JSON.stringify( that.datalist));
-        })
-        .catch(function (error) {
-          // console.log(error);
-        });
+        //使用axios 调用api接口数据
+        let url = "/api/courses/list";
+        let that=this;
+        that.$http.get("/api/classes/list",{page:1},
+        success=>{
+          that.list  = success.data.list
+            console.log(success.data.list);
+        },
+        failure=>{
+            console.log(failure);
+        }
+      )
     },
-    },
-    created() {
-    this.loaddata();
-  },
+    }
+
 }
 </script>
 <style scoped>

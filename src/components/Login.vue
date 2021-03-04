@@ -11,9 +11,8 @@
 		   <div v-if="loginType==1">
 			<div class="loginbox-c">
 				<ul>
-					<li><input v-model="username" type="text" id="username" class="txt" placeholder="账号" autocomplete="off"></li>
-					<li><input v-model="pass" type="password" id="pass" class="txt" placeholder="密码" autocomplete="off"></li>
-
+					<li><input v-model="username" type="text" id="username" class="txt" placeholder="账号"></li>
+					<li><input v-model="pass" type="password" id="pass" class="txt" placeholder="密码"></li>
 				</ul>
 			</div>
 			<div class="loginbox-b">
@@ -29,13 +28,13 @@
 						<input type="password" id="pass" class="txt" placeholder="验证码">
 					     <button class="btncode">获取验证码</button>
 					</li>
-
 				</ul>
 			</div>
 
 			<div class="loginbox-b">
 				<button type="submit" id="btnlogin" class="btn">登录</button>
 			</div>
+			
              </div>
 			 <div class="message">{{messtitle}}</div>
 		</div>
@@ -43,6 +42,7 @@
 </template>
 
 <script>
+import router from '../router'
 export default {
   data () {
     return {
@@ -58,20 +58,26 @@ export default {
   methods: {
 	  show(t){
 		  this.loginType=t;
+		 // alert(t);
 	  },
 	  login(){
-		  let that=this;
+		  var that=this
 		  if(that.username==""){
 			  that.messtitle="请输入账号";
-		  }
-		  else if(that.pass==""){
+		  }else if(that.pass==""){
 			    that.messtitle="请输入密码";
-		  }
-		  else{
-			   that.messtitle="";
+		  }else{
+		 	  that.messtitle="";
+			  that.$http.post("/api/admin/checklogin",{username:that.username,pass:that.pass},
+			success => {
+				localStorage.setItem("token",success.data);
+				router.push({path:'/'});
+				console.log(success.data);
+			},failure => {
+				that.messtitle="账号或者密码错误";
+		  },);
 			   //执行表单提交
 		  }
-		 
 	  }
   }
 }
@@ -85,7 +91,9 @@ body {
 }
 ul,li{list-style: none;}
 .message{
+	margin-top: 10px;
 	line-height: 30px;color: red;
+	text-align: center;
 }
 .login-type{
    margin-left: 20px;
@@ -713,6 +721,7 @@ input::-webkit-input-placeholder {
 	font-size: 28px;
 	margin-top: 0px;
 	padding-top: 40px;
+	margin-bottom: 20px;
 }
 
 .loginbox-c {
