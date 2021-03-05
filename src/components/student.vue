@@ -10,28 +10,28 @@
       <img src="@/assets/007.png" />添加学员
     </el-button>
     <el-dialog title="增加学员" :visible.sync="dialogVisible" width="40%">
-      学生姓名：
-      <input type="text" name="#" />
+      <span class="student-aa">学生姓名：</span>
+      <el-input placeholder="请输入学生姓名" v-model="name" clearable class="student-a"></el-input>
       <br />
-      <br />联系方式：
-      <input type="text" name="#" />
+      <br /><span class="student-aa">联系方式：</span>
+      <el-input placeholder="请输入联系方式：" v-model="tel" clearable class="student-a"></el-input>
       <br />
-      <br />学生性别：
-      <input type="radio" name="sex" value="男" />男
-      <input type="radio" name="sex" value="女" />女
+      <br /><span class="student-aa">学生性别：</span>
+      <el-radio v-model="sex" label="0">男</el-radio>
+      <el-radio v-model="sex" label="1">女</el-radio>
       <br />
-      <br />出生日期：
-      <input type="text" name="#" />
+      <br /><span class="student-aa">出生日期：</span>
+      <el-input placeholder="请输入出生日期" v-model="birthday" clearable class="student-a"></el-input>
       <br />
-      <br />学员编号：
-      <input type="text" name="#" />
+      <br /><span class="student-aa">学员编号：</span>
+      <el-input placeholder="请输入学员编号" v-model="num" clearable class="student-a"></el-input>
       <br />
-      <br />学生备注：
-      <input type="text" name="#" />
+      <br /><span class="student-aa">学生备注：</span>
+      <el-input placeholder="请输入学生备注" v-model="remarks" clearable class="student-a"></el-input>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">保存</el-button>
+        <el-button type="primary" @click="dialogVisible = false">添加</el-button>
       </span>
     </el-dialog>
     <el-button
@@ -194,29 +194,25 @@
       </el-input>
     </div>
     <div class="two">
-      <el-table
-        ref="multipleTable"
-        :data="tableData"
-        tooltip-effect="dark"
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column type="selection" width="55"></el-table-column>
-
-        <el-table-column prop="name" label="学员姓名" width="400">
-          <el-button type="text" @click="outerVisible = true">☺ 李宗霖</el-button>
-        </el-table-column>
-
-        <el-table-column prop="sex" label="性别" show-overflow-tooltip></el-table-column>
-
-        <el-table-column prop="kecheng" label="所选课程" width="200"></el-table-column>
-
-        <el-table-column prop="keshi" label="购买总课时" width="200"></el-table-column>
-
-        <el-table-column prop="skeshi" label="剩余课时" width="200"></el-table-column>
-      </el-table>
+      <table width="100%" style="line-height:50px;margin-left:20px;">
+      <tr>
+        <td><input type="radio"></td>
+        <td>学员姓名</td>
+        <td>性别</td>
+        <td>所选课程</td>
+        <td>购买总课时</td>
+        <td>剩余课时</td>
+      </tr>
+      <tr v-for="(item,index) in list" :key="index">
+        <td><input type="radio"></td>
+        <td>{{item.name}}</td>
+        <td>{{item.sex=== 0 ? '男' : '女'}}</td>
+        <td>{{item.num}}</td>
+        <td>{{item.buycourses}}</td>
+        <td>{{item.lavecourses}}</td>
+      </tr>
+    </table>
     </div>
-
     <div class="block" style="float: right; margin-top: 40px; margin-right:150px;">
       <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
     </div>
@@ -230,43 +226,7 @@ export default {
       value1:'',
       input3: "",
       select: "",
-      tableData: [
-        {
-          name: "☺ 李宗霖",
-          sex: "女",
-          kecheng: "",
-          keshi: "0",
-          skeshi: "0"
-        },
-        {
-          name: "☺ 米儿",
-          sex: "女",
-          kecheng: "",
-          keshi: "0",
-          skeshi: "0"
-        },
-        {
-          name: "☺ Jason",
-          sex: "女",
-          kecheng: "",
-          keshi: "0",
-          skeshi: "0"
-        },
-        {
-          name: "☺ 傅以禧",
-          sex: "女",
-          kecheng: "",
-          keshi: "0",
-          skeshi: "0"
-        },
-        {
-          name: "☺ 李睿",
-          sex: "女",
-          kecheng: "",
-          keshi: "0",
-          skeshi: "0"
-        }
-      ],
+      list: [],
       dialogVisible: false,
       dialogVisible1: false,
       outerVisible: false,
@@ -305,10 +265,19 @@ export default {
       value1: "",
       value2: "",
       startTime: '',
-        endTime: ''
+      endTime: '',
+
+      name:'',
+      sex:'0',
+      tel:'',
+      num:'',
+      birthday:'',
+      remarks:''
     };
   },
-
+    created() {
+      this.loaddate();
+    },
   methods: {
     toggleSelection(rows) {
       if (rows) {
@@ -321,7 +290,20 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-    }
+    },
+    loaddate() {
+        //使用axios 调用api接口数据
+        let that=this;
+        that.$http.get("/api/students/list",{page:1},
+        success=>{
+          that.list  = success.data.list
+            console.log(success.data.list);
+        },
+        failure=>{
+            console.log(failure);
+        }
+      )
+    },
   }
 };
 </script>
@@ -400,5 +382,11 @@ export default {
 .ee {
   width: 170px;
   height: 40px;
+}
+.student-a{
+  width: 350px;
+}
+.student-aa{
+  margin-left: 30px;
 }
 </style>

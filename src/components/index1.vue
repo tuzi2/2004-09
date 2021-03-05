@@ -120,7 +120,7 @@ export default {
   .el-main {
     float: left;
     padding: 0px;
-    height: 750px;
+    height: 850px;
   }
   
 </style>
