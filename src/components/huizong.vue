@@ -25,7 +25,35 @@
         </div>
       </div>
       <el-calendar v-model="value">
+
       </el-calendar>
+      <!-- 课程详情 -->
+      <el-button type="text" @click="dialogVisible = true" class="ke-click"><li>架子鼓基础班2102</li> <li>13:30明明</li></el-button>
+
+      <el-dialog title="课程详情" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
+        <div class="main">
+        <li><h3 style="margin-left:30px; color:#000;">基本信息</h3></li>
+        <li class="main-a"><b>课程名称：架子鼓课</b> <b>主讲老师：明明</b> <b>教室：202教室</b> </li>
+        <li style="margin-left:30px;"><b style="color:red;">*</b> <b style=" color:#000;font-size:17px;">上课时间</b></li>
+        <li class="main-b"><b>2021年3月1日(周一)</b> <b>13:30-14:15</b></li>
+        <li style="margin-left:30px;">
+                <b style="margin-right:35px; color:#000;font-size:17px;">学员(2)</b> 
+             <a href="#" style="text-decoration:none;"> <b style="color:#1890ff;">
+             <i class="el-icon-user-solid"></i>添加学员</b></a>
+        </li>
+        <li class="main-c"> 
+         <img  src="../logo.jpg" height="60px" style="margin-left:30px;" > 
+         <img src="../logo.jpg" height="60px" style="margin-left:120px;"> 
+        </li>
+        <b class="title">架子鼓基础班2102(架子鼓课)</b>
+         <b class="one">Jason</b> 
+          <b class="two">傅以禧</b> 
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消课程</el-button>
+          <el-button type="primary" @click="dialogVisible = false">保存修改</el-button>
+        </span>
+      </el-dialog>
       <router-view></router-view>
     </el-main>
   </el-container>
@@ -40,6 +68,7 @@ export default {
       select:'',
       dialogTableVisible: false,
       dialogFormVisible: false,
+      dialogVisible: false,
       form: {
         name: "",
         region: "",
@@ -52,7 +81,16 @@ export default {
       },
       formLabelWidth: "120px"
     };
-  }
+  },
+    methods: {
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      }
+    }
 };
 
 </script>
@@ -101,5 +139,74 @@ export default {
   width:475px;
   border: 0;
   float: right;
+}
+
+
+
+el-calendar{
+  position: relative;
+}
+.ke-click{
+  position: absolute;
+  top: 310px;
+  left: 150px;
+  width: 150px;
+  height: 40px;
+  border: 1px solid #ada2b2;
+  border-left: 10px solid #1890ff;
+  
+}
+
+el-dialog{
+  position: relative;
+}
+.title{
+  position:absolute;
+  top: -65px;
+  left: 320px;
+}
+
+
+.ke-click li{
+  text-align: left;
+  padding-left: 5px;
+  padding-top: -7px;
+  font-size: 13px;
+  color: #ada2b2;
+}
+.ke-click li:first-of-type{
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+}
+
+.main li{
+  width: 500px;
+  height: 70px;
+  
+}
+
+.main-a > b{
+  margin-left: 30px;
+}
+.main-b > b{
+  margin-left: 30px;
+}
+.main-c > b{
+  margin-left: 30px;
+}
+.main{
+  position: relative;
+}
+.one{
+  position: absolute;
+  top:355px;
+  left: 100px;
+}
+
+.two{
+  position: absolute;
+  top:355px;
+  left: 285px;
 }
 </style>

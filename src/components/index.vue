@@ -157,9 +157,9 @@
       </el-dialog>
 
       <!-- 单次排课 -->
-    <el-dialog title="排课" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-                <div>
-                  <table>
+      <el-dialog title="排课" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+                <div class="dpaike">
+                  <table >
                     <tr>
                       <td >主讲老师</td>
                       <td style="color:#1890fe">添加助教</td>
@@ -187,11 +187,11 @@
                   </table>
                 </div>
 
-                <div>
+                <div class="dpaike">
                   <table>
                     <tr>
-                      <td style="color:#1890fe;">单次排课</td>
-                      <td>批量排课</td>
+                      <td style="color:#1890fe;border-bottom:2px solid #1890fe;padding-bottom:10px">单次排课</td>
+                      <td style="padding-bottom:10px">批量排课</td>
                     </tr>
                   </table>
                 </div>
@@ -257,6 +257,7 @@
                   >
                 </span>
     </el-dialog>
+
       <!-- 班级排课 -->
       <el-dialog title1="排课" :visible.sync="dialogFormVisible1">
         <el-form :model="forms">
@@ -899,4 +900,15 @@ li {
 .tpaike table tr td {
   padding-right: 30px;
 }
+.dpaike table tr td {
+  padding-right: 15px;
+}
+.dpaike table {
+  margin-bottom: 20px;
+}
+.el-icon-user-solid {
+  color: #1890ff;
+  font-size: 14px;
+}
+
 </style>
