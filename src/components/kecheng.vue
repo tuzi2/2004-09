@@ -50,23 +50,15 @@
       <el-dialog title="增加课程" :visible.sync="dialogFormVisible">
         <el-form :model="form">
           <el-form-item label="课程名称:">
-            <el-input
-              v-model="form.name"
-              autocomplete="off"
-              class="inputs"
-            ></el-input>
+            <el-input v-model="form.name" autocomplete="off" class="inputs"></el-input>
           </el-form-item>
           <el-form-item label="收费模式:">
             <el-radio v-model="form.pricetype" label="1">按课时收费</el-radio>
             <el-radio v-model="form.pricetype" label="2">按期收费</el-radio>
           </el-form-item>
           <el-form-item label="单价:" class="form-items">
-            <el-input
-              v-model="form.price"
-              autocomplete="off"
-              class="inputs"
-            ></el-input
-            ><span class="inputs-a">元/课时</span>
+            <el-input v-model="form.price" autocomplete="off" class="inputs"></el-input>
+            <span class="inputs-a">元/课时</span>
           </el-form-item>
           <el-form-item label="上课模式:">
             <el-radio v-model="form.mode" label="1">一对一</el-radio>
@@ -90,14 +82,13 @@ export default {
       input3: "",
       radio: "1",
       radios: "1",
-      pricetype:"1",
 
       dialogFormVisible: false,
       form: {
         name: "",
-        pricetype: "",
+        pricetype: "1",
         price: "",
-        mode: "",
+        mode: "1",
       },
       pickerOptions: {
         disabledDate(time) {

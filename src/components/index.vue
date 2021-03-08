@@ -58,7 +58,6 @@
             <el-button type="primary" @click="add">确 定</el-button>
           </div>
         </el-dialog>
-        <!-- 搜索 -->
         <div class="right-three">
           <div style="margin-top: 15px;">
             <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
@@ -104,43 +103,31 @@
         </tbody>
       </table>
       <!-- 课表 -->
-       <el-dialog
-                title="课表"
-                :visible.sync="dialogVisible3"
-                width="70%"
-                :before-close="handleClose">
-
+       <el-dialog title="课表" :visible.sync="dialogVisible3" width="70%" :before-close="handleClose">
                 <div class="main">
                   <div class="main-left">
                   <div class="main-left-top">
                         <p class="top-t">架子鼓基础班2101</p>
-                        
                           <li><b>课程：</b>架子鼓课</li>
                           <li><b>老师：</b>希希、老师傅</li>
                           <li><b>教室：</b></li>
                           <li><b>人数：</b>2/30</li>
                           <li><el-progress :text-inside="true" :stroke-width="24" :percentage="50" status="success"></el-progress></li>
                           <li> <b class="yi">已上2节课</b> <b>已排4节课</b> </li>
-                        
                   </div>
-
                    <div class="main-left-bottom">
                       <p class="top-b">班级学员<b>(2)</b> <i class="el-icon-s-custom"></i> </p>
-                    
                        <table style="height:100px;">
                           <tr>
                             <td rowspan="2">  <i class="el-icon-dish">  </i></td>
                             <td class="dd">李四</td>
-
                           </tr>
                           <tr>
                             <td>已排3节，已上1节</td>
-
                           </tr>
                           <tr>
                             <td rowspan="2">  <i class="el-icon-dish">  </i></td>
                             <td class="dd">李四</td>
-
                           </tr>
                           <tr>
                             <td>已排本班课节3，其中上了1节</td>
@@ -148,7 +135,6 @@
                        </table>
                   </div> 
                   </div>
-
                   <div class="main-right">
                       <li class="main-right-p">
                         <el-button type="text" class="uu">单次排课</el-button> 
@@ -164,8 +150,6 @@
                       </div>
                   </div>
                 </div>
-
-
                 <span slot="footer" class="dialog-footer">
                   <el-button @click="dialogVisible3 = false">取 消</el-button>
                   <el-button type="primary" @click="dialogVisible3= false">确 定</el-button>
@@ -276,9 +260,41 @@
       <!-- 班级排课 -->
       <el-dialog title1="排课" :visible.sync="dialogFormVisible1">
         <el-form :model="forms">
+          <div class="tpaike">
+              <table >
+                    <tr>
+                      <td>主讲老师</td>
+                      <td style="color:#1890fe">添加助教</td>
+                      <td>教师</td>
+                      <td>单节课扣学员课时</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                          <el-select v-model="dd" slot="prepend" placeholder="课程" width="70px">
+                <el-option label="哈妮克孜" value="1"></el-option>
+                <el-option label="孙红雷" value="2"></el-option>
+                <el-option label="iu" value="3"></el-option>
+              </el-select>
+              <el-button>+</el-button>
+                      </td> 
+                      <td>
+                        <el-select v-model="ee" slot="prepend" placeholder="课程">
+                <el-option label="陈冠希" value="1"></el-option>
+                <el-option label="李晨" value="2"></el-option>
+                <el-option label="Lisa" value="3"></el-option>
+              </el-select>
+                            <el-button>+</el-button>
+                      </td>
+                      <td style="padding-right:40px"><el-input v-model="input" placeholder="请输入内容"></el-input></td>
+                    </tr>
+                  </table>
+          </div>
+          
+
           <el-form-item label="开课日期">
             <br />
-            <el-input v-model="forms.name" autocomplete="off" style="width:200px;"></el-input>
+            <el-date-picker v-model="value01" type="date" placeholder="开课日期"></el-date-picker>
           </el-form-item>
 
           <el-form-item label="结束方式" class="jl">
@@ -289,7 +305,7 @@
 
           <el-form-item label="* 结课日期" class="uo">
             <br />
-            <el-input v-model="forms.riqi" placeholder="结束日期" autocomplete="off" style="width:200px;"></el-input>
+            <el-date-picker v-model="value02" type="date" placeholder="结课日期"></el-date-picker>
           </el-form-item>
 
           <el-form-item label="* 日期选择" class="po">
@@ -333,6 +349,7 @@
           <el-button type="primary" @click="dialogFormVisible1 = false">保存</el-button>
         </div>
       </el-dialog>
+
       <!-- 搜索... -->
       <el-dialog title1="选择学员22222(钢琴课)"   :visible.sync="dialogFormVisibles"  >
        <div class="right-threes">
@@ -436,20 +453,23 @@ export default {
         radio: "1",
       },
       checked: "",
+      litt:"",
       relative: "",
       list: [],
-      liet:[],
-      startTime: '',
-      endTime: '',
-      startTimes: '',
-      endTimes: '',
+      liet: [],
+      value01:"",
+      value02:"",
+      startTime: "",
+      endTime: "",
+      startTimes: "",
+      endTimes: "",
       input3: "",
       select: "",
-      dd:"",
-      ee:"",
-      cc:"",
-      bb:"",
-      input:"",
+      dd: "",
+      ee: "",
+      cc: "",
+      bb: "",
+      input: "",
       // handleClose:'',
       dialogFormVisible: false,
       dialogFormVisible1: false,
@@ -543,6 +563,21 @@ export default {
         }
       );
     },
+    tearch() {
+      //使用axios 调用api接口数据
+      let that = this;
+      that.$http.get(
+        "/api/teachers/list",
+        { page: 1 },
+        (success) => {
+          that.litt = success.data.list;
+          console.log(success.data.list);
+        },
+        (failure) => {
+          console.log(failure);
+        }
+      );
+    },
     add: function () {
       let that = this;
       // console.log(that.form);
@@ -586,6 +621,7 @@ export default {
       that.form = that.list[index];
       // console.log(that.form)
     },
+    
   },
 };
 </script>
@@ -854,10 +890,13 @@ li {
   margin-bottom: 20px;
   margin-left: 17px;
 }
-.xueyuan{
+.xueyuan {
   cursor: pointer;
 }
 .demonstration {
   margin-right: 10px;
+}
+.tpaike table tr td {
+  padding-right: 30px;
 }
 </style>

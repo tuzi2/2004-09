@@ -51,7 +51,7 @@
             </div>
             <table class="table1">
               <tr>
-                <td>班级名称</td>
+                <td style="float:left;width:160px;">班级名称</td>
                 <td>课程</td>
                 <td>老师</td>
                 <td>人数</td>
@@ -60,38 +60,14 @@
                 <td>已上课时</td>
                 <td>操作</td>
               </tr>
-              <tr>
-                <td>架子鼓基础班2101</td>
-                <td>架子鼓课</td>
-                <td></td>
-                <td>0人</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>
-                  <span>课表</span>
-                </td>
-              </tr>
-              <tr>
-                <td>架子鼓基础班2101</td>
-                <td>架子鼓课</td>
-                <td></td>
-                <td>0人</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>
-                  <span>课表</span>
-                </td>
-              </tr>
-              <tr>
-                <td>架子鼓基础班2101</td>
-                <td>架子鼓课</td>
-                <td></td>
-                <td>0人</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
+              <tr v-for="(item,index) in liat" :key="index">
+                <td style="float:left;"><el-radio v-model="radios" label="1">{{item.name}}</el-radio></td>
+                <td>{{item.coursename}}</td>
+                <td>{{item.teacherslist}}</td>
+                <td>{{item.students}}</td>
+                <td>{{item.coursecounts}}</td>
+                <td>{{item.schcourses}}</td>
+                <td>{{item.endcourses}}</td>
                 <td>
                   <span>课表</span>
                 </td>
@@ -280,7 +256,7 @@ export default {
   data() {
     return {
       addstatus: false,
-      
+      radios:"",
       value1: "",
       checktab: "",
       tabList: [
@@ -337,7 +313,7 @@ export default {
       value2: "",
       startTime: '',
       endTime: '',
-
+      liat:[],
       name:'',
       sex:'0',
       tel:'',
@@ -348,6 +324,7 @@ export default {
   },
     created() {
       this.loaddate();
+      this.classes();
     },
   methods: {
     toggleSelection(rows) {
@@ -374,6 +351,21 @@ export default {
             console.log(failure);
         }
       )
+    },
+    classes() {
+      //使用axios 调用班级管理api接口数据
+      let that = this;
+      that.$http.get(
+        "/api/classes/list",
+        { page: 1 },
+        (success) => {
+          that.liat = success.data.list;
+          console.log(success.data.list);
+        },
+        (failure) => {
+          console.log(failure);
+        }
+      );
     },
     // 一对一排课
     changeAddteacher() {
