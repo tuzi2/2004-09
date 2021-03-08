@@ -15,9 +15,7 @@
           <el-form v-model="form">
             <el-form-item label="所选课程">
               <el-select v-model="form.coursename" placeholder="请选择">
-                <el-option label="架子鼓" value="架子鼓"></el-option>
-                <el-option label="音乐" value="音乐"></el-option>
-                <el-option label="基础班" value="基础班"></el-option>
+                <el-option v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="班级名称">
@@ -63,10 +61,8 @@
         <div class="right-three">
           <div style="margin-top: 15px;">
             <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-              <el-select v-model="select" slot="prepend" placeholder="课程">
-                <el-option label="架子鼓" value="1"></el-option>
-                <el-option label="音乐" value="2"></el-option>
-                <el-option label="基础班" value="3"></el-option>
+              <el-select v-model="select" slot="prepend" placeholder="课程" >
+                <el-option v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
               </el-select>
               <el-button slot="append" icon="el-icon-search"></el-button>
             </el-input>
@@ -292,12 +288,7 @@
 
           <el-form-item label="* 结课日期" class="uo">
             <br />
-            <el-input
-              v-model="forms.riqi"
-              placeholder="结束日期"
-              autocomplete="off"
-              style="width:200px;"
-            ></el-input>
+            <el-input v-model="forms.riqi" placeholder="结束日期" autocomplete="off" style="width:200px;"></el-input>
           </el-form-item>
 
           <el-form-item label="* 日期选择" class="po">
@@ -312,47 +303,19 @@
           </el-form-item>
 
           <el-form-item label="周六时间">
-            <el-input
-              v-model="forms.name"
-              placeholder="起始时间"
-              autocomplete="off"
-              style="width:120px; margin-top:30px; left:-70px;"
-            ></el-input>
-            <el-input
-              v-model="forms.name"
-              placeholder="时长(45分钟)"
-              autocomplete="off"
-              style="width:120px; margin-top:30px; left:-70px;"
-            ></el-input>
-            <el-input
-              v-model="forms.name"
-              placeholder="结束时间"
-              autocomplete="off"
-              style="width:120px; margin-top:30px; left:-70px;"
-            ></el-input>
-            <p class="el-icon-plus"></p>
+            <br><el-time-select placeholder="起始时间" v-model="startTime" :picker-options="{ start: '08:30',step: '00:15',end: '18:30'}" style="width:130px;">
+            </el-time-select>
+              <el-input v-model="forms.namea" placeholder="时长(45分钟)" autocomplete="off" style="width:120px;"></el-input>
+            <el-time-select placeholder="结束时间" v-model="endTime" :picker-options="{ start: '08:30',step: '00:15',end: '18:30',minTime: startTime}" style="width:130px;">
+            </el-time-select>
           </el-form-item>
 
           <el-form-item label="周日时间" class="pps">
-            <el-input
-              v-model="forms.name"
-              placeholder="起始时间"
-              autocomplete="off"
-              style="width:120px; margin-top:30px; left:-70px;"
-            ></el-input>
-            <el-input
-              v-model="forms.name"
-              placeholder="时长(45分钟)"
-              autocomplete="off"
-              style="width:120px;left:-70px;"
-            ></el-input>
-            <el-input
-              v-model="forms.name"
-              placeholder="结束时间"
-              autocomplete="off"
-              style="width:120px;left:-70px;"
-            ></el-input>
-            <p class="el-icon-plus"></p>
+            <br><el-time-select placeholder="起始时间" v-model="startTimes" :picker-options="{ start: '08:30',step: '00:15',end: '18:30'}" style="width:130px;">
+            </el-time-select>
+              <el-input v-model="forms.nameb" placeholder="时长(45分钟)" autocomplete="off" style="width:120px;"></el-input>
+            <el-time-select placeholder="结束时间" v-model="endTimes" :picker-options="{ start: '08:30',step: '00:15',end: '18:30',minTime: startTime}" style="width:130px;">
+            </el-time-select>
           </el-form-item>
 
           <div>
@@ -463,19 +426,22 @@
   </el-container>
 </template>
 <script>
-import axios from "axios";
 export default {
   data() {
     return {
       name: "",
-      names: "",
       checked: true,
       forms: {
-        radio: "",
+        radio: "1",
       },
       checked: "",
       relative: "",
       list: [],
+      liet:[],
+      startTime: '',
+      endTime: '',
+      startTimes: '',
+      endTimes: '',
       input3: "",
       select: "",
       dd:"",
@@ -536,6 +502,7 @@ export default {
   },
   created() {
     this.loaddata();
+    this.courses();
   },
   methods: {
     handleClose(done) {
@@ -546,14 +513,28 @@ export default {
         .catch((_) => {});
     },
     loaddata() {
-      //使用axios 调用api接口数据
-      let url = "/api/courses/list";
+      //使用axios 调用班级管理api接口数据
       let that = this;
       that.$http.get(
         "/api/classes/list",
         { page: 1 },
         (success) => {
           that.list = success.data.list;
+          console.log(success.data.list);
+        },
+        (failure) => {
+          console.log(failure);
+        }
+      );
+    },
+    courses() {
+      //使用axios 调用api接口数据
+      let that = this;
+      that.$http.get(
+        "/api/courses/list",
+        { page: 1 },
+        (success) => {
+          that.liet = success.data.list;
           console.log(success.data.list);
         },
         (failure) => {
@@ -615,7 +596,6 @@ export default {
 .right {
   width: 480px;
   height: 520px;
-  /* background-color: yellow; */
   float: right;
   position: relative;
   bottom: 520px;
@@ -624,17 +604,13 @@ export default {
   overflow-y: scroll;
   width: 430px;
   height: 480px;
-  /* float: left; */
 }
 .stu::-webkit-scrollbar {
   width: 4px;
-  /*height: 4px;*/
-  /* border-radius: 50px; */
 }
 .stu::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
-  /* background: rgba(0,0,0,0.2); */
 }
 .stu::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
@@ -645,10 +621,6 @@ export default {
   border-bottom: 1px solid #f0f0f0;
   line-height: 55px;
   width: 430px;
-}
-.el-icon-plus {
-  margin-left: -50px;
-  cursor: pointer;
 }
 .jl {
   margin-left: 250px;
@@ -696,16 +668,12 @@ export default {
 }
 .right-one img {
   width: 23px;
-  height: 23px;
-  text-align: center;
-  line-height: 40px;
   margin-left: 10px;
   margin-top: 10px;
 }
 .right-one span {
   font-size: 20px;
-  margin-left: 10px;
-  line-height: 20px;
+  margin-left: 2px;
   color: #ada2b2;
 }
 .right-two {
@@ -728,8 +696,6 @@ export default {
 }
 .right-two span {
   margin-left: -20px;
-  text-align: center;
-  line-height: 24px;
   color: #ada2b2;
 }
 .tab {
