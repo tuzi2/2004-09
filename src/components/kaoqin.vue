@@ -12,9 +12,7 @@
         <div style="" class="el-inputs">
           <el-input placeholder="搜索学员快速签到" v-model="input3" class="input-with-select">
             <el-select v-model="select" slot="prepend" placeholder="课程">
-              <el-option label="架子鼓" value="1"></el-option>
-              <el-option label="钢琴" value="2"></el-option>
-              <el-option label="基础班" value="3"></el-option>
+              <el-option  v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
             </el-select>
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
@@ -59,9 +57,7 @@
           <td>
             <div class="tab5">
               <p class="el-icon-edit-outline"></p>
-              <el-button type="text" @click="dialogTableVisible = true"
-                >签到</el-button
-              >
+              <el-button type="text" @click="dialogTableVisible = true">签到</el-button>
             </div>
           </td>
         </tr>
@@ -85,6 +81,7 @@
 export default {
   data() {
     return {
+      liet:[],
       radio:'1',
       input3: '',
       select: '',
@@ -132,12 +129,42 @@ export default {
         value2: ''
     };
   },
+  created() {
+    this.courses();
+  },
+  methods:{
+    courses() {
+      //使用axios 调用api接口数据
+      let that = this;
+      that.$http.get(
+        "/api/courses/list",
+        { page: 1 },
+        (success) => {
+          that.liet = success.data.list;
+          console.log(success.data.list);
+        },
+        (failure) => {
+          console.log(failure);
+        }
+      );
+    },
+  }
 };
 </script>
 
 <style>
+.el-dialog{
+  width:35%;
+}
+.el-dialog__body{
+  padding: 0;
+}
+.el-dialog__header{
+  padding: 0;
+  margin-left: 10px;
+}
 .buttons{
-  margin-left: 700px;
+  margin-left: 460px;
   width: 150px;
 }
 .inputs-aa{
