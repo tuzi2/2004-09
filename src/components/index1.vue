@@ -99,11 +99,21 @@ export default {
       ],
     };
   },
+  created(){
+    this.hp();
+  },
   methods: {
     addClass(val, path) {
       this.isChange = val;
       this.$router.push(path);
     },
+    hp(){
+        if(this.$route.path=="/index1"){this.isChange=0;}
+        if(this.$route.path=="/kecheng"){this.isChange=1;}
+        if(this.$route.path=="/kaoqin"){this.isChange=2;}
+        if(this.$route.path=="/huizong"){this.isChange=3;}
+        if(this.$route.path=="/student"){this.isChange=4;}
+    }
   },
 };
 </script>

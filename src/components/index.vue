@@ -161,7 +161,7 @@
             </td>
             <td>
               <!-- 教室列表 -->
-              <el-select v-model="scheduleList.classrooms">
+              <el-select v-model="scheduleList.classid">
                 <el-option v-for="item in classroomList" :key="item.id" :value="item.id" :label="item.name"></el-option>
               </el-select>
             </td>
@@ -401,7 +401,12 @@
               <td style="font-size:18px;">
                 <img src="../assets/10.png" width="40px" height="40px" alt="">{{item}}
               </td>
+              
             </tr>
+             <!-- <td >
+                <img src="../assets/10.png" width="40px" height="40px" alt="">{{item}}
+              <div v-for="item in scheduleList.studentlist" :key="item.id">{{item.name}}</div>
+            </td> -->
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="commit()">保存</el-button>
@@ -420,7 +425,7 @@
         </div>
         <div class="stu">
            <table> 
-          <tr v-for="(item,index) in xueyuan_list" :key="index" style="line-height:30px">
+          <tr v-for="item in xueyuan_list" :key="item.id" style="line-height:30px">
            <td><input type="checkbox"  v-model="xueyuan_list1" :value="item.name" style="width:20px;height:20px;"/><img src="../assets/10.png" alt="">{{item.name}}</td>
           </tr>
         </table>
@@ -471,6 +476,7 @@ export default {
       endTime: "",
       //排课状态(0:单次排课;1:批量排课)
       isschedule: 0,
+      
       // 主讲老师列表
       teacherList: [],
       // 助教老师列表
@@ -478,19 +484,20 @@ export default {
       // 教室列表
       classroomList: [],
       //排课列表
+      studentlist:[],
       scheduleList: {
         //单次排课:one 批量排课:more
         addtype: "one",
         //学生id
         studentid: 0,
         //班级id
-        classid: this.id,
+        classrooms: this.id,
         //主讲老师id
         teacherid: "",
         //助教老师id
         assistant: "",
         //教室id
-        classrooms: "",
+        classid: "",
         // 单节课扣学员课时
         pricecounts: "",
         //开课日期
@@ -627,7 +634,7 @@ export default {
   created() {
     this.loaddata();
     this.courses();
-    this.xueyuan__list()
+    this.xueyuan__list();
     //初始化主讲老师列表
     this.addTeacherList();
     //初始化助教老师列表
@@ -717,6 +724,7 @@ export default {
           (success) => {
             for (var i = 0; i < success.data.list.length; i++) {
               that.xueyuan_list.push(success.data.list[i]);
+              this.scheduleList.studentlist = success.data.list;
             }
           },
           (failure) => {
@@ -876,7 +884,9 @@ export default {
           this.$message({
             message: "恭喜你，排课成功",
             type: "success",
+            
           });
+          //  that.loaddata();
           this.scheduleList = {};
           this.$emit("addSched");
           console.log(success);

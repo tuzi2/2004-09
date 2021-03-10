@@ -9,7 +9,7 @@
     >
       <img src="@/assets/007.png" />添加学员
     </el-button>
-    <el-dialog :title="title" :visible.sync="dialogVisible" width="40%">
+    <el-dialog title="增加学员" :visible.sync="dialogVisible" width="40%">
       <span class="student-aa">学生姓名：</span>
       <el-input placeholder="请输入学生姓名" v-model="form.name" clearable class="student-a"></el-input>
       <br />
@@ -21,7 +21,7 @@
       <el-radio v-model="form.sex" label="1">女</el-radio>
       <br />
       <br /><span class="student-aa">出生日期：</span>
-      <el-input placeholder="请输入出生日期" v-model="form.birthday" clearable class="student-a" ></el-input>
+      <el-input placeholder="请输入出生日期" v-model="form.birthday" clearable class="student-a"></el-input>
       <br />
       <br /><span class="student-aa">学员编号：</span>
       <el-input placeholder="请输入学员编号" v-model="form.num" clearable class="student-a"></el-input>
@@ -41,7 +41,7 @@
     >
       <img src="@/assets/007.png" />添加排课
     </el-button>
-    <el-dialog title="添加排课" :visible.sync="dialogVisible1" width="60%">
+    <el-dialog title="增加学员" :visible.sync="dialogVisible1" width="60%">
       <el-tabs type="border-card">
         <el-tab-pane label="插班排课">
           <div>
@@ -230,7 +230,6 @@
         <td>所选课程</td>
         <td>购买总课时</td>
         <td>剩余课时</td>
-        <td>操作</td>
       </tr>
       <tr v-for="(item,index) in list" :key="index">
         <td>
@@ -241,13 +240,119 @@
         <td>{{item.num}}</td>
         <td>{{item.buycourses}}</td>
         <td>{{item.lavecourses}}</td>
-        <td>
-          <el-button type="danger" @click="del(item.id)">删除</el-button>
-          <el-button type="warning" @click="update(index)">修改</el-button>
-
-        </td>
+        <el-button type="success" @click="dialogVisible2 = true">购课</el-button>
+        <el-button type="danger" @click="del(item.id)">删除</el-button>
+        <el-button type="primary" @click="update(index)">修改</el-button>
       </tr>
+      <!-- 购课      -->
+      <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible2"
+        width="70%"
+        :before-close="handleClose" class="main-mian">
+
+        <div class="gk-main">
+
+            <div class="gk-main-1">
+              <table>
+               <tr>
+                 <td>合约类型</td>
+                 <td><b style="color:red;">*</b>签约日期</td>
+                 <td class="ri">结束日期</td>
+              
+               </tr>
+               <tr>
+                 <td>
+                   <input type="radio" name="dakai" value="课时卡">课时卡
+                   <input type="radio" class="dian" name="dakai" value="时段卡">时段卡
+                 </td>
+
+                 <td>
+                   
+                    <el-date-picker
+                      v-model="value1"
+                      type="date"
+                      placeholder="选择日期" style="margin-right:-1px;">
+                    </el-date-picker>
+
+                     <el-date-picker
+                        v-model="value2"
+                        type="date"
+                        placeholder="选择日期" style="margin-left:15px;">
+                      </el-date-picker>
+                 
+                 </td>
+
+               </tr>
+               </table>
+            </div>
+
+            <div class="gk-main-2">
+                <table>
+                  <tr>
+                    <td><b style="color:red;">*</b>签约课程</td>
+                    <td>课时数</td>
+                    <td>课程单价</td>
+                    <td><b style="color:red;">*</b>课程金额</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <select>
+                        <option>舞蹈课</option>
+                        <option>架子鼓课</option>
+                        <option>钢琴课</option>
+                      </select>
+                      <button class="jia">十</button>
+                    </td>
+
+                    <td><input type="text" name=""></td>
+                    <td><input type="text" name=""></td>
+                    <td><input type="text" name=""></td>
+                  </tr>
+                </table>
+            </div>
+
+            <div class="gk-main-3">
+               <table>
+                  <tr>
+                    <td>折扣方式</td>
+                    <td class="you">优惠金额</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="radio" name="zhekou" value="直减">直减
+                      <input type="radio" class="dian" name="zhekou" value="折扣">折扣
+                      <input type="text" name="" class="zhe">
+                    </td>
+ 
+                  </tr>
+                </table>  
+            </div>
+
+            <div class="gk-main-4">
+                <table>
+                  <tr>
+                    <td>备注</td>
+                
+                  </tr>
+                  <tr>
+                    <td><textarea></textarea></td>
+                
+                  </tr>
+                </table>
+            
+            </div>
+            <span class="student-name">米儿</span>
+            <div style="font-weight: blod;" class="jin"> <b style="margin-right:50px;">总金额：<span style="color:red;">¥15000</span></b>  <b>以优惠：<span style="color:red;">¥5000</span></b></div>
+
+        </div>
+
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogVisible2 = false">保 存</el-button>
+        </span>
+      </el-dialog>
     </table>
+
     </div>
       <div>
       <div v-if="counts <= 8">
@@ -289,6 +394,7 @@ export default {
       list: [],
       dialogVisible: false,
       dialogVisible1: false,
+      dialogVisible2: false,
       outerVisible: false,
       innerVisible: false,
       activeName: "",
@@ -336,15 +442,15 @@ export default {
       counts:0,
       pagesize:7,
       pagenum:1,
-      title:"添加学员",
       form : {
             name: "",
             tel: "",
             sex: "1",
-            birthday:"2002-8-25",
-            num: "",
-            remarks: "",
+            birthday: "2000-02-13",
+            num:"",
+            remarks:""
           }
+
     };
   },
     created() {
@@ -361,9 +467,63 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
+    
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+    add: function () {
+      let that = this;
+      console.log(that.form);
+      that.$http.post(
+        "/api/students/add",
+        JSON.stringify(this.form),
+        (success) => {
+          that.dialogVisible = false;
+          that.form = {
+            name: "",
+            tel: "",
+            sex: "",
+            birthday: "",
+            num:"",
+            remarks:""
+          };
+          that.loaddata();
+        },
+        (failure) => {
+          // alert(failure)
+        }
+      );
+    },
+     del(id) {
+      let that = this;
+      that.$http.get(
+        "/api/students/delete",
+        { id: id },
+        (success) => {
+          // this.loaddata();
+                    console.log(this.$route.path);
+
+        },
+        (failure) => {
+           //alert(failure)
+        }
+      );
+    },
+    update(index){
+      let that = this;
+      that.title = "修改学员";
+      that.dialogVisible = true;
+      that.form = that.list[index];
+
+    },
+     handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
+  
     loaddate() {
         //使用axios 调用api接口数据
         let that=this;
@@ -382,6 +542,7 @@ export default {
 				this.pagenum = currPage;
 				this.loaddate();
 			},
+      
     classes() {
       //使用axios 调用班级管理api接口数据
       let that = this;
@@ -409,54 +570,11 @@ export default {
       this.checktab = index;
       this.isschedule = index;
     },
-    add:function(){
-      let that=this;
-    that.$http.post(
-        "/api/students/add",
-        JSON.stringify(this.form),
-        (success) => {
-          that.dialogVisible = false;
-          that.form = {
-            name: "",
-            tel: "",
-            sex: "",
-            birthday:"",
-            num: "",
-            remarks: "",
-          };
-          that.loaddate();
-          console.log(123)
-        },
-        (failure) => {
-          alert(failure)
-        }
-      );
-      
-    },
-    del(id){
-      let that=this;
-      that.$http.get(
-        "/api/students/delete",
-        {id:id},
-        (success)=>{
-            that.loaddate();
-        },
-        (failure)=>{
-            alert(failure);
-        }
-      )
-    },
-    update(index){
-      let that=this;
-      that.title="修改学员";
-      that.dialogVisible = true;
-      that.form=that.list[index]
-    }
   }
 };
 </script>
 
-<style>
+<style scoped>
 .right-a {
   height: 62px;
   background-color: #f5f6fa;
@@ -472,6 +590,7 @@ export default {
   text-align: center;
   font-size: 19px;
   line-height: 59px;
+  
 }
 .da{
   display: block;
@@ -611,4 +730,69 @@ table {
   position: relative;
   top: 10px;
 }
+/* 购课 */
+.gk-main{
+  width: 1100px;
+  margin-left: 20px;
+  color: #000;
+  font-size: 16px;
+  position: relative;
+}
+.gk-main-2 input,.youhui,select{
+  width: 230px;
+  height: 40px;
+  border-radius: 3px;
+  border: 1px #dee3e9 solid ;
+}
+.jia{
+   border-radius: 3px;
+   width: 50px;
+   height: 40px;
+  border: 1px #dee3e9 solid ;
+  color: #dee3e9 ;
+ 
+}
+.gk-main td{
+  height: 40px;
+  
+}
+.gk-main .dian{
+  margin-left: 20px;
+}
+textarea{
+  width: 300px;
+  height: 60px;
+}
+.ri{
+  position: absolute;
+  top: 4px;
+  left: 560px;
+}
+.you{
+    position: absolute;
+  top: 212px;
+  left: 220px;
+}
+.zhe{
+  width: 230px;
+  height: 40px;
+  border-radius: 3px;
+  border: 1px #dee3e9 solid ;
+  margin-left: 80px;
+}
+
+.main-main{
+position: relative;
+}
+.student-name{
+  position: absolute;
+  top:-92px;
+  left: 500px;
+}
+.jin{
+  position: absolute;
+  top: 500px;
+  
+}
+
 </style>

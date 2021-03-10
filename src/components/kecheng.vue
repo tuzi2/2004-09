@@ -45,7 +45,10 @@
           </tr>
         </tbody>
       </table>
-      <p class="pp">共<span> {{list.length}}</span>条数据</p>
+      <div>
+        <el-pagination class="pagenation" :page-size="pagesize" background layout="prev, pager, next" :total="counts" @current-change="handleCurrentChange">
+        </el-pagination>
+    </div>
       <!-- Form -->
       <el-dialog title="增加课程" :visible.sync="dialogFormVisible">
         <el-form :model="form">
@@ -69,6 +72,7 @@
           <el-button type="primary" @click="add">保存</el-button>
         </div>
       </el-dialog>
+      
       <router-view></router-view>
     </el-main>
   </el-container>
@@ -82,7 +86,9 @@ export default {
       input3: "",
       radio: "1",
       radios: "1",
-
+      counts:0,
+      pagesize:7,
+      pagenum:1,
       dialogFormVisible: false,
       form: {
         name: "",
@@ -104,8 +110,9 @@ export default {
       let that = this;
       that.$http.get(
         "/api/courses/list",
-        { page: 1 },
+        {page:this.pagenum,psize:this.pagesize},
         (success) => {
+          that.counts = success.data.counts;
           that.list = success.data.list;
           console.log(success.data.list);
         },
@@ -114,6 +121,10 @@ export default {
         }
       );
     },
+    handleCurrentChange(currPage){
+				this.pagenum = currPage;
+				this.loaddata();
+			},
     add: function () {
       let that = this;
       console.log(that.form);
@@ -155,7 +166,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .dialog-footer {
   border-top: 1px solid #eff2f7;
   height: 40px;

@@ -95,7 +95,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 .bq {
   float: left;
   line-height: 60px;

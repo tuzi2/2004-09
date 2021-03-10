@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/index'
 import login from '@/components/Login'
-import list from '@/components/list'
 import gwc from '@/components/gwc'
 import kaoqin from '@/components/kaoqin'
 import kecheng from '@/components/kecheng'
@@ -19,11 +18,6 @@ export default new Router({
           path: '/index1',
           name: 'index',
           component: Index,
-        },
-        {
-          path: '/list',
-          name: 'list',
-          component: list
         },
         {
           path: '/kaoqin',
