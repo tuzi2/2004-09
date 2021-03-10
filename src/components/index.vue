@@ -10,7 +10,7 @@
           <img src="@/assets/007.png" />
           <span>添加班级</span>
         </el-button>
-        <!-- Form -->
+        <!-- Form Top -->
         <el-dialog :title="title" :visible.sync="dialogFormVisible">
           <el-form v-model="form">
             <el-form-item label="所选课程">
@@ -22,35 +22,16 @@
               <el-input v-model="form.name" autocomplete="off" class="inputs"></el-input>
             </el-form-item>
             <el-form-item label="计划课时">
-              <el-input
-                v-model="form.coursecounts"
-                autocomplete="off"
-                class="inputs"
-                placeholder="0"
-              ></el-input>
+              <el-input v-model="form.coursecounts" autocomplete="off" class="inputs" placeholder="0"></el-input>
               <span class="inputs-a">课时</span>
             </el-form-item>
             <div class="block">
               <span class="demonstration">开班日期</span>
-              <el-date-picker
-                v-model="form.startdate"
-                value-format="yyyy-MM-dd"
-                align="right"
-                type="date"
-                placeholder="选择日期"
-                :picker-options="pickerOptions"
-              ></el-date-picker>
+              <el-date-picker v-model="form.startdate" value-format="yyyy-MM-dd" align="right" type="date" placeholder="选择日期" :picker-options="pickerOptions"></el-date-picker>
             </div>
             <div class="block">
               <span class="demonstration">结班日期</span>
-              <el-date-picker
-                v-model="form.enddate"
-                value-format="yyyy-MM-dd"
-                align="right"
-                type="date"
-                placeholder="选择日期"
-                :picker-options="pickerOptionss"
-              ></el-date-picker>
+              <el-date-picker v-model="form.enddate" value-format="yyyy-MM-dd" align="right" type="date" placeholder="选择日期" :picker-options="pickerOptionss"></el-date-picker>
             </div>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -58,6 +39,7 @@
             <el-button type="primary" @click="add">确 定</el-button>
           </div>
         </el-dialog>
+        <!-- 搜索框 课程循环 -->
         <div class="right-three">
           <div style="margin-top: 15px;">
             <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
@@ -69,6 +51,7 @@
           </div>
         </div>
       </div>
+      <!-- 列表展示 -->
       <table class="tab" id="datalist">
         <tbody>
           <tr>
@@ -95,7 +78,6 @@
             <td>
               <el-button type="primary" @click="dialogFormVisible1 = true">排课</el-button>
               <el-button type="info" @click="dialogVisible3 = true">课表</el-button>
-              <!-- <el-button type="success" @click="dialogVisible = true">单次排课</el-button> -->
               <el-button type="danger" @click="del(item.id)">删除</el-button>
               <el-button type="warning" @click="uplad(index)">修改</el-button>
             </td>
@@ -103,7 +85,7 @@
         </tbody>
       </table>
       <!-- 课表 -->
-       <el-dialog title="课表" :visible.sync="dialogVisible3" width="70%" :before-close="handleClose">
+       <el-dialog title="课表" :visible.sync="dialogVisible3" width="60%">
                 <div class="main">
                   <div class="main-left">
                   <div class="main-left-top">
@@ -113,34 +95,28 @@
                           <li><b>教室：</b></li>
                           <li><b>人数：</b>2/30</li>
                           <li><el-progress :text-inside="true" :stroke-width="24" :percentage="50" status="success"></el-progress></li>
-                          <li> <b class="yi">已上2节课</b> <b>已排4节课</b> </li>
+                          <li> <b class="yi">已上2节课</b> <b class="er">已排4节课</b> </li>
                   </div>
                    <div class="main-left-bottom">
-                      <p class="top-b">班级学员<b>(2)</b> <i class="el-icon-s-custom"></i> </p>
-                       <table style="height:100px;">
-                          <tr>
-                            <td rowspan="2">  <i class="el-icon-dish">  </i></td>
-                            <td class="dd">李四</td>
-                          </tr>
-                          <tr>
-                            <td>已排3节，已上1节</td>
-                          </tr>
-                          <tr>
-                            <td rowspan="2">  <i class="el-icon-dish">  </i></td>
-                            <td class="dd">李四</td>
-                          </tr>
-                          <tr>
-                            <td>已排本班课节3，其中上了1节</td>
-                          </tr>
-                       </table>
-                  </div> 
+                      <p class="top-b">班级学员<b>(2)</b></p>
+                      <div class="top-b-img"  @click="dialogFormVisibles = true"><img src="../assets/11.png"></div>
+                   </div>
+                       <div style="margin-top:20px;">
+                         <img src="../assets/10.png" width="80px" height="80px" style="margin-top:15px; float:left;">
+                          <p style=" float:left; font-size:24px; color:#1890ff; margin:15px;">李四</p>
+                          <p  style="float:left; font-size:16px;margin:10px; color:#7d8c9f;">已排3节，已上1节</p>
+                          <img src="../assets/10.png" width="80px" height="80px" style="margin-top:15px; float:left;">
+                          <p style=" float:left; font-size:24px; color:#1890ff; margin:15px;">李四</p>
+                          <p  style="float:left; font-size:16px;margin:10px; color:#7d8c9f;">已排本班3节，已上1节</p>
+                       </div>
                   </div>
                   <div class="main-right">
                       <li class="main-right-p">
-                        <el-button type="text" class="uu">单次排课</el-button> 
-                        <el-button type="text">批量排课</el-button>
+                        <el-tabs v-model="activeName" @tab-click="handleClick">
+                          <el-tab-pane label="单次排课" name="first"></el-tab-pane>
+                          <el-tab-pane label="批量排课" name="second"></el-tab-pane>
+                        </el-tabs>
                       </li>
-
                       <div class="main-right-main">
                         <el-calendar :range="['2019-03-01', '2019-03-31']">
                        </el-calendar>
@@ -162,18 +138,9 @@
           <tr class="top">
             <td>
               <span>主讲老师</span>
-              <span
-                style="float: right;  cursor: pointer"
-                @click="addTeachingAssistants"
-                :style="isAddAssistant == true ? 'color:#3e9eff' : ''"
-                >添加助教</span
-              >
+              <span style="float: right;  cursor: pointer; margin-left:10px;" @click="addTeachingAssistants" :style="isAddAssistant == true ? 'color:#3e9eff' : ''">添加助教</span>
             </td>
-            <td
-              :class="
-                isAddAssistant == true ? `clickaddHelpteacher` : `addchange`
-              "
-            >
+            <td :class=" isAddAssistant == true ? `clickaddHelpteacher` : `addchange`">
               助教老师
             </td>
             <td>教室</td>
@@ -183,38 +150,19 @@
             <td>
               <!-- 主讲老师 -->
               <el-select v-model="scheduleList.teacherid">
-                <el-option
-                  v-for="(item, index) in teacherList"
-                  :key="index.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
+                <el-option v-for="(item, index) in teacherList" :key="index.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </td>
-            <td
-              :class="
-                isAddAssistant == true ? `clickaddHelpteacher` : `addchange`
-              "
-            >
+            <td :class=" isAddAssistant == true ? `clickaddHelpteacher` : `addchange`">
               <!-- 助教老师 -->
               <el-select v-model="scheduleList.assistant">
-                <el-option
-                  v-for="item in teacherAssistantsList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
+                <el-option v-for="item in teacherAssistantsList" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </td>
             <td>
               <!-- 教室列表 -->
               <el-select v-model="scheduleList.classrooms">
-                <el-option
-                  v-for="item in classroomList"
-                  :key="item.id"
-                  :value="item.id"
-                  :label="item.name"
-                ></el-option>
+                <el-option v-for="item in classroomList" :key="item.id" :value="item.id" :label="item.name"></el-option>
               </el-select>
             </td>
             <td>
@@ -222,19 +170,13 @@
             </td>
           </tr>
         </div>
-
         <!-- tab选项卡 -->
         <div class="group">
           <tr>
             <div class="middle">
               <td class="tabTitle">
                 <template v-for="(item, index) in tabList">
-                  <span
-                    :key="index.id"
-                    @click="changetab(index)"
-                    :class="{ changetab: checktab == index }"
-                    >{{ item.name }}</span
-                  >
+                  <span :key="index.id" @click="changetab(index)" :class="{ changetab: checktab == index }">{{ item.name }}</span>
                 </template>
               </td>
             </div>
@@ -249,12 +191,7 @@
             <tr>
               <div class="middle checkcontont">
                 <td>
-                  <el-date-picker
-                    v-model="scheduleList.begindate"
-                    type="date"
-                    placeholder="选择日期"
-                    value-format="yyyy-MM-dd"
-                  >
+                  <el-date-picker v-model="scheduleList.begindate" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
                   </el-date-picker>
                 </td>
               </div>
@@ -265,40 +202,16 @@
             <template v-for="(item, index) in this.scheduleList.weektime">
               <tr :key="index.id">
                 <td class="time">
-                  <el-time-select
-                    placeholder="起始时间"
-                    v-model="item.begintime"
-                    format="yyyy-MM-dd"
-                    :picker-options="{
-                      start: '08:30',
-                      step: '00:15',
-                      end: '18:30',
-                    }"
-                  >
+                  <el-time-select placeholder="起始时间" v-model="item.begintime" format="yyyy-MM-dd" :picker-options="{start: '08:30',step: '00:15',end: '18:30',}">
                   </el-time-select>
                   -
-                  <el-time-select
-                    placeholder="结束时间"
-                    v-model="item.endtime"
-                    :picker-options="{
-                      start: '08:30',
-                      step: '00:15',
-                      end: '18:30',
-                      minTime: startTime,
-                    }"
-                  >
+                  <el-time-select placeholder="结束时间" v-model="item.endtime" :picker-options="{start: '08:30',step: '00:15',end: '18:30',minTime: startTime,}">
                   </el-time-select>
                   <template v-if="index == 0">
-                    <span
-                      class="el-icon-plus create"
-                      @click="addOnceTime"
-                    ></span>
+                    <span class="el-icon-plus create" @click="addOnceTime"></span>
                   </template>
                   <template v-else>
-                    <span
-                      class="el-icon-minus create"
-                      @click="delOnceTime(index)"
-                    ></span>
+                    <span class="el-icon-minus create" @click="delOnceTime(index)"></span>
                   </template>
                 </td>
               </tr>
@@ -318,8 +231,7 @@
             <tr>
               <div class="middle checkcontont">
                 <td>
-                  <el-date-picker
-                    v-model="scheduleList.begindate"
+                  <el-date-picker v-model="scheduleList.begindate"
                     type="date"
                     placeholder="选择日期"
                     value-format="yyyy-MM-dd"
@@ -484,15 +396,15 @@
           </div>
         </el-form>
         </div>
-         <div style="width:100%;height:100px;">
-             <tr  v-for="(item,index) in xueyuan_list1" :key="index">
-            <td style="float:left">
-              <img src="../assets/10.png" width="30px" height="30px" alt="">{{item}}
-            </td>
-          </tr>
+         <div style="width:100%;height:70px;">
+            <tr v-for="(item,index) in xueyuan_list1" :key="index" style="float:left;margin:15px;">
+              <td style="font-size:18px;">
+                <img src="../assets/10.png" width="40px" height="40px" alt="">{{item}}
+              </td>
+            </tr>
         </div>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogFormVisible1 = false">保存</el-button>
+          <el-button type="primary" @click="commit()">保存</el-button>
         </div>
       </el-dialog>
        <el-dialog title1="选择学员22222(钢琴课)"   :visible.sync="dialogFormVisibles"  >
@@ -500,15 +412,12 @@
           <div style="margin-top: 15px;">
             <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
               <el-select v-model="select" slot="prepend" placeholder="课程">
-                <el-option label="架子鼓" value="1"></el-option>
-                <el-option label="音乐" value="2"></el-option>
-                <el-option label="基础班" value="3"></el-option>
+                <el-option v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
               </el-select>
               <el-button slot="append" icon="el-icon-search"></el-button>
             </el-input>
           </div>
         </div>
-        
         <div class="stu">
            <table> 
           <tr v-for="(item,index) in xueyuan_list" :key="index" style="line-height:30px">
@@ -519,20 +428,15 @@
       <div class="right">
         <h1 style="font-size:16;color:black;">已选学员({{xueyuan_list1.length}})</h1>
         <p class="rt"><img src="../assets/006.png"  alt="">清空</p> 
-
         <tr  v-for="(item,index) in xueyuan_list1" :key="index">
             <td style="padding-top:20px;border-bottom: 1px solid #f0f0f0;width:480px;">
               <img src="../assets/10.png" width="30px" height="30px" alt="">{{item}}
               <img src="../assets/006.png" width="20px" height="20px" alt="" style="float:right"></td>
           </tr>
       </div>
-        <el-dialog width="50%"  :append-to-body='true' class="dialog" center :visible.sync="isAddStu">
-        <addStudents
-          ref = "refStuInfo"
-          @checkStuInfo = "checkStuInfo"
-        ></addStudents>
+        <el-dialog width="50%" :append-to-body='true' class="dialog" center :visible.sync="isAddStu">
+        <addStudents ref = "refStuInfo" @checkStuInfo = "checkStuInfo"></addStudents>
       </el-dialog>
-        
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogFormVisibles = false">确定</el-button>
         </div> 
@@ -547,6 +451,7 @@
 export default {
   data() {
     return {
+      activeName: 'second',
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now();
@@ -731,13 +636,6 @@ export default {
     this.addClassroomList();
   },
   methods: {
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then((_) => {
-          done();
-        })
-        .catch((_) => {});
-    },
     loaddata() {
       //使用axios 调用班级管理api接口数据
       let that = this;
@@ -768,21 +666,10 @@ export default {
         }
       );
     },
-    tearch() {
-      //使用axios 调用api接口数据
-      let that = this;
-      that.$http.get(
-        "/api/teachers/list",
-        { page: 1 },
-        (success) => {
-          that.litt = success.data.list;
-          // console.log(success.data.list);
-        },
-        (failure) => {
-          console.log(failure);
-        }
-      );
-    },
+    handleClick(tab, event) {
+        console.log(tab, event);
+      },
+    //添加班级
     add: function () {
       let that = this;
       // console.log(that.form);
@@ -805,6 +692,7 @@ export default {
         }
       );
     },
+    //删除班级
     del(id) {
       let that = this;
       // console.log(id)
@@ -819,6 +707,7 @@ export default {
         }
       );
     },
+    // 学员列表接口
     xueyuan__list() {
       let that = this;
       for (var i = 1; i <= 4; i++) {
@@ -838,8 +727,7 @@ export default {
 
       console.log("学员列表", this.xueyuan_list);
     },
-
-    
+    //修改班级
     uplad(index) {
       let that = this;
       that.title = "修改班级";
@@ -970,7 +858,7 @@ export default {
       this.isAddStu = false
       this.scheduleList.studentlist = val
     },
-    //保存
+    //保存排课
     commit() {
       for (var i = 0; i < this.weekArray.length; i++) {
         if (this.weekArray[i].list.length > 0) {
@@ -979,9 +867,8 @@ export default {
           }
         }
       }
-
       console.log(JSON.stringify(this.scheduleList));
-
+      console.log(this.scheduleList);
       this.$http.post(
         "/api/coursetables/add",
         this.scheduleList,
@@ -993,10 +880,13 @@ export default {
           this.scheduleList = {};
           this.$emit("addSched");
           console.log(success);
+          console.log(12)
+          this.dialogFormVisible1 = false;
         },
         (fail) => {
           this.$message.error("班级排课失败");
           console.log(fail);
+          console.log(5432);
         }
       );
     },
@@ -1020,13 +910,10 @@ export default {
   width: 100%;
   height: auto;
 }
-
 .check-time {
   width: 100%;
   margin-bottom: 20px;
 }
-
-
   table {
     font-size: 19px;
     width: 100%;
@@ -1105,7 +992,6 @@ export default {
     float: left;
   }
   /* 引入精灵图 */
-
   .box tr td {
     width: 100%;
     float: left;
@@ -1331,13 +1217,6 @@ export default {
 .inputs-a {
   margin-left: 10px;
 }
-.block {
-  margin-bottom: 20px;
-  margin-left: 17px;
-}
-.demonstration {
-  margin-right: 10px;
-}
 .right-three {
   width: 40%;
   float: left;
@@ -1352,11 +1231,11 @@ export default {
   height: 700px;
   overflow-y: scroll;
 }
-
 .main-left {
   width: 300px;
   float: left;
   margin-right: 50px;
+  background-color: #f9f9fb;
 }
 .main-right {
   width: 700px;
@@ -1366,6 +1245,7 @@ export default {
 
 .top-t {
   height: 50px;
+  line-height: 50px;
   background-color: #1890ff;
   padding-top: 5px;
   padding-left: 15px;
@@ -1374,7 +1254,8 @@ export default {
 }
 
 .main-left-bottom {
-  margin-top: 50px;
+  margin-top: 30px;
+  background-color: #fff;
 }
 
 .main-left-bottom b {
@@ -1386,22 +1267,23 @@ export default {
   text-align: center;
 }
 .top-b {
-  height: 50px;
+  height: 60px;
   border-bottom: 1px solid #e5e5e5;
-  padding-top: 5px;
-  padding-left: 15px;
-  font-size: 18px;
+  margin-top: 20px;
+  font-size: 24px;
   font-weight: bold;
+  float: left;
+  width: 300px;
 }
-.el-icon-s-custom {
-  margin-left: 150px;
-  color: #1890ff;
+.top-b-img {
+  float: right;
+  height: 30px;
+  padding-top: 30px;
+  cursor: pointer;
+  position: relative;
+  top:-80px;
 }
 
-.el-icon-dish {
-  color: #1890ff;
-  font-size: 20px;
-}
 table td {
   height: 1px;
 }
@@ -1414,18 +1296,24 @@ table td {
 li {
   list-style: none;
 }
+.main-left-top{
+  background-color: #fff;
+  height: 360px;
+}
 .main-left-top li {
   color: #000;
-  font-weight: bold;
+  font-weight: normal;
+  font-size: 18px;
+  margin-top: 15px;
 }
 .main-left-top b {
   color: #7e8b9b;
+  font-weight: normal;
 }
 
 .yi {
-  margin-right: 150px;
+  margin-right: 120px;
 }
-
 .uu {
   margin-right: 30px;
 }
@@ -1456,7 +1344,6 @@ li {
 /* 他那个排课 */
 .block {
   margin-bottom: 20px;
-  margin-left: 17px;
 }
 .xueyuan {
   cursor: pointer;

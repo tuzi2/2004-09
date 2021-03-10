@@ -9,29 +9,29 @@
     >
       <img src="@/assets/007.png" />添加学员
     </el-button>
-    <el-dialog title="增加学员" :visible.sync="dialogVisible" width="40%">
+    <el-dialog :title="title" :visible.sync="dialogVisible" width="40%">
       <span class="student-aa">学生姓名：</span>
-      <el-input placeholder="请输入学生姓名" v-model="name" clearable class="student-a"></el-input>
+      <el-input placeholder="请输入学生姓名" v-model="form.name" clearable class="student-a"></el-input>
       <br />
       <br /><span class="student-aa">联系方式：</span>
-      <el-input placeholder="请输入联系方式：" v-model="tel" clearable class="student-a"></el-input>
+      <el-input placeholder="请输入联系方式：" v-model="form.tel" clearable class="student-a"></el-input>
       <br />
       <br /><span class="student-aa">学生性别：</span>
-      <el-radio v-model="sex" label="0">男</el-radio>
-      <el-radio v-model="sex" label="1">女</el-radio>
+      <el-radio v-model="form.sex" label="0">男</el-radio>
+      <el-radio v-model="form.sex" label="1">女</el-radio>
       <br />
       <br /><span class="student-aa">出生日期：</span>
-      <el-input placeholder="请输入出生日期" v-model="birthday" clearable class="student-a"></el-input>
+      <el-input placeholder="请输入出生日期" v-model="form.birthday" clearable class="student-a" ></el-input>
       <br />
       <br /><span class="student-aa">学员编号：</span>
-      <el-input placeholder="请输入学员编号" v-model="num" clearable class="student-a"></el-input>
+      <el-input placeholder="请输入学员编号" v-model="form.num" clearable class="student-a"></el-input>
       <br />
       <br /><span class="student-aa">学生备注：</span>
-      <el-input placeholder="请输入学生备注" v-model="remarks" clearable class="student-a"></el-input>
+      <el-input placeholder="请输入学生备注" v-model="form.remarks" clearable class="student-a"></el-input>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">添加</el-button>
+        <el-button type="primary" @click="add">添加</el-button>
       </span>
     </el-dialog>
     <el-button
@@ -41,7 +41,7 @@
     >
       <img src="@/assets/007.png" />添加排课
     </el-button>
-    <el-dialog title="增加学员" :visible.sync="dialogVisible1" width="60%">
+    <el-dialog title="添加排课" :visible.sync="dialogVisible1" width="60%">
       <el-tabs type="border-card">
         <el-tab-pane label="插班排课">
           <div>
@@ -230,6 +230,7 @@
         <td>所选课程</td>
         <td>购买总课时</td>
         <td>剩余课时</td>
+        <td>操作</td>
       </tr>
       <tr v-for="(item,index) in list" :key="index">
         <td>
@@ -240,6 +241,11 @@
         <td>{{item.num}}</td>
         <td>{{item.buycourses}}</td>
         <td>{{item.lavecourses}}</td>
+        <td>
+          <el-button type="danger" @click="del(item.id)">删除</el-button>
+          <el-button type="warning" @click="update(index)">修改</el-button>
+
+        </td>
       </tr>
     </table>
     </div>
@@ -330,6 +336,15 @@ export default {
       counts:0,
       pagesize:7,
       pagenum:1,
+      title:"添加学员",
+      form : {
+            name: "",
+            tel: "",
+            sex: "1",
+            birthday:"2002-8-25",
+            num: "",
+            remarks: "",
+          }
     };
   },
     created() {
@@ -394,6 +409,49 @@ export default {
       this.checktab = index;
       this.isschedule = index;
     },
+    add:function(){
+      let that=this;
+    that.$http.post(
+        "/api/students/add",
+        JSON.stringify(this.form),
+        (success) => {
+          that.dialogVisible = false;
+          that.form = {
+            name: "",
+            tel: "",
+            sex: "",
+            birthday:"",
+            num: "",
+            remarks: "",
+          };
+          that.loaddate();
+          console.log(123)
+        },
+        (failure) => {
+          alert(failure)
+        }
+      );
+      
+    },
+    del(id){
+      let that=this;
+      that.$http.get(
+        "/api/students/delete",
+        {id:id},
+        (success)=>{
+            that.loaddate();
+        },
+        (failure)=>{
+            alert(failure);
+        }
+      )
+    },
+    update(index){
+      let that=this;
+      that.title="修改学员";
+      that.dialogVisible = true;
+      that.form=that.list[index]
+    }
   }
 };
 </script>

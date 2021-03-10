@@ -43,12 +43,7 @@
            <!-- 考勤 -->
       <div class="kq-text1">
         <el-checkbox v-model="checked">全选</el-checkbox>
-        <el-button
-          type="primary"
-          @click="dialogFormVisible1 = true"
-          style="padding-right: 30px"
-          >考勤</el-button
-        >
+        <el-button type="primary" @click="dialogFormVisible1 = true" style="padding-right: 30px;width:100px;">考勤</el-button>
       </div>
 
       <div class="kq-text2" >
@@ -57,9 +52,9 @@
             <tr>
               <td>
                 <div class="tab2" style="float:left">
-                                  <el-checkbox v-model="checked"></el-checkbox>
+                                  <el-checkbox></el-checkbox>
 
-                  架子鼓基础班2021 <span class="asd">班级</span>
+                  架子鼓基础班2021 <span class="asd">班课</span>
                 </div>
                 <div class="tab3" style="float:left">
                   <p class="el-icon-reading"></p>
@@ -81,11 +76,11 @@
                   <tr>
                     <td>
                       <div class="tab2">
-                        <el-checkbox v-model="checked"></el-checkbox>
+                        <el-checkbox></el-checkbox>
                         <img
                           src="../assets/10.png"
-                          width="50px"
-                          height="50px"
+                          width="30px"
+                          height="30px"
                           alt=""
                         />
                         <span>武大郎</span>
@@ -155,11 +150,11 @@
                   <tr>
                     <td>
                       <div class="tab2">
-                        <el-checkbox v-model="checked"></el-checkbox>
+                        <el-checkbox></el-checkbox>
                         <img
                           src="../assets/10.png"
-                          width="50px"
-                          height="50px"
+                          width="30px"
+                          height="30px"
                           alt=""
                         />
                         <span>武大郎</span>
@@ -230,80 +225,13 @@
 
         <br />
       </div>
-      <!-- <div class="kq-text4">
-        <table>
-          <tr>
-            <td>
-              <div class="tab2">
-                <el-checkbox v-model="checked"></el-checkbox>
-                <img src="../assets/10.png" width="50px" height="50px" alt="" />
-                <span>武大郎</span>
-              </div>
-            </td>
-            <td>
-              <div class="tab3">
-                <p class="el-icon-reading"></p>
-                架子鼓课
-              </div>
-            </td>
-            <td>
-              <div class="tab3">
-                <p class="el-icon-pie-chart"></p>
-                8:00~8:45
-              </div>
-            </td>
-            <td>
-              <div class="tab3">
-                <p class="el-icon-s-custom"></p>
-                在
-              </div>
-            </td>
-            <td>
-              <div class="tab4">
-                <p class="el-icon-date"></p>
-                已到达
-              </div>
-            </td>
-            <td>
-              <div class="tab5">
-                <p class="el-icon-edit-outline"></p>
-                <el-button type="text" @click="dialogTableVisible = true"
-                  >签到</el-button
-                >
-              </div>
-            </td>
-          </tr>
-          <el-dialog title="签到" :visible.sync="dialogTableVisible">
-            <div class="groups">
-              <el-radio label="1" v-model="radio">出勤</el-radio>
-              <el-radio label="2" v-model="radio">迟到</el-radio>
-              <el-radio label="3" v-model="radio">请假</el-radio>
-              <el-radio label="4" v-model="radio">旷课</el-radio>
-              <br />
-              <el-input
-                type="textarea"
-                v-model="form.desc"
-                placeholder="备注"
-                class="inputs-aa"
-              ></el-input>
-            </div>
-            <br />
-            <el-button
-              type="primary"
-              @click="dialogFormVisible = false"
-              class="buttons"
-              >保 存</el-button
-            >
-          </el-dialog>
-        </table>
-      </div> -->
       <div class="kq-text5">
-        <table>
+        <table class="san">
           <tr>
             <td>
               <div class="tab2" style="padding-left:50px">
-                <el-checkbox v-model="checked"></el-checkbox>
-                <img src="../assets/10.png" width="50px" height="50px" alt="" />
+                <el-checkbox></el-checkbox>
+                <img src="../assets/10.png" width="30px" height="30px" alt="" />
                 <span>武大郎</span>
               </div>
             </td>
@@ -365,12 +293,12 @@
         </table>
       </div>
       <div class="kq-text6">
-        <table>
+        <table style="margin-top:20px;margin-left:20px">
           <tr>
             <td>
               <div class="tab2" style="padding-left:50px">
-                <el-checkbox v-model="checked"></el-checkbox>
-                <img src="../assets/10.png" width="50px" height="50px" alt="" />
+                <el-checkbox></el-checkbox>
+                <img src="../assets/10.png" width="30px" height="30px" alt="" />
                 <span>武大郎</span>
               </div>
             </td>
@@ -430,7 +358,7 @@
             >
           </el-dialog>
         </table>
-      </div>
+      </div> 
     </div>
   </div>
 </template>
@@ -639,29 +567,41 @@ export default {
 }
 .kq-text2 {
   margin-bottom: 20px;
+  margin-left: -30px;
+  margin-top:10px;
 }
 .kq-text5 {
-  margin-bottom: 20px;
+  margin:  50px 0;
+  margin-left: -30px;
 }
 .kq-text2 table {
   border: #c5c5c5 1px solid;
-width: 1648px; 
- height: 88px;
+  width: 1600px; 
+  height: 88px;
 }
-/* .kq-text4 table {
+.kq-text4 table {
   border: #c5c5c5 1px solid;
    width: 1700px;
   height: 88px;
   border-top: none;
-} */
+}
 .kq-text5 table {
   border: #c5c5c5 1px solid;
-   width: 1700px;
+   width: 1660px;
   height: 88px;
 }
 .kq-text6 table {
   border: #c5c5c5 1px solid;
-  width: 1700px;
+  width: 1660px;
   height: 88px;
+}
+.kq-text1{
+  margin-left: 50px;
+}
+.tab2{
+  padding-left: 10px;
+}
+.san{
+  margin-left: -20px;
 }
 </style>
