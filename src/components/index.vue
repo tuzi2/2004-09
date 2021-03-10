@@ -95,7 +95,7 @@
             <td>
               <el-button type="primary" @click="dialogFormVisible1 = true">排课</el-button>
               <el-button type="info" @click="dialogVisible3 = true">课表</el-button>
-              <el-button type="success" @click="dialogVisible = true">单次排课</el-button>
+              <!-- <el-button type="success" @click="dialogVisible = true">单次排课</el-button> -->
               <el-button type="danger" @click="del(item.id)">删除</el-button>
               <el-button type="warning" @click="uplad(index)">修改</el-button>
             </td>
@@ -156,203 +156,346 @@
                 </span>
       </el-dialog>
 
-      <!-- 单次排课 -->
-      <el-dialog title="排课" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-                <div class="dpaike">
-                  <table >
-                    <tr>
-                      <td >主讲老师</td>
-                      <td style="color:#1890fe">添加助教</td>
-                      <td>教师</td>
-                      <td>单节课扣学员课时</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                          <el-select v-model="dd" slot="prepend" placeholder="课程">
-                <el-option label="哈妮克孜" value="1"></el-option>
-                <el-option label="孙红雷" value="2"></el-option>
-                <el-option label="iu" value="3"></el-option>
-              </el-select>
-                      </td> 
-                      <td>
-                        <el-select v-model="ee" slot="prepend" placeholder="课程">
-                <el-option label="陈冠希" value="1"></el-option>
-                <el-option label="李晨" value="2"></el-option>
-                <el-option label="Lisa" value="3"></el-option>
-              </el-select>
-                      </td>
-                      <td><el-input v-model="input" placeholder="请输入内容"></el-input></td>
-                    </tr>
-                  </table>
-                </div>
-
-                <div class="dpaike">
-                  <table>
-                    <tr>
-                      <td style="color:#1890fe;border-bottom:2px solid #1890fe;padding-bottom:10px">单次排课</td>
-                      <td style="padding-bottom:10px">批量排课</td>
-                    </tr>
-                  </table>
-                </div>
-                <div>
-                  <table>
-                    <tr>
-                      <td colspan="2">开课日期</td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                        <div class="block">
-                          <el-date-picker
-                            v-model="bb"
-                            type="datetime"
-                            placeholder="选择日期时间"
-                          >
-                          </el-date-picker>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <div>
-                  <table>
-                    <tr>
-                      <td colspan="2">
-                        <span class="demonstration">上课时间</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                        <div class="block">
-                          <el-date-picker
-                            v-model="cc"
-                            type="datetimerange"
-                            align="right"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            :default-time="['12:00:00', '08:00:00']"
-                          >
-                          </el-date-picker>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <div class="xueyuan">
-                  <table>
-                    <th>
-                      <td style="font-weight:bold ">
-                        选中学员（0）
-                      </td>
-                      <td style="font-weight:bold ">
-                        <h6 class="el-icon-user-solid">添加学员</h6>                        
-                      </td>
-                    </th>
-                  </table>
-                </div>
-                <span slot="footer" class="dialog-footer">
-                  <el-button @click="dialogVisible = false">取 消</el-button>
-                  <el-button type="primary" @click="dialogVisible = false"
-                    >确 定</el-button
-                  >
-                </span>
-    </el-dialog>
-
-      <!-- 班级排课 -->
+      <!-- 排课 -->
       <el-dialog title1="排课" :visible.sync="dialogFormVisible1">
-        <el-form :model="forms">
-          <div class="tpaike">
-              <table >
-                    <tr>
-                      <td>主讲老师</td>
-                      <td style="color:#1890fe">添加助教</td>
-                      <td>教师</td>
-                      <td>单节课扣学员课时</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                          <el-select v-model="dd" slot="prepend" placeholder="课程" width="70px">
-                <el-option label="哈妮克孜" value="1"></el-option>
-                <el-option label="孙红雷" value="2"></el-option>
-                <el-option label="iu" value="3"></el-option>
+        <div class="group">
+          <tr class="top">
+            <td>
+              <span>主讲老师</span>
+              <span
+                style="float: right;  cursor: pointer"
+                @click="addTeachingAssistants"
+                :style="isAddAssistant == true ? 'color:#3e9eff' : ''"
+                >添加助教</span
+              >
+            </td>
+            <td
+              :class="
+                isAddAssistant == true ? `clickaddHelpteacher` : `addchange`
+              "
+            >
+              助教老师
+            </td>
+            <td>教室</td>
+            <td><font style="color: red">*</font>单节课扣学员课时</td>
+          </tr>
+          <tr class="top">
+            <td>
+              <!-- 主讲老师 -->
+              <el-select v-model="scheduleList.teacherid">
+                <el-option
+                  v-for="(item, index) in teacherList"
+                  :key="index.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
               </el-select>
-              <el-button>+</el-button>
-                      </td> 
-                      <td>
-                        <el-select v-model="ee" slot="prepend" placeholder="课程">
-                <el-option label="陈冠希" value="1"></el-option>
-                <el-option label="李晨" value="2"></el-option>
-                <el-option label="Lisa" value="3"></el-option>
+            </td>
+            <td
+              :class="
+                isAddAssistant == true ? `clickaddHelpteacher` : `addchange`
+              "
+            >
+              <!-- 助教老师 -->
+              <el-select v-model="scheduleList.assistant">
+                <el-option
+                  v-for="item in teacherAssistantsList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
               </el-select>
-                            <el-button>+</el-button>
-                      </td>
-                      <td style="padding-right:40px"><el-input v-model="input" placeholder="请输入内容"></el-input></td>
-                    </tr>
-                  </table>
+            </td>
+            <td>
+              <!-- 教室列表 -->
+              <el-select v-model="scheduleList.classrooms">
+                <el-option
+                  v-for="item in classroomList"
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.name"
+                ></el-option>
+              </el-select>
+            </td>
+            <td>
+              <el-input v-model="scheduleList.pricecounts"></el-input>
+            </td>
+          </tr>
+        </div>
+
+        <!-- tab选项卡 -->
+        <div class="group">
+          <tr>
+            <div class="middle">
+              <td class="tabTitle">
+                <template v-for="(item, index) in tabList">
+                  <span
+                    :key="index.id"
+                    @click="changetab(index)"
+                    :class="{ changetab: checktab == index }"
+                    >{{ item.name }}</span
+                  >
+                </template>
+              </td>
+            </div>
+          </tr>
+          <!-- 单次排课 -->
+          <div v-if="isschedule == 0">
+            <tr>
+              <div class="middle center">
+                <td>开课日期</td>
+              </div>
+            </tr>
+            <tr>
+              <div class="middle checkcontont">
+                <td>
+                  <el-date-picker
+                    v-model="scheduleList.begindate"
+                    type="date"
+                    placeholder="选择日期"
+                    value-format="yyyy-MM-dd"
+                  >
+                  </el-date-picker>
+                </td>
+              </div>
+            </tr>
+            <tr>
+              <td>上课时间</td>
+            </tr>
+            <template v-for="(item, index) in this.scheduleList.weektime">
+              <tr :key="index.id">
+                <td class="time">
+                  <el-time-select
+                    placeholder="起始时间"
+                    v-model="item.begintime"
+                    format="yyyy-MM-dd"
+                    :picker-options="{
+                      start: '08:30',
+                      step: '00:15',
+                      end: '18:30',
+                    }"
+                  >
+                  </el-time-select>
+                  -
+                  <el-time-select
+                    placeholder="结束时间"
+                    v-model="item.endtime"
+                    :picker-options="{
+                      start: '08:30',
+                      step: '00:15',
+                      end: '18:30',
+                      minTime: startTime,
+                    }"
+                  >
+                  </el-time-select>
+                  <template v-if="index == 0">
+                    <span
+                      class="el-icon-plus create"
+                      @click="addOnceTime"
+                    ></span>
+                  </template>
+                  <template v-else>
+                    <span
+                      class="el-icon-minus create"
+                      @click="delOnceTime(index)"
+                    ></span>
+                  </template>
+                </td>
+              </tr>
+            </template>
           </div>
+          <!-- 批量排课 -->
+          <div v-else>
+            <tr>
+              <div class="middle center">
+                <td>开课日期</td>
+                <td>结束日期</td>
+                <td>
+                  {{ scheduleList.jsfs == "按课节" ? "排课总数" : "结束课程" }}
+                </td>
+              </div>
+            </tr>
+            <tr>
+              <div class="middle checkcontont">
+                <td>
+                  <el-date-picker
+                    v-model="scheduleList.begindate"
+                    type="date"
+                    placeholder="选择日期"
+                    value-format="yyyy-MM-dd"
+                  >
+                  </el-date-picker>
+                </td>
+                <td>
+                  <el-radio-group
+                    v-model="scheduleList.jsfs"
+                    @change="changejsfs"
+                    class="font"
+                  >
+                    <el-radio :label="'按课节'"></el-radio>
+                    <el-radio :label="'按日期'"></el-radio>
+                  </el-radio-group>
+                </td>
+                <td>
+                  <!-- 按课节 -->
+                  <div v-if="scheduleList.jsfs == '按课节'">
+                    <el-input v-model="scheduleList.coursescount"></el-input>
+                  </div>
+                  <!-- 按日期 -->
+                  <div v-else>
+                    <el-date-picker
+                      v-model="scheduleList.enddate"
+                      type="date"
+                      placeholder="选择日期"
+                      value-format="yyyy-MM-dd"
+                    >
+                    </el-date-picker>
+                  </div>
+                </td>
+              </div>
+            </tr>
+            <tr>
+              <td>
+                <font style="color: red">*</font
+                >{{ scheduleList.jsfs == "按课节" ? "上课时间" : "星期选择" }}
+              </td>
+            </tr>
+            <tr>
+              <!-- 按课节(选择时间) -->
+              <div v-if="scheduleList.jsfs == '按课节'">
+                <template v-for="(item, index) in this.scheduleList.weektime">
+                  <div :key="index.id">
+                    <td class="time">
+                      <el-time-select
+                        placeholder="起始时间"
+                        v-model="item.begintime"
+                        :picker-options="{
+                          start: '08:30',
+                          step: '00:15',
+                          end: '18:30',
+                        }"
+                      >
+                      </el-time-select>
+                      -
+                      <el-time-select
+                        placeholder="结束时间"
+                        v-model="item.endtime"
+                        :picker-options="{
+                          start: '08:30',
+                          step: '00:15',
+                          end: '18:30',
+                          minTime: startTime,
+                        }"
+                      >
+                      </el-time-select>
+                      <template v-if="index == 0">
+                        <span
+                          class="el-icon-plus create"
+                          @click="addOnceTime"
+                        ></span>
+                      </template>
+                      <template v-else>
+                        <span
+                          class="el-icon-minus create"
+                          @click="delOnceTime(index)"
+                        ></span>
+                      </template>
+                    </td>
+                  </div>
+                </template>
+              </div>
+              <!-- 按星期(选择时间) -->
+              <div class="week" v-else>
+                <div class="check-time">
+                  <el-checkbox
+                    v-for="(item, index) in weekArray"
+                    :key="index.id"
+                    v-model="item.isCheck"
+                    :label="'星期' + item.name"
+                    @change="changeWeek(index)"
+                  >
+                  </el-checkbox>
+                </div>
+
+                <template v-for="(w, ind) in weekArray">
+                  <div v-if="w.list.length > 0" :key="w.id" class="every-time">
+                    <span class="zoutime">周{{ w.name }}时间</span>
+                    <div
+                      class="week-time"
+                      v-for="(item, index) in w.list"
+                      :key="index.id"
+                    >
+                      <el-time-select
+                        placeholder="起始时间"
+                        class="weekTime"
+                        v-model="item.begintime"
+                        :picker-options="{
+                          start: '08:30',
+                          step: '00:15',
+                          end: '18:30',
+                        }"
+                      >
+                      </el-time-select>
+                      <el-input
+                        class="weekTime"
+                        placeholder="时长(45分钟)"
+                      ></el-input>
+                      <el-time-select
+                        placeholder="结束时间"
+                        class="weekTime"
+                        v-model="item.endtime"
+                        :picker-options="{
+                          start: '08:30',
+                          step: '00:15',
+                          end: '18:30',
+                          minTime: startTime,
+                        }"
+                      >
+                      </el-time-select>
+                      <template v-if="index == 0">
+                        <span
+                          @click="addtime(ind)"
+                          class="el-icon-plus create"
+                        ></span>
+                      </template>
+                      <template v-else>
+                        <span
+                          @click="deltime(ind, index)"
+                          class="el-icon-minus create"
+                        ></span>
+                      </template>
+                    </div>
+                  </div>
+                </template>
+                <div></div>
+              </div>
+            </tr>
+          </div>
+        </div>
+        <div>
+            <h1>选择学员({{xueyuan_list1.length}})</h1>
+           
           
-
-          <el-form-item label="开课日期">
-            <br />
-            <el-date-picker v-model="value01" type="date" placeholder="开课日期"></el-date-picker>
-          </el-form-item>
-
-          <el-form-item label="结束方式" class="jl">
-            <br />
-            <el-radio v-model="forms.radio" label="1">按课节</el-radio>
-            <el-radio v-model="forms.radio" label="2">按日期</el-radio>
-          </el-form-item>
-
-          <el-form-item label="* 结课日期" class="uo">
-            <br />
-            <el-date-picker v-model="value02" type="date" placeholder="结课日期"></el-date-picker>
-          </el-form-item>
-
-          <el-form-item label="* 日期选择" class="po">
-            <br />
-            <el-checkbox v-model="checked">星期一</el-checkbox>
-            <el-checkbox>星期二</el-checkbox>
-            <el-checkbox>星期三</el-checkbox>
-            <el-checkbox>星期四</el-checkbox>
-            <el-checkbox>星期五</el-checkbox>
-            <el-checkbox v-model="checked">星期六</el-checkbox>
-            <el-checkbox>星期日</el-checkbox>
-          </el-form-item>
-
-          <el-form-item label="周六时间">
-            <br><el-time-select placeholder="起始时间" v-model="startTime" :picker-options="{ start: '08:30',step: '00:15',end: '18:30'}" style="width:130px;">
-            </el-time-select>
-              <el-input v-model="forms.namea" placeholder="时长(45分钟)" autocomplete="off" style="width:120px;"></el-input>
-            <el-time-select placeholder="结束时间" v-model="endTime" :picker-options="{ start: '08:30',step: '00:15',end: '18:30',minTime: startTime}" style="width:130px;">
-            </el-time-select>
-          </el-form-item>
-
-          <el-form-item label="周日时间" class="pps">
-            <br><el-time-select placeholder="起始时间" v-model="startTimes" :picker-options="{ start: '08:30',step: '00:15',end: '18:30'}" style="width:130px;">
-            </el-time-select>
-              <el-input v-model="forms.nameb" placeholder="时长(45分钟)" autocomplete="off" style="width:120px;"></el-input>
-            <el-time-select placeholder="结束时间" v-model="endTimes" :picker-options="{ start: '08:30',step: '00:15',end: '18:30',minTime: startTime}" style="width:130px;">
-            </el-time-select>
-          </el-form-item>
-
-          <div>
-            <h1>选择学员(0)</h1>
-          </div>
-         
+         <el-form>
           <div class="um" @click="dialogFormVisibles = true">
              <img src="../assets/11.png" style="margin-left:5px;cursor: pointer;" alt="">
             添加学员
-            <!-- <img src="./img/images/课时汇总-排课_03.gif" alt /> -->
+             <!-- <img src="./img/images/课时汇总-排课_03.gif" alt /> -->
           </div>
         </el-form>
+        </div>
+         <div style="width:100%;height:100px;">
+             <tr  v-for="(item,index) in xueyuan_list1" :key="index">
+            <td style="float:left">
+              <img src="../assets/10.png" width="30px" height="30px" alt="">{{item}}
+            </td>
+          </tr>
+        </div>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogFormVisible1 = false">保存</el-button>
         </div>
       </el-dialog>
-
-      <!-- 搜索... -->
-      <el-dialog title1="选择学员22222(钢琴课)"   :visible.sync="dialogFormVisibles"  >
+       <el-dialog title1="选择学员22222(钢琴课)"   :visible.sync="dialogFormVisibles"  >
        <div class="right-threes">
           <div style="margin-top: 15px;">
             <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
@@ -365,81 +508,37 @@
             </el-input>
           </div>
         </div>
+        
         <div class="stu">
-           <table > 
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">米儿</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox ><img src="../assets/10.png" width="24px" height="24px" alt="">jason</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
-          </tr>
-          <tr>
-            <td><el-checkbox><img src="../assets/10.png" width="24px" height="24px" alt="">luke</el-checkbox></td>
+           <table> 
+          <tr v-for="(item,index) in xueyuan_list" :key="index" style="line-height:30px">
+           <td><input type="checkbox"  v-model="xueyuan_list1" :value="item.name" style="width:20px;height:20px;"/><img src="../assets/10.png" alt="">{{item.name}}</td>
           </tr>
         </table>
-        </div>
+        </div> 
       <div class="right">
-        <h1 style="font-size:16;color:black;">已选学员(4)</h1>
+        <h1 style="font-size:16;color:black;">已选学员({{xueyuan_list1.length}})</h1>
         <p class="rt"><img src="../assets/006.png"  alt="">清空</p> 
 
-        <tr>
-            <td style="padding-top:38px;border-bottom: 1px solid #f0f0f0;width:480px;"><img src="../assets/10.png" width="30px" height="30px" alt="">luke</td>
-          </tr>
-          <tr >
-            <td style="border-bottom: 1px solid #f0f0f0; width:480px;"><img src="../assets/10.png" width="30px" height="30px" alt="">luke</td>
-          </tr>
-          <tr >
-            <td style="border-bottom: 1px solid #f0f0f0;width:480px;"><img src="../assets/10.png" width="30px" height="30px" alt="">luke</td>
-          </tr>
-          <tr >
-            <td style="border-bottom: 1px solid #f0f0f0;width:480px;"><img src="../assets/10.png" width="30px" height="30px" alt="">luke</td>
+        <tr  v-for="(item,index) in xueyuan_list1" :key="index">
+            <td style="padding-top:20px;border-bottom: 1px solid #f0f0f0;width:480px;">
+              <img src="../assets/10.png" width="30px" height="30px" alt="">{{item}}
+              <img src="../assets/006.png" width="20px" height="20px" alt="" style="float:right"></td>
           </tr>
       </div>
-        
+        <el-dialog width="50%"  :append-to-body='true' class="dialog" center :visible.sync="isAddStu">
+        <addStudents
+          ref = "refStuInfo"
+          @checkStuInfo = "checkStuInfo"
+        ></addStudents>
+      </el-dialog>
         
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogFormVisibles = false">确定</el-button>
-        </div>
+        </div> 
       </el-dialog>
+        
+      <!-- </el-dialog> -->
       <router-view></router-view>
     </el-main>
   </el-container>
@@ -448,6 +547,103 @@
 export default {
   data() {
     return {
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+      },
+      //是否添加学员
+      isAddStu: false,
+      //是否添加助教(默认不添加)
+      isAddAssistant: false,
+      // 选择排课
+      checktab: "",
+      //tab选项卡(单次排课 && 批量排课)
+      tabList: [{ name: "单次排课" }, { name: "批量排课" }],
+      //上课起始时间
+      startTime: "",
+      //上课结束时间
+      endTime: "",
+      //排课状态(0:单次排课;1:批量排课)
+      isschedule: 0,
+      // 主讲老师列表
+      teacherList: [],
+      // 助教老师列表
+      teacherAssistantsList: [],
+      // 教室列表
+      classroomList: [],
+      //排课列表
+      scheduleList: {
+        //单次排课:one 批量排课:more
+        addtype: "one",
+        //学生id
+        studentid: 0,
+        //班级id
+        classid: this.id,
+        //主讲老师id
+        teacherid: "",
+        //助教老师id
+        assistant: "",
+        //教室id
+        classrooms: "",
+        // 单节课扣学员课时
+        pricecounts: "",
+        //开课日期
+        begindate: "",
+        //结课日期
+        enddate: "",
+        //结束方法按课节(0:按课节: 按日期)
+        jsfs: "按课节",
+        //排课总数
+        coursescount: 0,
+        //上课时间
+        weektime: [
+          {
+            week: 0,
+            begintime: "",
+            endtime: "",
+          },
+        ],
+      },
+
+      //星期选择week
+      weekArray: [
+        {
+          name: "一",
+          isCheck: false,
+          list: [],
+        },
+        {
+          name: "二",
+          isCheck: false,
+          list: [],
+        },
+        {
+          name: "三",
+          isCheck: false,
+          list: [],
+        },
+        {
+          name: "四",
+          isCheck: false,
+          list: [],
+        },
+        {
+          name: "五",
+          isCheck: false,
+          list: [],
+        },
+        {
+          name: "六",
+          isCheck: false,
+          list: [],
+        },
+        {
+          name: "日",
+          isCheck: false,
+          list: [],
+        },
+      ],
       name: "",
       checked: true,
       forms: {
@@ -458,6 +654,8 @@ export default {
       relative: "",
       list: [],
       liet: [],
+      xueyuan_list1:[],
+      xueyuan_list:[],
       value01:"",
       value02:"",
       startTime: "",
@@ -471,7 +669,6 @@ export default {
       cc: "",
       bb: "",
       input: "",
-      // handleClose:'',
       dialogFormVisible: false,
       dialogFormVisible1: false,
       dialogFormVisibles: false,
@@ -525,6 +722,13 @@ export default {
   created() {
     this.loaddata();
     this.courses();
+    this.xueyuan__list()
+    //初始化主讲老师列表
+    this.addTeacherList();
+    //初始化助教老师列表
+    this.addAssistantTeacherList();
+    //初始化教室列表
+    this.addClassroomList();
   },
   methods: {
     handleClose(done) {
@@ -542,7 +746,7 @@ export default {
         { page: 1 },
         (success) => {
           that.list = success.data.list;
-          console.log(success.data.list);
+          // console.log(success.data.list);
         },
         (failure) => {
           console.log(failure);
@@ -557,7 +761,7 @@ export default {
         { page: 1 },
         (success) => {
           that.liet = success.data.list;
-          console.log(success.data.list);
+          // console.log(success.data.list);
         },
         (failure) => {
           console.log(failure);
@@ -572,7 +776,7 @@ export default {
         { page: 1 },
         (success) => {
           that.litt = success.data.list;
-          console.log(success.data.list);
+          // console.log(success.data.list);
         },
         (failure) => {
           console.log(failure);
@@ -615,6 +819,27 @@ export default {
         }
       );
     },
+    xueyuan__list() {
+      let that = this;
+      for (var i = 1; i <= 4; i++) {
+        that.$http.get(
+          "/api/students/list",
+          { page: i },
+          (success) => {
+            for (var i = 0; i < success.data.list.length; i++) {
+              that.xueyuan_list.push(success.data.list[i]);
+            }
+          },
+          (failure) => {
+            console.log("123");
+          }
+        );
+      }
+
+      console.log("学员列表", this.xueyuan_list);
+    },
+
+    
     uplad(index) {
       let that = this;
       that.title = "修改班级";
@@ -622,11 +847,353 @@ export default {
       that.form = that.list[index];
       // console.log(that.form)
     },
-    
+       //是否添加助教
+    addTeachingAssistants() {
+      if (this.isAddAssistant) {
+        this.isAddAssistant = false;
+      } else {
+        this.isAddAssistant = true;
+      }
+    },
+    //给选中tab添加样式
+    changetab(index) {
+      this.checktab = index;
+      this.isschedule = index;
+      console.log(index);
+      if (index == 0) {
+        this.scheduleList.addtype = "one";
+      } else {
+        this.scheduleList.addtype = "more";
+        this.scheduleList.jsfs == "按课节"
+      }
+      this.scheduleList.weektime = [
+        {
+          week: 0,
+          begintime: "",
+          endtime: "",
+        },
+      ];
+    },
+
+    //单次排课，点击加号加入数据
+    addOnceTime() {
+      this.scheduleList.weektime.push({
+        week: 0,
+        begintime: "",
+        endtime: "",
+      });
+    },
+
+    //单次排课，点击减号减除数据
+    delOnceTime(index){
+       this.scheduleList.weektime.splice(index,1)
+    },
+
+    //点击加号给星期index，添加一个新的list[]模板
+    addtime(index) {
+      this.weekArray[index].list.push({
+        week: index,
+        begintime: "",
+        endtime: "",
+      });
+      console.log(11);
+    },
+    //点击减号给给ind这个组的list，减少一个list[]模板
+    deltime(ind, index) {
+      this.weekArray[ind].list.splice(index, 1);
+    },
+
+    //点击星期选中(取消选中)
+    changeWeek(index) {
+      if (this.weekArray[index].isCheck) {
+        this.weekArray[index].list.push({
+          week: index,
+          begintime: "",
+          endtime: "",
+        });
+      } else {
+        this.weekArray[index].list = [];
+      }
+    },
+
+    //获取主讲老师
+    addTeacherList() {
+      this.$http.get(
+        "/api/teachers/list",
+        { cat: 1, page: 1 },
+        (success) => {
+          this.teacherList = success.data.list;
+        },
+        (fail) => {
+          console.log(fail);
+        }
+      );
+    },
+    //获取助教老师
+    addAssistantTeacherList() {
+      this.$http.get(
+        "/api/teachers/list",
+        { cat: 2, page: 1 },
+        (success) => {
+          this.teacherAssistantsList = success.data.list;
+        },
+        (fail) => {
+          console.log(fail);
+        }
+      );
+    },
+    //获取教室
+    addClassroomList() {
+      this.$http.get(
+        "/api/classrooms/list",
+        { page: 1 },
+        (success) => {
+          this.classroomList = success.data.list;
+          console.log(success.data.list);
+        },
+        (fail) => {
+          console.log(fail);
+        }
+      );
+    },
+    //获取结算方式
+    changejsfs() {
+      if (this.scheduleList.jsfs == "按课节") {
+        this.scheduleList.enddate = null;
+      } else {
+        this.scheduleList.coursescount = "";
+      }
+    },
+
+    //添加学生选中数据成功
+    checkStuInfo(val){
+      this.isAddStu = false
+      this.scheduleList.studentlist = val
+    },
+    //保存
+    commit() {
+      for (var i = 0; i < this.weekArray.length; i++) {
+        if (this.weekArray[i].list.length > 0) {
+          for (var j in this.weekArray[i].list) {
+            this.scheduleList.weektime.push(this.weekArray[i].list[j]);
+          }
+        }
+      }
+
+      console.log(JSON.stringify(this.scheduleList));
+
+      this.$http.post(
+        "/api/coursetables/add",
+        this.scheduleList,
+        (success) => {
+          this.$message({
+            message: "恭喜你，排课成功",
+            type: "success",
+          });
+          this.scheduleList = {};
+          this.$emit("addSched");
+          console.log(success);
+        },
+        (fail) => {
+          this.$message.error("班级排课失败");
+          console.log(fail);
+        }
+      );
+    },
   },
 };
 </script>
 <style scoped>
+.week-time {
+  margin: 20px 20px 20px 0px;
+  float: left;
+}
+
+.zoutime {
+  float: left;
+  width: 100%;
+}
+.weekTime {
+  width: 125px;
+}
+.every-time {
+  width: 100%;
+  height: auto;
+}
+
+.check-time {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+
+  table {
+    font-size: 19px;
+    width: 100%;
+  }
+  .group {
+    padding: 20px;
+    margin: 20px;
+    background-color: #fff;
+  }
+
+  .top td > .el-select {
+    margin: 11px 0px;
+  }
+
+  .top td {
+    padding-right: 40px;
+  }
+
+  .addchange {
+    display: none;
+  }
+  .clickaddHelpteacher {
+    display: block;
+  }
+
+  /* 中间 */
+  .middle {
+    margin-top: 20px;
+  }
+
+  .middle .tabTitle {
+    width: 220px;
+    cursor: pointer;
+  }
+  .changetab {
+    /* 选中tab */
+    height: 40px;
+    border-bottom: 2px solid #3e9eff;
+    display: inline-block;
+  }
+  .middle:first-of-type td span:nth-of-type(2) {
+    float: right;
+  }
+  .center td {
+    padding-right: 180px;
+  }
+
+  .checkcontont td {
+    width: 230px;
+    padding-right: 25px;
+    padding-bottom: 30px;
+  }
+
+  .time {
+    padding-top: 14px;
+  }
+  .add {
+    position: relative;
+    top: 10px;
+  }
+
+  /* 引入精灵图 */
+  .elf {
+    width: 24px;
+    height: 24px;
+    background-image: url("../assets/10.png");
+    background-repeat: no-repeat ;
+  }
+  .userCap {
+    display: inline-block;
+    background-position: -2px -630px;
+  }
+  .box .user > div {
+    margin-top: 30px;
+    margin-right: 100px;
+    float: left;
+  }
+  /* 引入精灵图 */
+
+  .box tr td {
+    width: 100%;
+    float: left;
+  }
+  .box tr td .students {
+    font-size: 20px;
+    margin-top: 26px;
+  }
+  .box tr td .students span {
+    margin-left: 30px;
+  }
+  .box tr td .students a {
+    margin-left: 7px;
+    text-decoration: none;
+    color: #4281fc;
+    font-weight: normal;
+  }
+  .box tr td:nth-of-type(2) div {
+    float: left;
+    background: url("../assets/10.png");
+    /* background-repeat: no-repeat ; */
+    background-position: 0px -620px;
+    margin: 27px 100px 20px 10px;
+    padding-left: 32px;
+  }
+  .box tr td:nth-of-type(2) {
+    height: auto;
+    line-height: 50px;
+  }
+  @font-face {
+    font-family: "iconfont";
+    src: url("//at.alicdn.com/t/font_2397874_f8g10mwklol.eot?t=1614758616054"); /* IE9 */
+    src: url("//at.alicdn.com/t/font_2397874_f8g10mwklol.eot?t=1614758616054#iefix")
+        format("embedded-opentype"),
+      /* IE6-IE8 */
+        url("data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAMMAAsAAAAABrgAAAK9AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCCcAqBPIFQATYCJAMICwYABCAFhG0HOBv+BVGUrMkO2Y/D2D1SYi3a4ITDp+0RE/PHJoKn/dJ5+/cwBCoFAAksAUnWhWWJhCO0VXFRlYCadWtv+/00JRY258uyqh2wQv8g7wPnp3R+Tk+p+bFws5u8dpsW7XymAw2y5sc9vkZxikWS/cXhtHneBTK/wbnMNTDqAoy3BjrWoMgKJPSG6VXDpYQBPE6gbqKxyoaLu0doy/C4QFwMPAXtnFeWw0RVKNcszeKWkmq6nN7hpvp+/LU0qiSlAi7ZevrcwvrHfJJSjDRGHBQIPgJaXUKB+UAmdtZGN6uJEF9Tj9ZNBfsqDH7MbzSEXuxVI8K/Duc3gz7IvSce499qfgIZ9q4ADo66npzq62qO/joY7bOWqd9rY4ea3H86DiCarg5V0+XHZ/f7a+fIven9t7Pp/bSHio8W2dr84d5VucXKNyN5ojOmTmu7k7btU5e238kxTm+f1nHnLi0Z/5rMg9IUhCWuh/2bNg6PF8vHinghivX/f5v7U1nxIweT6Q8VGqgOBmQ7nA61IjlgDUBjJCuG/+pvLGr9Hx8ZrfhXbcrg+ynzrvj97KB6blvwD3k9a3IswIp0NVxkS1Zk3BKwoI4G7Oz0O1bZc8PmUM3xQkgqJkChajoyY+dDSZPlUFa1GurmuVzdpAuriVzDXC8AQrtXSFqNQaHdGzJjf6Ck1x+UtUcBdbuja8smM+Ncdz2TErKojxiYLHXUIF1deE/eNlacFSjCM3EZBHCxcHExcUkp8Rwzyp23FHHoOEvwApxGcZxhzllIRqa+SL6aLTpd96apyRLoWo8RRRALaUcoYGRSTjQW3dLn7xHPVkzhlqoR8zPCSkH/aGFq3gN5KU17Vd3LK6Udz5IQDnJYJoEuwCASi2VQXj8oRAwx5Y8I51ZmpJ7rK52uL0++bhPUYVUKUlJovRSoNGSVTOlxq1IAAAAA")
+        format("woff2"),
+      url("//at.alicdn.com/t/font_2397874_f8g10mwklol.woff?t=1614758616054")
+        format("woff"),
+      url("//at.alicdn.com/t/font_2397874_f8g10mwklol.ttf?t=1614758616054")
+        format("truetype"),
+      /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+        url("//at.alicdn.com/t/font_2397874_f8g10mwklol.svg?t=1614758616054#iconfont")
+        format("svg"); /* iOS 4.1- */
+  }
+
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 18px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .icon-tianjiarenyuan:before {
+    content: "\e62c";
+    color: #4281fc;
+  }
+
+  .create {
+    cursor: pointer;
+    color: #e3e3e3;
+    border: 1px solid #e3e3e3;
+    width: 37px;
+    height: 37px;
+    border-radius: 3px;
+    text-align: center;
+    line-height: 37px;
+    position: relative;
+    top: 3px;
+  }
+  .week {
+    padding-top: 25px;
+    padding-left: 7px;
+  }
+
+.btn {
+  width: 100%;
+  border-top: 1px solid #e9e9e9;
+  margin-top: 50px;
+  height: 50px;
+}
+
+.preservation {
+  width: 150px;
+  float: right;
+  margin-top: 20px;
+}
 .rt {
   float: right;
   margin-top: -18px;
@@ -910,5 +1477,4 @@ li {
   color: #1890ff;
   font-size: 14px;
 }
-
 </style>

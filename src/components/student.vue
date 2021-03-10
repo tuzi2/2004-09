@@ -45,10 +45,7 @@
       <el-tabs type="border-card">
         <el-tab-pane label="插班排课">
           <div>
-            <div class="chaban">
-              <input type="text" name id placeholder="输入关键字" />
-              <span />
-            </div>
+              <el-input class="search-b" placeholder="输入关键字" prefix-icon="el-icon-search" v-model="search"></el-input>
             <table class="table1">
               <tr>
                 <td style="float:left;width:160px;">班级名称</td>
@@ -225,9 +222,9 @@
       </el-input>
     </div>
     <div class="two">
-      <table width="100%" style="line-height:50px;margin-left:20px;">
+      <table width="100%" style="line-height:50px;margin-left:20px;margin-bottom:30px;">       
       <tr>
-        <td></td>
+        <td><input type="checkbox" style="width:20px;height:20px;"></td>
         <td>学员姓名</td>
         <td>性别</td>
         <td>所选课程</td>
@@ -236,8 +233,9 @@
       </tr>
       <tr v-for="(item,index) in list" :key="index">
         <td>
+          <input type="checkbox" style="width:20px;height:20px;">
         </td>
-        <td>{{item.name}}</td>
+        <td><img src="../assets/10.png" style="margin-top:15px;margin-right:15px;">{{item.name}}</td>
         <td>{{item.sex=== 0 ? '男' : '女'}}</td>
         <td>{{item.num}}</td>
         <td>{{item.buycourses}}</td>
@@ -245,9 +243,18 @@
       </tr>
     </table>
     </div>
-    <div class="block" style="float: right; margin-top: 40px; margin-right:150px;">
-      <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
+      <div>
+      <div v-if="counts <= 8">
+        <div class="page">
+          共<font class="page-num">{{ counts }}</font>条记录
+        </div>
+      </div>
+      <div v-else>
+        <el-pagination class="pagenation" :page-size="pagesize" background layout="prev, pager, next" :total="counts" @current-change="handleCurrentChange">
+        </el-pagination>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -270,7 +277,7 @@ export default {
       startTime: "",
       endTime: "",
       isschedule: 0, //是单选排课换是批量排课
-
+      search:"",
       input3: "",
       select: "",
       list: [],
@@ -319,7 +326,10 @@ export default {
       tel:'',
       num:'',
       birthday:'',
-      remarks:''
+      remarks:'',
+      counts:0,
+      pagesize:7,
+      pagenum:1,
     };
   },
     created() {
@@ -342,16 +352,21 @@ export default {
     loaddate() {
         //使用axios 调用api接口数据
         let that=this;
-        that.$http.get("/api/students/list",{page:1},
+        that.$http.get("/api/students/list",{page:this.pagenum,psize:this.pagesize},
         success=>{
+          that.counts = success.data.counts
           that.list  = success.data.list
-            console.log(success.data.list);
+            // console.log(success.data.list);
         },
         failure=>{
             console.log(failure);
         }
       )
     },
+    handleCurrentChange(currPage){
+				this.pagenum = currPage;
+				this.loaddate();
+			},
     classes() {
       //使用axios 调用班级管理api接口数据
       let that = this;
@@ -400,31 +415,9 @@ export default {
   font-size: 19px;
   line-height: 59px;
 }
-.chaban {
-  display: inline-block;
-  border: 1px solid #cdcdcd;
-  height: 30px;
-}
 .da{
   display: block;
 }
-.chaban input {
-  height: 25px;
-  display: inline-block;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  outline: none;
-  position: relative;
-  top: -11px;
-}
-.chaban span {
-  height: 30px;
-  width: 30px;
-  display: inline-block;
-  position: relative;
-}
-
 .xiala select {
   width: 140px;
   height: 40px;
@@ -453,7 +446,10 @@ export default {
   background-color: #f5f6fa;
   border: 1px solid #dee3e9;
 }
-
+.search-b{
+  margin: 10px;
+  width: 300px;
+}
 .ee {
   width: 170px;
   height: 40px;
