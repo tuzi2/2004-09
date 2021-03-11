@@ -6,12 +6,30 @@
         <div id="triangle-right"></div>
       </div>
       <div class="block">
-        <el-date-picker v-model="value2" type="datetimerange" :picker-options="pickerOptions" range-separator="~" start-placeholder="开始日期" end-placeholder="结束日期" align="right">
+        <el-date-picker
+          v-model="value2"
+          type="datetimerange"
+          :picker-options="pickerOptions"
+          range-separator="~"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          align="right"
+        >
         </el-date-picker>
+
         <div style="" class="el-inputs">
-          <el-input placeholder="搜索学员快速签到" v-model="input3" class="input-with-select">
+          <el-input
+            placeholder="搜索学员快速签到"
+            v-model="input3"
+            class="input-with-select"
+          >
             <el-select v-model="select" slot="prepend" placeholder="课程">
-              <el-option v-for="(item, indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
+              <el-option
+                v-for="(item, indexs) in liet"
+                :key="indexs"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
@@ -24,26 +42,27 @@
     <div class="right-ya">
            <!-- 考勤 -->
       <div class="kq-text1">
-        <el-checkbox v-model="checked">全选</el-checkbox>
+        <el-checkbox v-model="stuAll" @click="changeAll">全选</el-checkbox>
         <el-button type="primary" @click="dialogFormVisible1 = true" style="padding-right: 30px;width:100px;">考勤</el-button>
       </div>
-
-      <div class="kq-text2" >
+      <div class="kq-text2"  v-for="pitem in list" :key="pitem.id">
         <div>
           <table >
             <tr>
               <td>
                 <div class="tab2" style="float:left">
-                  <el-checkbox></el-checkbox>
-                  架子鼓基础班2021 <span class="asd">班课</span>
+                                  <el-checkbox></el-checkbox>
+
+                 {{ pitem.classname }} <span class="asd">班课</span>
                 </div>
                 <div class="tab3" style="float:left">
                   <p class="el-icon-reading"></p>
-                  架子鼓课
+                {{ pitem.coursename }}
                 </div>
                 <div class="tab3" style="float:left">
                   <p class="el-icon-pie-chart"></p>
-                  8:00~8:45
+                 {{ pitem.starttime | dateFormatHHmm }} ——
+                {{ pitem.endtime | dateFormatHHmm }}
                 </div>
                 <div class="tab3">
                   <p class="el-icon-s-custom"></p>
@@ -53,43 +72,35 @@
             </tr>
             <ul>
               <li>
-                <table style="border:none; ">
+                <table style="border:none; " v-for="item in pitem.studentList" :key="item.id">
                   <tr>
                     <td>
                       <div class="tab2">
-                        <el-checkbox></el-checkbox>
-                        <img src="../assets/10.png" width="30px" height="30px" alt=""/>
-                        <span>武大郎</span>
+                        <el-checkbox v-model="stuAll"></el-checkbox>
+                        <img
+                          src="../assets/10.png"
+                          width="30px"
+                          height="30px"
+                          alt=""
+                        />
+                        <span>{{ item.name }}</span>
                       </div>
                     </td>
                     <td>
                       <div class="tab3">
                         <p class="el-icon-reading"></p>
-                        架子鼓课
+                       {{ item.checkedName }}
                       </div>
                     </td>
-                    <td>
-                      <div class="tab3">
-                        <p class="el-icon-pie-chart"></p>
-                        8:00~8:45
-                      </div>
-                    </td>
-                    <td>
-                      <div class="tab3">
-                        <p class="el-icon-s-custom"></p>
-                        在
-                      </div>
-                    </td>
-                    <td>
-                      <div class="tab4">
-                        <p class="el-icon-date"></p>
-                        已到达
-                      </div>
-                    </td>
+                    
                     <td>
                       <div class="tab5">
                         <p class="el-icon-edit-outline"></p>
-                        <el-button type="text" @click="dialogTableVisible = true">签到</el-button>
+                        <el-button
+                          type="text"
+                          @click="dialogTableVisible = true"
+                          >签到</el-button
+                        >
                       </div>
                     </td>
                   </tr>
@@ -100,65 +111,20 @@
                       <el-radio label="3" v-model="radio">请假</el-radio>
                       <el-radio label="4" v-model="radio">旷课</el-radio>
                       <br />
-                      <el-input type="textarea" v-model="form.desc" placeholder="备注" class="inputs-aa"></el-input>
+                      <el-input
+                        type="textarea"
+                        v-model="form.desc"
+                        placeholder="备注"
+                        class="inputs-aa"
+                      ></el-input>
                     </div>
                     <br />
-                    <el-button type="primary" @click="dialogFormVisible = false" class="buttons">保 存</el-button>
-                  </el-dialog>
-                </table>
-              </li>
-              <li >
-                <table  style="border:none"> 
-                  <tr>
-                    <td>
-                      <div class="tab2">
-                        <el-checkbox></el-checkbox>
-                        <img src="../assets/10.png" width="30px" height="30px" alt="" />
-                        <span>武大郎</span>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="tab3">
-                        <p class="el-icon-reading"></p>
-                        架子鼓课
-                      </div>
-                    </td>
-                    <td>
-                      <div class="tab3">
-                        <p class="el-icon-pie-chart"></p>
-                        8:00~8:45
-                      </div>
-                    </td>
-                    <td>
-                      <div class="tab3">
-                        <p class="el-icon-s-custom"></p>
-                        在
-                      </div>
-                    </td>
-                    <td>
-                      <div class="tab4">
-                        <p class="el-icon-date"></p>
-                        已到达
-                      </div>
-                    </td>
-                    <td>
-                      <div class="tab5" style="text-aligin:right">
-                        <p class="el-icon-edit-outline"></p>
-                        <el-button type="text" @click="dialogTableVisible = true">签到</el-button>
-                      </div>
-                    </td>
-                  </tr>
-                  <el-dialog title="签到" :visible.sync="dialogTableVisible">
-                    <div class="groups">
-                      <el-radio label="1" v-model="radio">出勤</el-radio>
-                      <el-radio label="2" v-model="radio">迟到</el-radio>
-                      <el-radio label="3" v-model="radio">请假</el-radio>
-                      <el-radio label="4" v-model="radio">旷课</el-radio>
-                      <br />
-                      <el-input type="textarea" v-model="form.desc" placeholder="备注" class="inputs-aa"></el-input>
-                    </div>
-                    <br />
-                    <el-button type="primary" @click="dialogFormVisible = false" class="buttons">保 存</el-button>
+                    <el-button
+                      type="primary"
+                      @click="dialogTableVisible = false"
+                      class="buttons"
+                      >保 存</el-button
+                    >
                   </el-dialog>
                 </table>
               </li>
@@ -167,128 +133,18 @@
         </div>
         <br />
       </div>
-      <div class="kq-text5">
-        <table class="san">
-          <tr>
-            <td>
-              <div class="tab2" style="padding-left:50px">
-                <el-checkbox></el-checkbox>
-                <img src="../assets/10.png" width="30px" height="30px" alt="" />
-                <span>武大郎</span>
-              </div>
-            </td>
-            <td>
-              <div class="tab3">
-                <p class="el-icon-reading"></p>
-                架子鼓课
-              </div>
-            </td>
-            <td>
-              <div class="tab3">
-                <p class="el-icon-pie-chart"></p>
-                8:00~8:45
-              </div>
-            </td>
-            <td>
-              <div class="tab3">
-                <p class="el-icon-s-custom"></p>
-                在
-              </div>
-            </td>
-            <td>
-              <div class="tab4">
-                <p class="el-icon-date"></p>
-                已到达
-              </div>
-            </td>
-            <td>
-              <div class="tab5">
-                <p class="el-icon-edit-outline"></p>
-                <el-button type="text" @click="dialogTableVisible = true"
-                  >签到</el-button
-                >
-              </div>
-            </td>
-          </tr>
-          <el-dialog title="签到" :visible.sync="dialogTableVisible">
-            <div class="groups">
-              <el-radio label="1" v-model="radio">出勤</el-radio>
-              <el-radio label="2" v-model="radio">迟到</el-radio>
-              <el-radio label="3" v-model="radio">请假</el-radio>
-              <el-radio label="4" v-model="radio">旷课</el-radio>
-              <br />
-              <el-input type="textarea" v-model="form.desc" placeholder="备注" class="inputs-aa"></el-input>
-            </div>
-            <br />
-            <el-button type="primary" @click="dialogFormVisible = false" class="buttons">保 存</el-button>
-          </el-dialog>
-        </table>
-      </div>
-      <div class="kq-text6">
-        <table style="margin-top:20px;margin-left:20px">
-          <tr>
-            <td>
-              <div class="tab2" style="padding-left:50px">
-                <el-checkbox></el-checkbox>
-                <img src="../assets/10.png" width="30px" height="30px" alt="" />
-                <span>武大郎</span>
-              </div>
-            </td>
-            <td>
-              <div class="tab3">
-                <p class="el-icon-reading"></p>
-                架子鼓课
-              </div>
-            </td>
-            <td>
-              <div class="tab3">
-                <p class="el-icon-pie-chart"></p>
-                8:00~8:45
-              </div>
-            </td>
-            <td>
-              <div class="tab3">
-                <p class="el-icon-s-custom"></p>
-                在
-              </div>
-            </td>
-            <td>
-              <div class="tab4">
-                <p class="el-icon-date"></p>
-                已到达
-              </div>
-            </td>
-            <td>
-              <div class="tab5">
-                <p class="el-icon-edit-outline"></p>
-                <el-button type="text" @click="dialogTableVisible = true"
-                  >签到</el-button
-                >
-              </div>
-            </td>
-          </tr>
-          <el-dialog title="签到" :visible.sync="dialogTableVisible">
-            <div class="groups">
-              <el-radio label="1" v-model="radio">出勤</el-radio>
-              <el-radio label="2" v-model="radio">迟到</el-radio>
-              <el-radio label="3" v-model="radio">请假</el-radio>
-              <el-radio label="4" v-model="radio">旷课</el-radio>
-              <br />
-              <el-input type="textarea" v-model="form.desc" placeholder="备注" class="inputs-aa"></el-input>
-            </div>
-            <br />
-            <el-button type="primary" @click="dialogFormVisible = false" class="buttons">保 存</el-button>
-          </el-dialog>
-        </table>
-      </div> 
     </div>
   </div>
 </template>
 <script>
+ 
 export default {
+
   data() {
     return {
       liet: [],
+      list:[],
+      stuAll:[],
       radio: "1",
       input3: "",
       select: "",
@@ -339,21 +195,50 @@ export default {
       },
       value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
       value2: "",
+      
     };
   },
   created() {
     this.courses();
   },
+  
   methods: {
+      changeAll() {
+      if (!this.checked) {
+        this.stuAll = this.list;
+        this.checked = true;
+      } else {
+        this.stuAll = [];
+        this.checked = true;
+      }
+    },
+    dateFormat(fmt, date) {
+      return date;
+    },
     courses() {
       //使用axios 调用api接口数据
       let that = this;
       that.$http.get(
         "/api/courses/list",
-        { page: 1 },
+        // { page: 1 },
         (success) => {
           that.liet = success.data.list;
           console.log(success.data.list);
+        },
+        (failure) => {
+          console.log(failure);
+        }
+      );
+    },
+    courses() {
+      //使用axios 调用api接口数据
+      let that = this;
+      that.$http.get(
+        "/api/coursetables/checked",
+        null,
+        (success) => {
+          console.log(111)
+          this.list = success.data.list;
         },
         (failure) => {
           console.log(failure);
@@ -483,18 +368,10 @@ export default {
 .kq-text2 {
   float: left;
 }
-.kq-text6 {
-  width: 1700px;
-  height: 88px;
-}
 .kq-text2 {
   margin-bottom: 20px;
   margin-left: -30px;
   margin-top:10px;
-}
-.kq-text5 {
-  margin:  50px 0;
-  margin-left: -30px;
 }
 .kq-text2 table {
   border: #c5c5c5 1px solid;
@@ -506,16 +383,6 @@ export default {
    width: 1700px;
   height: 88px;
   border-top: none;
-}
-.kq-text5 table {
-  border: #c5c5c5 1px solid;
-   width: 1660px;
-  height: 88px;
-}
-.kq-text6 table {
-  border: #c5c5c5 1px solid;
-  width: 1660px;
-  height: 88px;
 }
 .kq-text1{
   margin-left: 50px;

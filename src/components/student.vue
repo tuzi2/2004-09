@@ -5,7 +5,7 @@
     <el-button type="button" @click="dialogVisible = true" style="margin:8px 20px; height:39px;font-size:18px">
       <img src="@/assets/007.png" />添加学员
     </el-button>
-    <el-dialog title="增加学员" :visible.sync="dialogVisible" width="40%">
+    <el-dialog :title="title" :visible.sync="dialogVisible" width="40%">
       <span class="student-aa">学生姓名：</span>
       <el-input placeholder="请输入学生姓名" v-model="form.name" clearable class="student-a"></el-input>
       <br />
@@ -13,8 +13,8 @@
       <el-input placeholder="请输入联系方式：" v-model="form.tel" clearable class="student-a"></el-input>
       <br />
       <br /><span class="student-aa">学生性别：</span>
-      <el-radio v-model="form.sex" label="0">男</el-radio>
-      <el-radio v-model="form.sex" label="1">女</el-radio>
+      <el-radio v-model="form.sex" label="1">男</el-radio>
+      <el-radio v-model="form.sex" label="0">女</el-radio>
       <br />
       <br /><span class="student-aa">出生日期：</span>
       <el-input placeholder="请输入出生日期" v-model="form.birthday" clearable class="student-a"></el-input>
@@ -27,14 +27,10 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="add">添加</el-button>
+        <el-button type="primary" @click="add">{{zhuangtai}}</el-button>
       </span>
     </el-dialog>
-    <el-button
-      type="button"
-      style="margin:8px 20px; height:39px;font-size:18px"
-      @click="dialogVisible1 = true"
-    >
+    <el-button type="button" style="margin:8px 20px; height:39px;font-size:18px" @click="dialogVisible1 = true">
       <img src="@/assets/007.png" />添加排课
     </el-button>
     <el-dialog title="增加学员" :visible.sync="dialogVisible1" width="60%">
@@ -215,7 +211,7 @@
           <input type="checkbox" style="width:20px;height:20px;">
         </td>
         <td><img src="../assets/10.png" style="margin-top:15px;margin-right:15px;">{{item.name}}</td>
-        <td>{{item.sex=== 0 ? '男' : '女'}}</td>
+        <td>{{item.sex=== 1 ? '男' : '女'}}</td>
         <td>{{item.num}}</td>
         <td>{{item.buycourses}}</td>
         <td>{{item.lavecourses}}</td>
@@ -223,92 +219,62 @@
         <el-button type="danger" @click="del(item.id)">删除</el-button>
         <el-button type="primary" @click="update(index)">修改</el-button>
       </tr>
+      
       <!-- 购课      -->
-      <el-dialog title="购课" :visible.sync="dialogVisible2" width="70%" :before-close="handleClose" class="main-mian">
-        <div class="gk-main">
-            <div class="gk-main-1">
-              <table>
-               <tr>
-                 <td>合约类型</td>
-                 <td><b style="color:red;">*</b>签约日期</td>
-                 <td class="ri">结束日期</td>
-               </tr>
-               <tr>
-                 <td>
-                 </td>
-                 <td>
-                    <el-date-picker v-model="value1" type="date" placeholder="选择日期" style="margin-right:-1px;">
-                    </el-date-picker>
-                     <el-date-picker v-model="value2" type="date" placeholder="选择日期" style="margin-left:15px;">
-                      </el-date-picker>
-                 </td>
-               </tr>
-               </table>
-            </div>
+      <el-dialog :title="title" :visible.sync="dialogVisible2">
+      <el-form :model="form2">
+        <el-form-item class="wqs" label="合约类型" :label-width="formLabelWidth" style="margin-left:20px;"><br>
+          <el-radio v-model="form2.radio" label="1" >课时卡</el-radio>
+          <el-radio v-model="form2.radio" label="2">时段卡</el-radio>
+        </el-form-item>
+        <el-form-item class="kas" label="* 签约时间:" :label-width="formLabelWidth"><br>
+           <el-date-picker v-model="form.shijian"  type="date" placeholder="选择日期"> </el-date-picker>
+        </el-form-item>
+      
+        <el-form-item class="kiu" label="结束时间" :label-width="formLabelWidth"><br>
+            <el-date-picker v-model="form.jieshu" type="date"  placeholder="选择日期"> </el-date-picker>
+          </el-form-item>
 
-            <div class="gk-main-2">
-                <table>
-                  <tr>
-                    <td><b style="color:red;">*</b>签约课程</td>
-                    <td>课时数</td>
-                    <td>课程单价</td>
-                    <td><b style="color:red;">*</b>课程金额</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <select>
-                        <option>舞蹈课</option>
-                        <option>架子鼓课</option>
-                        <option>钢琴课</option>
-                      </select>
-                      <button class="jia">十</button>
-                    </td>
+         <el-form-item class="kiuhs " label="* 签约课程" :label-width="formLabelWidth"><br>
+         <el-select  v-model="value" placeholder="请选择">
+        <el-option  v-for="item in options"  :key="item.value" :label="item.label" :value="item.value"  > </el-option>
+      </el-select>
+      
+            </el-form-item>
+        
+      <div class="yuts el-icon-plus"></div>
+           <el-form-item style="margin-left:250px;margin-top:-171px;width:250px;width:160px;" label="课时数" :label-width="formLabelWidth"><br>
+            <el-input v-model="form.jieshu" autocomplete="off" ></el-input>
+          </el-form-item>
+          <el-form-item style="margin-left:460px;margin-top:-166px;width:250px;width:160px;" label="课程单价" :label-width="formLabelWidth"><br>
+            <el-input v-model="form.jieshu" autocomplete="off" ></el-input>
+          </el-form-item>
+          <el-form-item style="margin-left:650px;margin-top:-166px;width:250px;width:160px;" label="* 课程金额" :label-width="formLabelWidth"><br>
+            <el-input v-model="form.jieshu" autocomplete="off" ></el-input>
+          </el-form-item>
 
-                    <td><input type="text" name=""></td>
-                    <td><input type="text" name=""></td>
-                    <td><input type="text" name=""></td>
-                  </tr>
-                </table>
-            </div>
+          <el-form-item style="margin-left:20px;" label="折扣方式" :label-width="formLabelWidth"><br>
+            <el-radio v-model="form2.radios" label="1">直减</el-radio>
+          <el-radio v-model="form2.radios" label="2">折扣</el-radio>
+          </el-form-item>
 
-            <div class="gk-main-3">
-               <table>
-                  <tr>
-                    <td>折扣方式</td>
-                    <td class="you">优惠金额</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="radio" name="zhekou" value="直减">直减
-                      <input type="radio" class="dian" name="zhekou" value="折扣">折扣
-                      <input type="text" name="" class="zhe">
-                    </td>
- 
-                  </tr>
-                </table>  
-            </div>
+       <el-form-item label="优惠金额" style="width:200px;margin-left:200px;margin-top:-120px;" :label-width="formLabelWidth"><br>
+            <el-input v-model="form.jieshu" autocomplete="off" ></el-input>
+          </el-form-item>
 
-            <div class="gk-main-4">
-                <table>
-                  <tr>
-                    <td>备注</td>
-                
-                  </tr>
-                  <tr>
-                    <td><textarea></textarea></td>
-                  </tr>
-                </table>
-            </div>
-            <span class="student-name">米儿</span>
-            <div style="font-weight: blod;" class="jin"> <b style="margin-right:50px;">总金额：<span style="color:red;">¥15000</span></b>  <b>以优惠：<span style="color:red;">¥5000</span></b></div>
 
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible2 = false">保 存</el-button>
-        </span>
-      </el-dialog>
+        <el-form-item label="备注" style="" :label-width="formLabelWidth"><br>
+            <el-input style="width:250px;" type="textarea" :rows="2" placeholder="请输入内容" v-model="form2.textarea">
+</el-input>
+          </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <p style="float:left">总金额:<span style="color:red">￥15000</span></p><p style="float:left">以优惠:<span style="color:red">￥5000</span> </p>
+        <el-button type="primary" >确定</el-button>
+      </div>
+    </el-dialog>
     </table>
-
     </div>
       <div>
       <div v-if="counts <= 8">
@@ -329,6 +295,34 @@
 export default {
   data() {
     return {
+      form:{
+        jieshu:'',
+        shijian:''
+      },
+      form2:{
+        radio:'',
+        textarea:''
+      },
+      formLabelWidth:'',
+      value:'',
+      options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+
+      title:'购课',
       addstatus: false,
       radios:"",
       value1: "",
@@ -405,7 +399,9 @@ export default {
             birthday: "2000-02-13",
             num:"",
             remarks:""
-          }
+          },
+          zhuangtai:"添加",
+          title:"增加学员"
 
     };
   },
@@ -434,7 +430,6 @@ export default {
         "/api/students/add",
         JSON.stringify(this.form),
         (success) => {
-          that.dialogVisible = false;
           that.form = {
             name: "",
             tel: "",
@@ -443,7 +438,8 @@ export default {
             num:"",
             remarks:""
           };
-          that.loaddata();
+          this.loaddate();
+            that.dialogVisible = false;
         },
         (failure) => {
           // alert(failure)
@@ -457,6 +453,8 @@ export default {
         { id: id },
         (success) => {
           // this.loaddata();
+                    this.loaddate();
+  
                     console.log(this.$route.path);
 
         },
@@ -467,6 +465,7 @@ export default {
     },
     update(index){
       let that = this;
+      that.zhuangtai="修改"
       that.title = "修改学员";
       that.dialogVisible = true;
       that.form = that.list[index];
@@ -487,7 +486,7 @@ export default {
         success=>{
           that.counts = success.data.counts
           that.list  = success.data.list
-            // console.log(success.data.list);
+            // console.log("列表？",success.data.list);
         },
         failure=>{
             console.log(failure);
@@ -526,6 +525,16 @@ export default {
       this.checktab = index;
       this.isschedule = index;
     },
+  },
+  watch:{
+    dialogVisible(a,c){
+      if(a==false){
+        this.zhuangtai="添加"
+        this.form={sex:"1"};
+        this.title="增加学员"
+      }
+    }
+
   }
 };
 </script>
@@ -695,68 +704,19 @@ table {
   top: 10px;
 }
 /* 购课 */
-.gk-main{
-  width: 1100px;
-  margin-left: 20px;
-  color: #000;
-  font-size: 16px;
-  position: relative;
-}
-.gk-main-2 input,.youhui,select{
-  width: 230px;
-  height: 40px;
-  border-radius: 3px;
-  border: 1px #dee3e9 solid ;
-}
-.jia{
-   border-radius: 3px;
-   width: 50px;
-   height: 40px;
-  border: 1px #dee3e9 solid ;
-  color: #dee3e9 ;
- 
-}
-.gk-main td{
-  height: 40px;
-  
-}
-.gk-main .dian{
-  margin-left: 20px;
-}
-textarea{
+.kiu{
+  margin-left: 520px;
+  margin-top: -118px;
   width: 300px;
-  height: 60px;
 }
-.ri{
-  position: absolute;
-  top: 4px;
-  left: 560px;
+.kas{
+  margin-left: 210px;
+  margin-top: -131px; 
+  width: 300px;
+  /* float: right; */
 }
-.you{
-    position: absolute;
-  top: 212px;
-  left: 220px;
-}
-.zhe{
-  width: 230px;
-  height: 40px;
-  border-radius: 3px;
-  border: 1px #dee3e9 solid ;
-  margin-left: 80px;
-}
-
-.main-main{
-position: relative;
-}
-.student-name{
-  position: absolute;
-  top:-92px;
-  left: 500px;
-}
-.jin{
-  position: absolute;
-  top: 500px;
-  
+.wqs{
+  margin-left: -20px;
 }
 
 </style>

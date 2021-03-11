@@ -7,6 +7,14 @@ import kaoqin from '@/components/kaoqin'
 import kecheng from '@/components/kecheng'
 import huizong from '@/components/huizong'
 import student from '@/components/student'
+
+import dateTime from "../../api/time.js"
+//  Vue.filter("dateFormatHHmm",dateTime["dateFormatHHmm"]);
+//  Vue.filter("dateFormatYYmmdd",dateTime["dateFormatYYmmdd"]);
+for(let key in dateTime){
+  Vue.filter(key,dateTime[key]);
+}
+
 Vue.use(Router);
 export default new Router({
   routes: [

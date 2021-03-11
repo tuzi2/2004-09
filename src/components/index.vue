@@ -557,6 +557,14 @@ export default {
     //初始化教室列表
     this.addClassroomList();
   },
+  watch:{
+dialogFormVisible(k,l){
+  if(k==false){
+    this.form={}
+    this.title="添加班级"
+  }
+}
+  },
   methods: {
     loaddata() {
       //使用axios 调用班级管理api接口数据
