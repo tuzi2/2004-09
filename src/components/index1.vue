@@ -190,6 +190,5 @@ body > .el-container {
 .el-main {
   float: left;
   padding: 0px;
-  height: 850px;
 }
 </style>

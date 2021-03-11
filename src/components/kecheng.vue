@@ -4,20 +4,12 @@
       <div class="right-a">
         <p class="kes">课程管理</p>
         <div id="triangle-right"></div>
-        <el-button
-          type="text"
-          @click="dialogFormVisible = true"
-          class="right-two"
-        >
+        <el-button type="text" @click="dialogFormVisible = true" class="right-two">
           <img src="@/assets/007.png" /><span>添加课程</span>
         </el-button>
         <div class="right-three">
           <div style="margin-top: 15px">
-            <el-input
-              placeholder="请输入内容"
-              v-model="input3"
-              class="input-with-select"
-            >
+            <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
               <el-button slot="append" icon="el-icon-search"></el-button>
             </el-input>
           </div>
@@ -78,7 +70,6 @@
   </el-container>
 </template>
 <script>
-import axios from "axios";
 export default {
   data() {
     return {

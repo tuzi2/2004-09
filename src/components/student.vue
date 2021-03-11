@@ -2,11 +2,7 @@
   <div class="right-a">
     <p class="on">学员管理</p>
     <div id="triangle-right"></div>
-    <el-button
-      type="button"
-      @click="dialogVisible = true"
-      style="margin:8px 20px; height:39px;font-size:18px"
-    >
+    <el-button type="button" @click="dialogVisible = true" style="margin:8px 20px; height:39px;font-size:18px">
       <img src="@/assets/007.png" />添加学员
     </el-button>
     <el-dialog title="增加学员" :visible.sync="dialogVisible" width="40%">
@@ -170,27 +166,10 @@
                         </tr>
                         <tr>
                           <td class="time">
-                            <el-time-select
-                              placeholder="起始时间"
-                              v-model="startTime"
-                              :picker-options="{
-                                start: '08:30',
-                                step: '00:15',
-                                end: '18:30',
-                              }"
-                            >
+                            <el-time-select placeholder="起始时间" v-model="startTime" :picker-options="{ start:'08:30', step: '00:15',end: '18:30', }">
                             </el-time-select>
                             -
-                            <el-time-select
-                              placeholder="结束时间"
-                              v-model="endTime"
-                              :picker-options="{
-                                start: '08:30',
-                                step: '00:15',
-                                end: '18:30',
-                                minTime: startTime,
-                              }"
-                            >
+                            <el-time-select placeholder="结束时间" v-model="endTime" :picker-options="{ start: '08:30',step: '00:15', end: '18:30', minTime: startTime, }">
                             </el-time-select>
                             <span class="iconfont icon-jiahao add"></span>
                           </td>
@@ -245,44 +224,24 @@
         <el-button type="primary" @click="update(index)">修改</el-button>
       </tr>
       <!-- 购课      -->
-      <el-dialog
-        title="提示"
-        :visible.sync="dialogVisible2"
-        width="70%"
-        :before-close="handleClose" class="main-mian">
-
+      <el-dialog title="购课" :visible.sync="dialogVisible2" width="70%" :before-close="handleClose" class="main-mian">
         <div class="gk-main">
-
             <div class="gk-main-1">
               <table>
                <tr>
                  <td>合约类型</td>
                  <td><b style="color:red;">*</b>签约日期</td>
                  <td class="ri">结束日期</td>
-              
                </tr>
                <tr>
                  <td>
-                   <input type="radio" name="dakai" value="课时卡">课时卡
-                   <input type="radio" class="dian" name="dakai" value="时段卡">时段卡
                  </td>
-
                  <td>
-                   
-                    <el-date-picker
-                      v-model="value1"
-                      type="date"
-                      placeholder="选择日期" style="margin-right:-1px;">
+                    <el-date-picker v-model="value1" type="date" placeholder="选择日期" style="margin-right:-1px;">
                     </el-date-picker>
-
-                     <el-date-picker
-                        v-model="value2"
-                        type="date"
-                        placeholder="选择日期" style="margin-left:15px;">
+                     <el-date-picker v-model="value2" type="date" placeholder="选择日期" style="margin-left:15px;">
                       </el-date-picker>
-                 
                  </td>
-
                </tr>
                </table>
             </div>
@@ -337,16 +296,13 @@
                   </tr>
                   <tr>
                     <td><textarea></textarea></td>
-                
                   </tr>
                 </table>
-            
             </div>
             <span class="student-name">米儿</span>
             <div style="font-weight: blod;" class="jin"> <b style="margin-right:50px;">总金额：<span style="color:red;">¥15000</span></b>  <b>以优惠：<span style="color:red;">¥5000</span></b></div>
 
         </div>
-
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible2 = false">保 存</el-button>
         </span>
@@ -445,7 +401,7 @@ export default {
       form : {
             name: "",
             tel: "",
-            sex: "1",
+            sex: "0",
             birthday: "2000-02-13",
             num:"",
             remarks:""
@@ -575,6 +531,14 @@ export default {
 </script>
 
 <style scoped>
+#triangle-right {
+  float: left;
+  width: 0px;
+  height: 0px;
+  border-top: 30px solid transparent;
+  border-left: 20px solid #dfe3ec;
+  border-bottom: 30px solid transparent;
+}
 .right-a {
   height: 62px;
   background-color: #f5f6fa;
@@ -588,9 +552,9 @@ export default {
   width: 120px;
   background-color: #dfe3ec;
   text-align: center;
-  font-size: 19px;
+  font-size: 24px;
   line-height: 59px;
-  
+  padding-left: 10px;
 }
 .da{
   display: block;

@@ -231,19 +231,11 @@
             <tr>
               <div class="middle checkcontont">
                 <td>
-                  <el-date-picker v-model="scheduleList.begindate"
-                    type="date"
-                    placeholder="选择日期"
-                    value-format="yyyy-MM-dd"
-                  >
+                  <el-date-picker v-model="scheduleList.begindate" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
                   </el-date-picker>
                 </td>
                 <td>
-                  <el-radio-group
-                    v-model="scheduleList.jsfs"
-                    @change="changejsfs"
-                    class="font"
-                  >
+                  <el-radio-group v-model="scheduleList.jsfs" @change="changejsfs" class="font">
                     <el-radio :label="'按课节'"></el-radio>
                     <el-radio :label="'按日期'"></el-radio>
                   </el-radio-group>
@@ -255,12 +247,7 @@
                   </div>
                   <!-- 按日期 -->
                   <div v-else>
-                    <el-date-picker
-                      v-model="scheduleList.enddate"
-                      type="date"
-                      placeholder="选择日期"
-                      value-format="yyyy-MM-dd"
-                    >
+                    <el-date-picker v-model="scheduleList.enddate" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
                     </el-date-picker>
                   </div>
                 </td>
@@ -278,39 +265,16 @@
                 <template v-for="(item, index) in this.scheduleList.weektime">
                   <div :key="index.id">
                     <td class="time">
-                      <el-time-select
-                        placeholder="起始时间"
-                        v-model="item.begintime"
-                        :picker-options="{
-                          start: '08:30',
-                          step: '00:15',
-                          end: '18:30',
-                        }"
-                      >
+                      <el-time-select placeholder="起始时间" v-model="item.begintime" :picker-options="{ start: '08:30', step: '00:15', end: '18:30',}">
                       </el-time-select>
                       -
-                      <el-time-select
-                        placeholder="结束时间"
-                        v-model="item.endtime"
-                        :picker-options="{
-                          start: '08:30',
-                          step: '00:15',
-                          end: '18:30',
-                          minTime: startTime,
-                        }"
-                      >
+                      <el-time-select placeholder="结束时间" v-model="item.endtime" :picker-options="{start: '08:30', step: '00:15', end: '18:30', minTime: startTime,}">
                       </el-time-select>
                       <template v-if="index == 0">
-                        <span
-                          class="el-icon-plus create"
-                          @click="addOnceTime"
-                        ></span>
+                        <span class="el-icon-plus create" @click="addOnceTime"></span>
                       </template>
                       <template v-else>
-                        <span
-                          class="el-icon-minus create"
-                          @click="delOnceTime(index)"
-                        ></span>
+                        <span class="el-icon-minus create" @click="delOnceTime(index)"></span>
                       </template>
                     </td>
                   </div>
@@ -319,62 +283,23 @@
               <!-- 按星期(选择时间) -->
               <div class="week" v-else>
                 <div class="check-time">
-                  <el-checkbox
-                    v-for="(item, index) in weekArray"
-                    :key="index.id"
-                    v-model="item.isCheck"
-                    :label="'星期' + item.name"
-                    @change="changeWeek(index)"
-                  >
+                  <el-checkbox v-for="(item, index) in weekArray" :key="index.id" v-model="item.isCheck" :label="'星期' + item.name" @change="changeWeek(index)">
                   </el-checkbox>
                 </div>
-
                 <template v-for="(w, ind) in weekArray">
                   <div v-if="w.list.length > 0" :key="w.id" class="every-time">
                     <span class="zoutime">周{{ w.name }}时间</span>
-                    <div
-                      class="week-time"
-                      v-for="(item, index) in w.list"
-                      :key="index.id"
-                    >
-                      <el-time-select
-                        placeholder="起始时间"
-                        class="weekTime"
-                        v-model="item.begintime"
-                        :picker-options="{
-                          start: '08:30',
-                          step: '00:15',
-                          end: '18:30',
-                        }"
-                      >
+                    <div class="week-time" v-for="(item, index) in w.list" :key="index.id">
+                      <el-time-select placeholder="起始时间" class="weekTime" v-model="item.begintime" :picker-options="{ start: '08:30',step: '00:15', end: '18:30',}">
                       </el-time-select>
-                      <el-input
-                        class="weekTime"
-                        placeholder="时长(45分钟)"
-                      ></el-input>
-                      <el-time-select
-                        placeholder="结束时间"
-                        class="weekTime"
-                        v-model="item.endtime"
-                        :picker-options="{
-                          start: '08:30',
-                          step: '00:15',
-                          end: '18:30',
-                          minTime: startTime,
-                        }"
-                      >
+                      <el-input class="weekTime" placeholder="时长(45分钟)"></el-input>
+                      <el-time-select placeholder="结束时间" class="weekTime" v-model="item.endtime" :picker-options="{ start: '08:30',step: '00:15', end: '18:30', minTime: startTime,}">
                       </el-time-select>
                       <template v-if="index == 0">
-                        <span
-                          @click="addtime(ind)"
-                          class="el-icon-plus create"
-                        ></span>
+                        <span @click="addtime(ind)" class="el-icon-plus create"></span>
                       </template>
                       <template v-else>
-                        <span
-                          @click="deltime(ind, index)"
-                          class="el-icon-minus create"
-                        ></span>
+                        <span @click="deltime(ind, index)" class="el-icon-minus create"></span>
                       </template>
                     </div>
                   </div>
@@ -386,13 +311,10 @@
         </div>
         <div>
             <h1>选择学员({{xueyuan_list1.length}})</h1>
-           
-          
          <el-form>
           <div class="um" @click="dialogFormVisibles = true">
              <img src="../assets/11.png" style="margin-left:5px;cursor: pointer;" alt="">
             添加学员
-             <!-- <img src="./img/images/课时汇总-排课_03.gif" alt /> -->
           </div>
         </el-form>
         </div>
@@ -401,12 +323,7 @@
               <td style="font-size:18px;">
                 <img src="../assets/10.png" width="40px" height="40px" alt="">{{item}}
               </td>
-              
             </tr>
-             <!-- <td >
-                <img src="../assets/10.png" width="40px" height="40px" alt="">{{item}}
-              <div v-for="item in scheduleList.studentlist" :key="item.id">{{item.name}}</div>
-            </td> -->
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="commit()">保存</el-button>
@@ -446,8 +363,6 @@
           <el-button type="primary" @click="dialogFormVisibles = false">确定</el-button>
         </div> 
       </el-dialog>
-        
-      <!-- </el-dialog> -->
       <router-view></router-view>
     </el-main>
   </el-container>
@@ -884,19 +799,16 @@ export default {
           this.$message({
             message: "恭喜你，排课成功",
             type: "success",
-            
           });
           //  that.loaddata();
           this.scheduleList = {};
           this.$emit("addSched");
           console.log(success);
-          console.log(12)
           this.dialogFormVisible1 = false;
         },
         (fail) => {
           this.$message.error("班级排课失败");
           console.log(fail);
-          console.log(5432);
         }
       );
     },
