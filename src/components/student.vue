@@ -230,45 +230,38 @@
         <el-form-item class="kas" label="* 签约时间:" :label-width="formLabelWidth"><br>
            <el-date-picker v-model="form.shijian"  type="date" placeholder="选择日期"> </el-date-picker>
         </el-form-item>
-      
         <el-form-item class="kiu" label="结束时间" :label-width="formLabelWidth"><br>
             <el-date-picker v-model="form.jieshu" type="date"  placeholder="选择日期"> </el-date-picker>
           </el-form-item>
-
-         <el-form-item class="kiuhs " label="* 签约课程" :label-width="formLabelWidth"><br>
+         <el-form-item class="kiuhs" label="* 签约课程" :label-width="formLabelWidth"><br>
          <el-select  v-model="value" placeholder="请选择">
         <el-option  v-for="item in options"  :key="item.value" :label="item.label" :value="item.value"  > </el-option>
       </el-select>
-      
-            </el-form-item>
+      </el-form-item>
         
       <div class="yuts el-icon-plus"></div>
-           <el-form-item style="margin-left:250px;margin-top:-171px;width:250px;width:160px;" label="课时数" :label-width="formLabelWidth"><br>
+           <el-form-item style="margin-left:250px;margin-top:-171px;width:160px;" label="课时数" :label-width="formLabelWidth"><br>
             <el-input v-model="form.jieshu" autocomplete="off" ></el-input>
           </el-form-item>
-          <el-form-item style="margin-left:460px;margin-top:-166px;width:250px;width:160px;" label="课程单价" :label-width="formLabelWidth"><br>
+          <el-form-item style="margin-left:460px;margin-top:-166px;width:160px;" label="课程单价" :label-width="formLabelWidth"><br>
             <el-input v-model="form.jieshu" autocomplete="off" ></el-input>
           </el-form-item>
-          <el-form-item style="margin-left:650px;margin-top:-166px;width:250px;width:160px;" label="* 课程金额" :label-width="formLabelWidth"><br>
+          <el-form-item style="margin-left:650px;margin-top:-166px;width:160px;" label="* 课程金额" :label-width="formLabelWidth"><br>
             <el-input v-model="form.jieshu" autocomplete="off" ></el-input>
           </el-form-item>
-
           <el-form-item style="margin-left:20px;" label="折扣方式" :label-width="formLabelWidth"><br>
             <el-radio v-model="form2.radios" label="1">直减</el-radio>
-          <el-radio v-model="form2.radios" label="2">折扣</el-radio>
+            <el-radio v-model="form2.radios" label="2">折扣</el-radio>
           </el-form-item>
 
        <el-form-item label="优惠金额" style="width:200px;margin-left:200px;margin-top:-120px;" :label-width="formLabelWidth"><br>
             <el-input v-model="form.jieshu" autocomplete="off" ></el-input>
           </el-form-item>
-
-
         <el-form-item label="备注" style="" :label-width="formLabelWidth"><br>
             <el-input style="width:250px;" type="textarea" :rows="2" placeholder="请输入内容" v-model="form2.textarea">
-</el-input>
+            </el-input>
           </el-form-item>
       </el-form>
-
       <div slot="footer" class="dialog-footer">
         <p style="float:left">总金额:<span style="color:red">￥15000</span></p><p style="float:left">以优惠:<span style="color:red">￥5000</span> </p>
         <el-button type="primary" >确定</el-button>
