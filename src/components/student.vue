@@ -239,18 +239,15 @@
           <el-radio v-model="form2.ordertype" label="2">时段卡</el-radio>
         </el-form-item>
         <el-form-item class="kas" label="* 签约时间:" :label-width="formLabelWidth"><br>
-           <el-date-picker v-model="form.beigindate"  type="date" placeholder="选择日期"> </el-date-picker>
+           <el-date-picker v-model="form2.beigindate"  type="date" placeholder="选择日期"> </el-date-picker>
         </el-form-item>
-      
         <el-form-item class="kiu" label="结束时间" :label-width="formLabelWidth"><br>
-            <el-date-picker v-model="form.enddate" type="date"  placeholder="选择日期"> </el-date-picker>
+            <el-date-picker v-model="form2.enddate" type="date"  placeholder="选择日期"> </el-date-picker>
           </el-form-item>
-
          <el-form-item class="kiuhs " label="* 签约课程" :label-width="formLabelWidth"><br>
          <el-select  v-model="value" placeholder="请选择">
               <el-option v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
       </el-select>
-      
             </el-form-item>
         
       <div class="yuts el-icon-plus"></div>
@@ -268,20 +265,15 @@
             <el-radio v-model="form2.discounttype" label="1">直减</el-radio>
           <el-radio v-model="form2.discounttype" label="2">折扣</el-radio>
           </el-form-item>
-
        <el-form-item label="优惠金额" style="width:200px;margin-left:200px;margin-top:-120px;" :label-width="formLabelWidth"><br>
             <el-input v-show="form2.discounttype == '2'" v-model="form2.discountper" autocomplete="off" ></el-input>
-              <el-input v-show="form2.discounttype == '1'" v-model="form2.discountprice" autocomplete="off" ></el-input>
+            <el-input v-show="form2.discounttype == '1'" v-model="form2.discountprice" autocomplete="off" ></el-input>
             {{ form2.discounttype == "2" ? "折扣" : "直减" }}
         </el-form-item>
-
-
         <el-form-item label="备注" style="" :label-width="formLabelWidth"><br>
-            <el-input style="width:250px;" type="textarea" :rows="2" placeholder="请输入内容" v-model="form2.remarks">
-</el-input>
+        <el-input style="width:250px;" type="textarea" :rows="2" placeholder="请输入内容" v-model="form2.remarks"></el-input>
           </el-form-item>
       </el-form>
-
       <div slot="footer" class="dialog-footer">
         <font color="black">总金额<span style="color:red;">￥{{total}}</span></font>
           <font color="black">已优惠<span style="color:red;">￥{{form2.coursecounts * form2.price -  total}}</span></font>

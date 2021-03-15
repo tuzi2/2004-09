@@ -7,7 +7,7 @@ import kaoqin from '@/components/kaoqin'
 import kecheng from '@/components/kecheng'
 import huizong from '@/components/huizong'
 import student from '@/components/student'
-
+import time from "../../api/time1.js"
 import dateTime from "../../api/time.js"
 //  Vue.filter("dateFormatHHmm",dateTime["dateFormatHHmm"]);
 //  Vue.filter("dateFormatYYmmdd",dateTime["dateFormatYYmmdd"]);
