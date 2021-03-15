@@ -82,16 +82,23 @@
                       </tr>
                       <tr class="top">
                         <td>
-                          <el-select value=""></el-select>
+                          <el-select v-model="scheduleList.teacherid">
+                            <el-option v-for="(item, index) in teacherList" :key="index.id" :label="item.name" :value="item.id"></el-option>
+                          </el-select>
                         </td>
                         <td :class="addstatus == true ? `clickaddHelpteacher` : `addchange`">
-                          <el-select value=""></el-select>
+                          <el-select v-model="scheduleList.assistant">
+                            <el-option v-for="item in teacherAssistantsList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                          </el-select>
                         </td>
                         <td>
-                          <el-select value=""></el-select>
+                          <!-- 教室列表 -->
+                          <el-select v-model="scheduleList.classid">
+                            <el-option v-for="item in classroomList" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                          </el-select>
                         </td>
                         <td>
-                          <el-input></el-input>
+                          <el-input v-model="kxy" placeholder="单节课扣学员课时数量"></el-input>
                         </td>
                       </tr>
                     </div>
@@ -149,11 +156,11 @@
                               </el-date-picker>
                             </td>
                             <td>
-                              <input type="radio" name="time" />按课节
-                              <input type="radio" name="time" />按日期
+                              <el-radio v-model="kejie" label="1">按课节</el-radio>
+                              <el-radio v-model="kejie" label="2">按日期</el-radio>
                             </td>
                             <td>
-                              <el-input value="0"></el-input>
+                              <el-input v-model="pkzs" placeholder="请输入排课总数"></el-input>
                             </td>
                           </div>
                         </tr>
@@ -161,13 +168,19 @@
                           <td>上课时间</td>
                         </tr>
                         <tr>
+                          
                           <td class="time">
                             <el-time-select placeholder="起始时间" v-model="startTime" :picker-options="{ start:'08:30', step: '00:15',end: '18:30', }">
                             </el-time-select>
                             -
                             <el-time-select placeholder="结束时间" v-model="endTime" :picker-options="{ start: '08:30',step: '00:15', end: '18:30', minTime: startTime, }">
                             </el-time-select>
-                            <span class="iconfont icon-jiahao add"></span>
+                            <template v-if="index == 0">
+                        <span class="el-icon-plus create" @click="addOnceTime"></span>
+                      </template>
+                      <template v-else>
+                        <span class="el-icon-minus create" @click="delOnceTime(index)"></span>
+                      </template>
                           </td>
                         </tr>
                       </div>
@@ -188,9 +201,7 @@
     </el-button>
     <div style="float:right;margin-top:9px;margin-left:5px;">
       <el-select v-model="select" slot="prepend" placeholder="课程" style="width:20%">
-        <el-option label="架子鼓" value="1" selected></el-option>
-        <el-option label="音乐" value="2"></el-option>
-        <el-option label="基础班" value="3"></el-option>
+        <el-option v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
       </el-select>
       <el-input placeholder="请输入内容" v-model="input3" style="width:50%;margin-left:-5px;">
         <el-button slot="append" icon="el-icon-search"></el-button>
@@ -215,56 +226,68 @@
         <td>{{item.num}}</td>
         <td>{{item.buycourses}}</td>
         <td>{{item.lavecourses}}</td>
-        <el-button type="success" @click="dialogVisible2 = true">购课</el-button>
+        <el-button type="success" @click="guoke(item.id)">购课</el-button>
         <el-button type="danger" @click="del(item.id)">删除</el-button>
         <el-button type="primary" @click="update(index)">修改</el-button>
       </tr>
       
       <!-- 购课      -->
-      <el-dialog :title="title" :visible.sync="dialogVisible2">
+      <el-dialog title="购课" :visible.sync="gouke">
       <el-form :model="form2">
         <el-form-item class="wqs" label="合约类型" :label-width="formLabelWidth" style="margin-left:20px;"><br>
-          <el-radio v-model="form2.radio" label="1" >课时卡</el-radio>
-          <el-radio v-model="form2.radio" label="2">时段卡</el-radio>
+          <el-radio v-model="form2.ordertype" label="1" >课时卡</el-radio>
+          <el-radio v-model="form2.ordertype" label="2">时段卡</el-radio>
         </el-form-item>
         <el-form-item class="kas" label="* 签约时间:" :label-width="formLabelWidth"><br>
-           <el-date-picker v-model="form.shijian"  type="date" placeholder="选择日期"> </el-date-picker>
+           <el-date-picker v-model="form.beigindate"  type="date" placeholder="选择日期"> </el-date-picker>
         </el-form-item>
+      
         <el-form-item class="kiu" label="结束时间" :label-width="formLabelWidth"><br>
-            <el-date-picker v-model="form.jieshu" type="date"  placeholder="选择日期"> </el-date-picker>
+            <el-date-picker v-model="form.enddate" type="date"  placeholder="选择日期"> </el-date-picker>
           </el-form-item>
-         <el-form-item class="kiuhs" label="* 签约课程" :label-width="formLabelWidth"><br>
+
+         <el-form-item class="kiuhs " label="* 签约课程" :label-width="formLabelWidth"><br>
          <el-select  v-model="value" placeholder="请选择">
-        <el-option  v-for="item in options"  :key="item.value" :label="item.label" :value="item.value"  > </el-option>
+              <el-option v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
       </el-select>
-      </el-form-item>
+      
+            </el-form-item>
         
       <div class="yuts el-icon-plus"></div>
-           <el-form-item style="margin-left:250px;margin-top:-171px;width:160px;" label="课时数" :label-width="formLabelWidth"><br>
-            <el-input v-model="form.jieshu" autocomplete="off" ></el-input>
+           <el-form-item style="margin-left:250px;margin-top:-171px;width:160px;" format="yyyy-MM-dd" label="课时数" :label-width="formLabelWidth"><br>
+            <el-input v-model="form2.coursecounts" autocomplete="off" ></el-input>
           </el-form-item>
-          <el-form-item style="margin-left:460px;margin-top:-166px;width:160px;" label="课程单价" :label-width="formLabelWidth"><br>
-            <el-input v-model="form.jieshu" autocomplete="off" ></el-input>
+          <el-form-item style="margin-left:460px;margin-top:-166px;width:160px;" format="yyyy-MM-dd" label="课程单价" :label-width="formLabelWidth"><br>
+            <el-input v-model="form2.price" autocomplete="off" ></el-input>
           </el-form-item>
-          <el-form-item style="margin-left:650px;margin-top:-166px;width:160px;" label="* 课程金额" :label-width="formLabelWidth"><br>
-            <el-input v-model="form.jieshu" autocomplete="off" ></el-input>
+          <el-form-item style="margin-left:650px;margin-top:-166px;width:160px;" format="yyyy-MM-dd" label="* 课程金额" :label-width="formLabelWidth"><br>
+            <el-input v-model="form2.sumprice" autocomplete="off" ></el-input>
           </el-form-item>
+
           <el-form-item style="margin-left:20px;" label="折扣方式" :label-width="formLabelWidth"><br>
-            <el-radio v-model="form2.radios" label="1">直减</el-radio>
-            <el-radio v-model="form2.radios" label="2">折扣</el-radio>
+            <el-radio v-model="form2.discounttype" label="1">直减</el-radio>
+          <el-radio v-model="form2.discounttype" label="2">折扣</el-radio>
           </el-form-item>
 
        <el-form-item label="优惠金额" style="width:200px;margin-left:200px;margin-top:-120px;" :label-width="formLabelWidth"><br>
-            <el-input v-model="form.jieshu" autocomplete="off" ></el-input>
-          </el-form-item>
+            <el-input v-show="form2.discounttype == '2'" v-model="form2.discountper" autocomplete="off" ></el-input>
+              <el-input v-show="form2.discounttype == '1'" v-model="form2.discountprice" autocomplete="off" ></el-input>
+            {{ form2.discounttype == "2" ? "折扣" : "直减" }}
+        </el-form-item>
+
+
         <el-form-item label="备注" style="" :label-width="formLabelWidth"><br>
-            <el-input style="width:250px;" type="textarea" :rows="2" placeholder="请输入内容" v-model="form2.textarea">
-            </el-input>
+            <el-input style="width:250px;" type="textarea" :rows="2" placeholder="请输入内容" v-model="form2.remarks">
+</el-input>
           </el-form-item>
       </el-form>
+
       <div slot="footer" class="dialog-footer">
-        <p style="float:left">总金额:<span style="color:red">￥15000</span></p><p style="float:left">以优惠:<span style="color:red">￥5000</span> </p>
-        <el-button type="primary" >确定</el-button>
+        <font color="black">总金额<span style="color:red;">￥{{total}}</span></font>
+          <font color="black">已优惠<span style="color:red;">￥{{form2.coursecounts * form2.price -  total}}</span></font>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="goke()">确定</el-button>
+        </div>
       </div>
     </el-dialog>
     </table>
@@ -288,33 +311,26 @@
 export default {
   data() {
     return {
-      form:{
-        jieshu:'',
-        shijian:''
-      },
-      form2:{
-        radio:'',
-        textarea:''
+     form1: {},
+      form2: {
+        studentid: "",
+        ordertype: "1",
+        beigindate: "",
+        enddate: "",
+        courseid: "",
+        coursecounts: "",
+        price: "",
+        sumprice: "",
+        discounttype: "1",
+        remarks: "",
+        discountprice: "",
+        discountper: "",
       },
       formLabelWidth:'',
       value:'',
-      options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-
+      kejie:'1',
+      pkzs:'',
+      kxy:'',
       title:'购课',
       addstatus: false,
       radios:"",
@@ -337,10 +353,11 @@ export default {
       list: [],
       dialogVisible: false,
       dialogVisible1: false,
-      dialogVisible2: false,
+      gouke: false,
       outerVisible: false,
       innerVisible: false,
       activeName: "",
+      // formLabelWidth: "120px",
       multipleSelection: [],
       pickerOptions: {
         disabledDate(time) {
@@ -371,6 +388,47 @@ export default {
           }
         ]
       },
+      // 主讲老师列表
+      teacherList: [],
+      // 助教老师列表
+      teacherAssistantsList: [],
+      // 教室列表
+      classroomList: [],
+      //排课列表
+      studentlist:[],
+      scheduleList: {
+        //单次排课:one 批量排课:more
+        addtype: "one",
+        //学生id
+        studentid: 0,
+        //班级id
+        classrooms: this.id,
+        //主讲老师id
+        teacherid: "",
+        //助教老师id
+        assistant: "",
+        //教室id
+        classid: "",
+        // 单节课扣学员课时
+        pricecounts: "",
+        //开课日期
+        begindate: "",
+        //结课日期
+        enddate: "",
+        //结束方法按课节(0:按课节: 按日期)
+        jsfs: "按课节",
+        //排课总数
+        coursescount: 0,
+        //上课时间
+        weektime: [
+          {
+            week: 0,
+            begintime: "",
+            endtime: "",
+          },
+        ],
+      },
+      liet:[],
       value1: "",
       value2: "",
       startTime: '',
@@ -401,8 +459,75 @@ export default {
     created() {
       this.loaddate();
       this.classes();
+      this.courses();
+      //初始化主讲老师列表
+      this.addTeacherList();
+      //初始化助教老师列表
+      this.addAssistantTeacherList();
+      //初始化教室列表
+      this.addClassroomList();
     },
   methods: {
+    //单次排课，点击加号加入数据
+    addOnceTime() {
+      this.scheduleList.weektime.push({
+        week: 0,
+        begintime: "",
+        endtime: "",
+      });
+    },
+    courses() {
+      //使用axios 调用api接口数据
+      let that = this;
+      that.$http.get(
+        "/api/courses/list",
+        { page: 1 },
+        (success) => {
+          that.liet = success.data.list;
+          // console.log(success.data.list);
+        },
+        (failure) => {
+          console.log(failure);
+        }
+      );
+    },
+    //单次排课，点击减号减除数据
+    delOnceTime(index){
+       this.scheduleList.weektime.splice(index,1)
+    },
+        goke() {
+      if (this.form2.discounttype == "2") {
+        this.form2.discounttype = "折扣";
+        this.form2.discountprice="";
+      } else {
+        this.form2.discounttype = "直减";
+        this.form2.discountper="";
+      }
+      if (this.form2.ordertype == "0") {
+        this.form2.ordertype = "课时卡";
+      } else {
+        this.form2.ordertype = "时段卡";
+      }
+      this.form2.courseid = this.form2.courseid.toString();
+      this.form2.sumprice = this.form2.sumprice.toString();
+      let tath = this;
+      console.log(JSON.stringify(tath.form2));
+      tath.$http.post(
+        "/api/students/addorder",
+        JSON.stringify(tath.form2),
+        (success) => {
+          this.gouke = false;
+          console.log(success);
+        },
+        (fall) => {
+          console.log(fall);
+        }
+      );
+    },
+    guoke(id) {
+      this.gouke = true;
+      this.form2.studentid = id.toString();
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -411,6 +536,46 @@ export default {
       } else {
         this.$refs.multipleTable.clearSelection();
       }
+    },
+    //获取主讲老师
+    addTeacherList() {
+      this.$http.get(
+        "/api/teachers/list",
+        { cat: 1, page: 1 },
+        (success) => {
+          this.teacherList = success.data.list;
+        },
+        (fail) => {
+          console.log(fail);
+        }
+      );
+    },
+    //获取助教老师
+    addAssistantTeacherList() {
+      this.$http.get(
+        "/api/teachers/list",
+        { cat: 2, page: 1 },
+        (success) => {
+          this.teacherAssistantsList = success.data.list;
+        },
+        (fail) => {
+          console.log(fail);
+        }
+      );
+    },
+    //获取教室
+    addClassroomList() {
+      this.$http.get(
+        "/api/classrooms/list",
+        { page: 1 },
+        (success) => {
+          this.classroomList = success.data.list;
+          console.log(success.data.list);
+        },
+        (fail) => {
+          console.log(fail);
+        }
+      );
     },
     
     handleSelectionChange(val) {
@@ -519,16 +684,52 @@ export default {
       this.isschedule = index;
     },
   },
+
+    
   watch:{
+    total(a, c) {
+      this.form2.sumprice = this.total;
+    },
     dialogVisible(a,c){
       if(a==false){
         this.zhuangtai="添加"
         this.form={sex:"1"};
         this.title="增加学员"
       }
-    }
-
-  }
+    },
+    gouke(z,c) {
+      if (z == false) {
+        this.form2 = {
+          studentid: "",
+          ordertype: "0",
+          beigindate: "",
+          enddate: "",
+          courseid: "",
+          coursecounts: "",
+          price: "",
+          sumprice: "",
+          discounttype: "1",
+          remarks: "",
+          discountprice: "",
+          discountper: "",
+        };
+      }
+    },
+  },
+   computed: {
+    total() {
+      var form2 = this.form2;
+      console.log(form2.discountper);
+      var sum = 0;
+      if (form2.discounttype == "2") {
+        sum =(Number(form2.price) *Number(form2.coursecounts) *Number(form2.discountper)) /10;
+      } else {
+        sum =Number(form2.price) * Number(form2.coursecounts) -Number(form2.discountprice);
+      }
+      // console.log(sum);
+      return sum;
+    },
+  },
 };
 </script>
 

@@ -13,9 +13,9 @@
         <!-- Form Top -->
         <el-dialog :title="title" :visible.sync="dialogFormVisible">
           <el-form v-model="form">
-            <el-form-item label="所选课程">
-              <el-select v-model="form.coursename" placeholder="请选择">
-                <el-option v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
+            <el-form-item label="所选课程" >
+              <el-select  placeholder="请选择" v-model="form.coursename">
+                <el-option v-for="(item,indexs) in liet" :key="indexs"  :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="班级名称">
@@ -57,7 +57,7 @@
           <tr>
             <th class="textleft" width="300px">班级名称</th>
             <th>课程</th>
-            <th>老師</th>
+            <th>老师</th>
             <th>人数</th>
             <th>计划课时</th>
             <th>已排课时</th>
@@ -68,7 +68,6 @@
             <td class="textleft" style="position: relative">
               <img src="@/assets/09.png" />
               {{item.name}}
-              <input type="hidden" value="item.id">
             <td>{{item.coursename}}</td>
             <td>{{item.teacherslist}}</td>
             <td>{{item.students}}</td>
@@ -98,16 +97,17 @@
                           <li> <b class="yi">已上2节课</b> <b class="er">已排4节课</b> </li>
                   </div>
                    <div class="main-left-bottom">
-                      <p class="top-b">班级学员<b>(2)</b></p>
+                      <p class="top-b">班级学员<b>({{xueyuan_list1.length}})</b></p>
                       <div class="top-b-img"  @click="dialogFormVisibles = true"><img src="../assets/11.png"></div>
                    </div>
                        <div style="margin-top:20px;">
-                         <img src="../assets/10.png" width="80px" height="80px" style="margin-top:15px; float:left;">
-                          <p style=" float:left; font-size:24px; color:#1890ff; margin:15px;">李四</p>
-                          <p  style="float:left; font-size:16px;margin:10px; color:#7d8c9f;">已排3节，已上1节</p>
-                          <img src="../assets/10.png" width="80px" height="80px" style="margin-top:15px; float:left;">
-                          <p style=" float:left; font-size:24px; color:#1890ff; margin:15px;">李四</p>
-                          <p  style="float:left; font-size:16px;margin:10px; color:#7d8c9f;">已排本班3节，已上1节</p>
+                         <div style="width:100%;height:70px;">
+            <tr v-for="(item,index) in xueyuan_list1" :key="index" style="float:left;margin:15px;">
+              <td style="font-size:18px;">
+                <img src="../assets/10.png" width="40px" height="40px" alt="">{{item}}
+              </td>
+            </tr>
+        </div>
                        </div>
                   </div>
                   <div class="main-right">
@@ -608,6 +608,8 @@ dialogFormVisible(k,l){
         JSON.stringify(this.form),
         (success) => {
           that.dialogFormVisible = false;
+          that.list = success.data.list;
+
           that.form = {
             coursename: "",
             name: "",

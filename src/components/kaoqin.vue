@@ -6,30 +6,12 @@
         <div id="triangle-right"></div>
       </div>
       <div class="block">
-        <el-date-picker
-          v-model="value2"
-          type="datetimerange"
-          :picker-options="pickerOptions"
-          range-separator="~"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          align="right"
-        >
+        <el-date-picker v-model="value2" type="datetimerange" :picker-options="pickerOptions" range-separator="~" start-placeholder="开始日期" end-placeholder="结束日期" align="right">
         </el-date-picker>
-
         <div style="" class="el-inputs">
-          <el-input
-            placeholder="搜索学员快速签到"
-            v-model="input3"
-            class="input-with-select"
-          >
+          <el-input placeholder="搜索学员快速签到" v-model="input3" class="input-with-select">
             <el-select v-model="select" slot="prepend" placeholder="课程">
-              <el-option
-                v-for="(item, indexs) in liet"
-                :key="indexs"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
+              <el-option v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
             </el-select>
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
@@ -51,8 +33,7 @@
             <tr>
               <td>
                 <div class="tab2" style="float:left">
-                                  <el-checkbox></el-checkbox>
-
+                  <el-checkbox></el-checkbox>
                  {{ pitem.classname }} <span class="asd">班课</span>
                 </div>
                 <div class="tab3" style="float:left">
@@ -77,12 +58,7 @@
                     <td>
                       <div class="tab2">
                         <el-checkbox v-model="stuAll"></el-checkbox>
-                        <img
-                          src="../assets/10.png"
-                          width="30px"
-                          height="30px"
-                          alt=""
-                        />
+                        <img src="../assets/10.png" width="30px" height="30px" alt=""/>
                         <span>{{ item.name }}</span>
                       </div>
                     </td>
@@ -92,15 +68,10 @@
                        {{ item.checkedName }}
                       </div>
                     </td>
-                    
                     <td>
                       <div class="tab5">
                         <p class="el-icon-edit-outline"></p>
-                        <el-button
-                          type="text"
-                          @click="dialogTableVisible = true"
-                          >签到</el-button
-                        >
+                        <el-button type="text" @click="dialogTableVisible = true" >签到</el-button>
                       </div>
                     </td>
                   </tr>
@@ -111,20 +82,10 @@
                       <el-radio label="3" v-model="radio">请假</el-radio>
                       <el-radio label="4" v-model="radio">旷课</el-radio>
                       <br />
-                      <el-input
-                        type="textarea"
-                        v-model="form.desc"
-                        placeholder="备注"
-                        class="inputs-aa"
-                      ></el-input>
+                      <el-input type="textarea" v-model="form.desc" placeholder="备注" class="inputs-aa"></el-input>
                     </div>
                     <br />
-                    <el-button
-                      type="primary"
-                      @click="dialogTableVisible = false"
-                      class="buttons"
-                      >保 存</el-button
-                    >
+                    <el-button type="primary" @click="dialogTableVisible = false" class="buttons">保 存</el-button>
                   </el-dialog>
                 </table>
               </li>
@@ -200,6 +161,7 @@ export default {
   },
   created() {
     this.courses();
+    this.coursess();
   },
   
   methods: {
@@ -215,12 +177,12 @@ export default {
     dateFormat(fmt, date) {
       return date;
     },
-    courses() {
+    coursess() {
       //使用axios 调用api接口数据
       let that = this;
       that.$http.get(
         "/api/courses/list",
-        // { page: 1 },
+        { page: 1 },
         (success) => {
           that.liet = success.data.list;
           console.log(success.data.list);

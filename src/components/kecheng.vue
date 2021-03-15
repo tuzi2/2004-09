@@ -32,6 +32,7 @@
             <td>{{ item.price }}元/课时</td>
             <td>{{ item.mode ==1 ?"一对一":"集体班"}}</td>
             <td>
+              <el-button type="primary" @click="update(index)">修改</el-button>
               <el-button type="primary" @click="del(item.id)">删除</el-button>
             </td>
           </tr>
@@ -42,7 +43,7 @@
         </el-pagination>
     </div>
       <!-- Form -->
-      <el-dialog title="增加课程" :visible.sync="dialogFormVisible">
+      <el-dialog :title="title" :visible.sync="dialogFormVisible">
         <el-form :model="form">
           <el-form-item label="课程名称:">
             <el-input v-model="form.name" autocomplete="off" class="inputs"></el-input>
@@ -80,6 +81,7 @@ export default {
       counts:0,
       pagesize:7,
       pagenum:1,
+      title:"添加课程",
       dialogFormVisible: false,
       form: {
         name: "",
@@ -151,10 +153,24 @@ export default {
         }
       );
     },
+    update:function (index){
+        let that=this;
+        that.title="修改课程";
+        that.dialogFormVisible=true;
+        that.form=that.list[index]
+    }
   },
   created() {
     this.loaddata();
   },
+  watch:{
+  dialogFormVisible(k,l){
+  if(k==false){
+    this.form={}
+    this.title="添加课程"
+  }
+}
+},
 };
 </script>
 <style scoped>
