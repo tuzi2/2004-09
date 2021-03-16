@@ -6,20 +6,11 @@
       <div class="right-three">
         <div class="search-a">
           <div>
-            <el-select v-model="select" slot="prepend" placeholder="请选择" style="width:15%">
-              <el-option label="架子鼓" value="1" selected></el-option>
-              <el-option label="音乐" value="2"></el-option>
-              <el-option label="基础班" value="3"></el-option>
+            <el-select v-model="selecta" slot="prepend" placeholder="请选择" style="width:15%">
+              <el-option v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
             </el-select>
-            <el-select
-              v-model="select"
-              slot="prepend"
-              placeholder="请选择 "
-              style="width:15%;margin-left:-5px"
-            >
-              <el-option label="架子鼓" value="1" selected></el-option>
-              <el-option label="音乐" value="2"></el-option>
-              <el-option label="基础班" value="3"></el-option>
+            <el-select v-model="selectb" slot="prepend" placeholder="请选择 " style="width:15%;margin-left:-5px">
+              <el-option v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
             </el-select>
             <el-input placeholder="请输入内容" v-model="input3" class="ssk">
               <el-button slot="append" icon="el-icon-search"></el-button>
@@ -38,9 +29,7 @@
             <div v-if="data.day == item.coursedate" class="kecheng">
               <div class="neirong">
                 <b style="width:100%">{{ item.coursename }}</b>
-                <span
-                  style="color:#a698a7;width:100%;"
-                >{{item.starttime | formatTime}}——{{item.endtime | formatTime}}</span>
+                <span style="color:#a698a7;width:100%;">{{item.starttime | formatTime}}——{{item.endtime | formatTime}}</span>
                 <span style="color:#a698a7;">{{item.teachername}}</span>
               </div>
             </div>
@@ -52,15 +41,15 @@
     <el-dialog :title="title" :visible.sync="dialogFormVisible" v-for="(item,index) in list" :key="index">
          <h1>基本信息:</h1>
           课程名称: {{item.coursename}}  主讲老师:{{item.teachername}} 教室:{{item.classrooms}}
-
           <h1 style="margin:20px 0;">上课时间</h1>
           {{item.starttime}}<br>
           <h1 style="margin-top:20px;">学员({{xueyuan_list1.length}})</h1>
          <el-form>
-          <div class="um" @click="dialogFormVisibles = true">
-             <img src="../assets/11.png" style="margin-left:5px;cursor: pointer;" alt="">
+          <div class="um" @click="dialogFormVisibles = true" style="cursor: pointer;">
+             <img src="../assets/11.png" style="margin-left:5px;" alt="">
             添加学员
           </div>
+          <el-button type="success" @click="dialogFormVisible = false" class="cgan">确定</el-button>
         </el-form>
          <div style="width:100%;height:70px;">
             <tr v-for="(item,index) in xueyuan_list1" :key="index" style="float:left;margin:15px;">
@@ -73,11 +62,11 @@
            <el-dialog title1="选择学员22222(钢琴课)"   :visible.sync="dialogFormVisibles"  >
        <div class="right-threes">
           <div style="margin-top: 15px;">
-            <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-              <el-select v-model="select" slot="prepend" placeholder="课程">
+            <el-input placeholder="请输入内容" v-model="input3" class="input-with-select aac">
+              <el-select v-model="selectc" slot="prepend" placeholder="课程" class="aab">
                 <el-option v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
               </el-select>
-              <el-button slot="append" icon="el-icon-search"></el-button>
+              <el-button slot="append" icon="el-icon-search" class="search-aa"></el-button>
             </el-input>
           </div>
         </div>
@@ -115,9 +104,11 @@ export default {
       input3:'',
       liet:[],
       isAddStu: false,
-       xueyuan_list1:[],
+      xueyuan_list1:[],
       xueyuan_list:[],
-      select:'',
+      selecta:'',
+      selectb:'',
+      selectc:'',
       time: new Date(),
       dialogFormVisible:false,
       dialogFormVisibles:false,
@@ -133,12 +124,28 @@ export default {
   created() {
     this.huo_list();
     this.xueyuan__list();
+    this.courses();
     // console.log(23434)
   },
   methods: {
      checkStuInfo(val){
       this.isAddStu = false
       this.scheduleList.studentlist = val
+    },
+    courses() {
+      //使用axios 调用api接口数据
+      let that = this;
+      that.$http.get(
+        "/api/courses/list",
+        { page: 1 },
+        (success) => {
+          that.liet = success.data.list;
+          // console.log(success.data.list);
+        },
+        (failure) => {
+          console.log(failure);
+        }
+      );
     },
       xueyuan__list() {
       let that = this;
@@ -182,6 +189,19 @@ export default {
 
 
 <style>
+.aac{
+  width: 410px;
+}
+.aab{
+  width: 90px;
+}
+.search-aa{
+  width: 50px;
+}
+.cgan{
+  float: right;
+  margin-top: 20px;
+}
 .right-threes {
   width: 40%;
 }
