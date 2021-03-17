@@ -43,11 +43,11 @@
         <!-- 搜索框 课程循环 -->
         <div class="right-three">
           <div style="margin-top: 15px;">
-            <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
+            <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select">
               <el-select v-model="select" slot="prepend" placeholder="课程" >
                 <el-option v-for="(item,indexs) in liet" :key="indexs" :label="item.name" :value="item.id"></el-option>
               </el-select>
-              <el-button slot="append" icon="el-icon-search"></el-button>
+              <el-button slot="append" @click="search()" icon="el-icon-search"></el-button>
             </el-input>
           </div>
         </div>
@@ -125,7 +125,7 @@
         <!--自定义内容-->
         <div @click="dial = true">
           <div class="calendar-day">{{ data.day.split("-").slice(2).join("-") }}</div>
-          <div v-for="(item, index) in list" :key="index">
+          <div v-for="(item, index) in kelist" :key="index">
             <div v-if="data.day == item.coursedate" class="kecheng">
               <div class="neirong">
                 <b style="width:100%">{{ item.coursename }}</b>
@@ -512,12 +512,14 @@ export default {
       startTimes: "",
       endTimes: "",
       input3: "",
+      keyword:'',
       select: "",
       dd: "",
       ee: "",
       cc: "",
       bb: "",
       input: "",
+      kelist:'',
       dialogFormVisible: false,
       dialogFormVisible1: false,
       dialogFormVisibles: false,
@@ -599,33 +601,33 @@ dialogFormVisible(k,l){
       this.isAddStu = false
       this.scheduleList.studentlist = val
     },
-      xueyuan__list() {
-      let that = this;
-      for (var i = 1; i <= 4; i++) {
-        that.$http.get(
-          "/api/students/list",
-          { page: i },
-          (success) => {
-            for (var i = 0; i < success.data.list.length; i++) {
-              that.xueyuan_list.push(success.data.list[i]);
-              this.scheduleList.studentlist = success.data.list;
-            }
-          },
-          (failure) => {
-            console.log("123");
-          }
-        );
-      }
+    //   xueyuan__list() {
+    //   let that = this;
+    //   for (var i = 1; i <= 4; i++) {
+    //     that.$http.get(
+    //       "/api/students/list",
+    //       { page: i },
+    //       (success) => {
+    //         for (var i = 0; i < success.data.list.length; i++) {
+    //           that.xueyuan_list.push(success.data.list[i]);
+    //           this.scheduleList.studentlist = success.data.list;
+    //         }
+    //       },
+    //       (failure) => {
+    //         console.log("123");
+    //       }
+    //     );
+    //   }
 
-      console.log("学员列表", this.xueyuan_list);
-    },
+    //   console.log("学员列表", this.xueyuan_list);
+    // },
     huo_list() {
       let that = this;
       that.$http.get(
         "/api/coursetables/search",
         { month: new Date().format("yyyy-MM"), page: 1, psize: 10000 },
         success => {
-          // that.list = success.data.list;
+          that.kelist = success.data.list;
           console.log(success.data.list);
           // console.log(123);
         },
@@ -635,12 +637,15 @@ dialogFormVisible(k,l){
         }
       );
     },
+    search(){
+      this.loaddata()
+    },
     loaddata() {
       //使用axios 调用班级管理api接口数据
       let that = this;
       that.$http.get(
         "/api/classes/list",
-        { page: 1 },
+        { page: 1 ,name:that.keyword},
         (success) => {
           that.list = success.data.list;
           // console.log(success.data.list);

@@ -9,8 +9,8 @@
         </el-button>
         <div class="right-three">
           <div style="margin-top: 15px">
-            <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-              <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-input placeholder="请输入内容" v-model="keyword" class="input-with-select">
+              <el-button slot="append" @click="search()" icon="el-icon-search"></el-button>
             </el-input>
           </div>
         </div>
@@ -83,6 +83,7 @@ export default {
       counts:0,
       pagesize:7,
       pagenum:1,
+      keyword:'',
       title:"添加课程",
       dialogFormVisible: false,
       messtitle:"",
@@ -101,12 +102,15 @@ export default {
   },
 
   methods: {
+    search(){
+      this.loaddata()
+    },
     loaddata() {
       //使用axios 调用api接口数据
       let that = this;
       that.$http.get(
         "/api/courses/list",
-        {page:this.pagenum,psize:this.pagesize},
+        {page:this.pagenum,psize:this.pagesize,name:that.keyword},
         (success) => {
           that.counts = success.data.counts;
           that.list = success.data.list;
