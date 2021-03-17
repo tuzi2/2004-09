@@ -38,6 +38,7 @@
             <el-button @click="dialogFormVisible = false">取 消</el-button>
             <el-button type="primary" @click="add">确 定</el-button>
           </div>
+          			 <div class="message">{{addtexta}}</div>
         </el-dialog>
         <!-- 搜索框 课程循环 -->
         <div class="right-three">
@@ -453,6 +454,7 @@ export default {
       dial:false,
       dialog:false,
       title2:'课程详情',
+      addtexta:"",
       //星期选择week
       weekArray: [
         {
@@ -669,27 +671,40 @@ dialogFormVisible(k,l){
     //添加班级
     add: function () {
       let that = this;
-      // console.log(that.form);
-      that.$http.post(
-        "/api/classes/add",
-        JSON.stringify(this.form),
-        (success) => {
-          that.dialogFormVisible = false;
-          that.list = success.data.list;
+      if(that.form.coursename==""){
+          that.addtexta="所选课程不能为空！"
+      }else if(that.form.name==""){
+          that.addtexta="班级名称不能为空！"
+      }else if(that.form.enddate==""){
+          that.addtexta="结束时间不能为空！"
+      }else if(that.form.startdate==""){
+          that.addtexta="开始时间不能为空！"
+      }else if(that.form.coursecounts==""){
+          that.addtexta="计划课时不能为空！"
+      }else{
+        that.$http.post(
+          "/api/classes/add",
+          JSON.stringify(this.form),
+          (success) => {
+            that.dialogFormVisible = false;
+            that.list = success.data.list;
 
-          that.form = {
-            coursename: "",
-            name: "",
-            enddate: "",
-            startdate: "",
-            coursecounts: "",
-          };
-          that.loaddata();
-        },
-        (failure) => {
-          // alert(failure)
-        }
-      );
+            that.form = {
+              coursename: "",
+              name: "",
+              enddate: "",
+              startdate: "",
+              coursecounts: "",
+            };
+            that.loaddata();
+          },
+          (failure) => {
+            // alert(failure)
+          }
+        );
+      }
+      // console.log(that.form);
+      
     },
     //删除班级
     del(id) {
@@ -1404,5 +1419,10 @@ li {
 }
 .neirong span {
   display: inline-block;
+}
+.message {
+  	margin-top: 10px;
+	line-height: 30px;color: red;
+	text-align: center;
 }
 </style>

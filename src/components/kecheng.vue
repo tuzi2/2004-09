@@ -64,6 +64,8 @@
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="add">保存</el-button>
         </div>
+        <div class="message">{{messtitle}}</div>
+
       </el-dialog>
       
       <router-view></router-view>
@@ -83,6 +85,7 @@ export default {
       pagenum:1,
       title:"添加课程",
       dialogFormVisible: false,
+      messtitle:"",
       form: {
         name: "",
         pricetype: "1",
@@ -120,24 +123,35 @@ export default {
 			},
     add: function () {
       let that = this;
-      console.log(that.form);
-      that.$http.post(
-        "/api/courses/add",
-        JSON.stringify(this.form),
-        (success) => {
-          that.dialogFormVisible = false;
-          that.form = {
-            name: "",
-            pricetype: "",
-            price: "",
-            mode: "",
-          };
-          that.loaddata();
-        },
-        (failure) => {
-          // alert(failure)
-        }
-      );
+      if(that.form.name==""){
+         	that.messtitle="请输入课程名称";
+      }else if(that.form.pricetype==""){
+          that.messtitle="请选择收费模式";
+      }else if(that.form.price==""){
+          that.messtitle="请输入单价";
+      }else if(that.form.mode==""){
+        that.messtitle="请选择上课模式";
+      }else{
+          that.$http.post(
+            "/api/courses/add",
+            JSON.stringify(this.form),
+            (success) => {
+              that.dialogFormVisible = false;
+              that.form = {
+                name: "",
+                pricetype: "",
+                price: "",
+                mode: "",
+              };
+              that.loaddata();
+            },
+            (failure) => {
+              // alert(failure)
+            }
+          );
+      }
+      // console.log(that.form);
+     
     },
     del: function (id) {
       let that = this;
@@ -276,5 +290,10 @@ p span {
 }
 .form-items {
   margin-left: 45px;
+}
+.message{
+	margin-top: 10px;
+	line-height: 30px;color: red;
+	text-align: center;
 }
 </style>

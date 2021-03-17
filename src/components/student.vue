@@ -29,6 +29,7 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="add">{{zhuangtai}}</el-button>
       </span>
+      <div class="message"> {{messtitle}}</div>
     </el-dialog>
     <el-button type="button" style="margin:8px 20px; height:39px;font-size:18px" @click="dialogVisible1 = true">
       <img src="@/assets/007.png" />添加排课
@@ -444,8 +445,8 @@ export default {
             remarks:""
           },
           zhuangtai:"添加",
-          title:"增加学员"
-
+          title:"增加学员",
+          messtitle:""
     };
   },
     created() {
@@ -574,27 +575,47 @@ export default {
       this.multipleSelection = val;
     },
     add: function () {
-      let that = this;
-      console.log(that.form);
-      that.$http.post(
-        "/api/students/add",
-        JSON.stringify(this.form),
-        (success) => {
-          that.form = {
-            name: "",
-            tel: "",
-            sex: "",
-            birthday: "",
-            num:"",
-            remarks:""
-          };
-          this.loaddate();
-            that.dialogVisible = false;
-        },
-        (failure) => {
-          // alert(failure)
-        }
-      );
+      let that = this; 
+    if(that.form.name==""){
+          that.messtitle="请输入名称";
+      }else if(that.form.tel==""){
+        that.messtitle="请输入联系方式";
+
+      }else if(that.form.sex==""){
+          that.messtitle="请输入性别";
+
+      }else if(that.form.birthday==""){
+          that.messtitle="请输入出生年月";
+
+      }else if(that.form.num==""){
+          that.messtitle="请输入编号";
+
+      }else if(that.form.remarks==""){
+          that.messtitle="请输入备注";
+
+      }else{
+          that.$http.post(
+          "/api/students/add",
+          JSON.stringify(this.form),
+          (success) => {
+            that.form = {
+              name: "",
+              tel: "",
+              sex: "",
+              birthday: "",
+              num:"",
+              remarks:""
+            };
+            this.loaddate();
+              that.dialogVisible = false;
+          },
+          (failure) => {
+            // alert(failure)
+          }
+        );
+      }
+
+  
     },
      del(id) {
       let that = this;
@@ -904,5 +925,9 @@ table {
 .wqs{
   margin-left: -20px;
 }
-
+.message{
+	margin-top: 10px;
+	line-height: 30px;color: red;
+	text-align: center;
+}
 </style>
